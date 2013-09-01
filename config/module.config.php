@@ -1,0 +1,148 @@
+<?php
+
+return array(
+    'router' => array(
+        'routes' => array(
+             'admin' => array(
+                'child_routes' => array(
+                    'stats' => array(
+                	    'type' => 'Literal',
+                    	'options' => array(
+                    		'route' => '/stats',
+                            'defaults' => array(
+                                'controller' => 'adminstats',
+                                'action' => 'index',
+                            ),
+                        ),
+                    	'may_terminate' => true,
+                        'child_routes' =>array(
+                            'statistics' => array(
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/summary',
+                                    'defaults' => array(
+                                        'controller' => 'adminstats',
+                                        'action' => 'statistics',
+                                    ),
+                                ),
+                            ),
+		                    'share' => array(
+		                        'type' => 'Literal',
+		                        'options' => array(
+		                            'route' => '/share',
+		                            'defaults' => array(
+		                                'controller' => 'adminstats',
+		                                'action' => 'share',
+		                            ),
+		                        ),
+		                    ),
+		                    'badge' => array(
+		                        'type' => 'Literal',
+		                        'options' => array(
+		                            'route' => '/badge',
+		                            'defaults' => array(
+		                                'controller' => 'adminstats',
+		                                'action' => 'badge',
+		                            ),
+		                        ),
+		                    ),
+		                    'download' => array(
+		                        'type' => 'Literal',
+		                        'options' => array(
+		                            'route' => '/download',
+		                            'defaults' => array(
+		                                'controller' => 'adminstats',
+		                                'action'     => 'download',
+		                            ),
+		                        ),
+		                    ),
+		                    'games' => array(
+								'type' => 'literal',
+								'options' => array(
+									'route' => '/games',
+									'defaults' => array(
+		                                'controller' => 'adminstats',
+		                                'action' => 'games',
+		                            ),
+								),
+							),
+							'export' => array(
+								'type' => 'literal',
+								'options' => array(
+									'route' => '/export',
+									'defaults' => array(
+		                                'controller' => 'adminstats',
+		                                'action' => 'export',
+		                            ),
+								),
+							),
+							'downloadexport' => array(
+		                        'type' => 'Literal',
+		                        'options' => array(
+		                            'route' => '/download-export',
+		                            'defaults' => array(
+		                                'controller' => 'adminstats',
+		                                'action'     => 'downloadexport',
+		                            ),
+		                        ),
+		                    ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+
+    'core_layout' => array(
+        'PlaygroundStats' => array(
+            'default_layout' => 'layout/admin',
+            'controllers' => array(
+            	'adminstats'   => array(
+            		'default_layout' => 'layout/admin',
+            	),
+            ),
+        ),
+    ),
+
+    'translator' => array(
+        'locale' => 'fr_FR',
+        'translation_file_patterns' => array(
+            array(
+                'type'     => 'phpArray',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern'  => '%s.php'
+            ),
+        ),
+    ),
+		
+    'controllers' => array(
+        'invokables' => array(
+            'adminstats' => 'PlaygroundStats\Controller\Admin\StatisticsController',
+        ),
+    ),
+		
+    'view_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../view/admin',
+            __DIR__ . '/../view/frontend',
+        ),
+    ),
+	
+	'navigation' => array(
+		'admin' => array(
+			'statisticsgames' => array(
+				'order' => 1,
+				'label' => 'Statistiques des jeux',
+				'route' => 'admin/stats/games',
+				'resource' => 'stats',
+				'privilege' => 'list',
+			),
+			'export' => array(
+				'label' => 'Export',
+				'route' => 'admin/stats/export',
+				'resource' => 'stats',
+				'privilege' => 'list',
+			),
+		),
+	),
+);

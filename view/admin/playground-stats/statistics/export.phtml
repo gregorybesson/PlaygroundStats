@@ -1,0 +1,250 @@
+<?php $this->plugin('translate')->setTranslatorTextDomain('application');// Pour le texte ?>
+<?php
+	$form = $this->form;
+	$form->prepare();
+	$form->setAttribute('action', $this->url('admin/stats/export'));
+	$form->setAttribute('class', 'validate');
+	
+?>
+
+<!-- STATS DASHBOARD -->
+<h1><?php echo $this->translate('Exporter des membres'); ?></h1>
+
+<?php echo $this->form()->openTag($form); ?>
+
+<div id="statistics-export" class="statistics-tab">
+	
+	<?php if ($this->data == '') : ?>
+	<div class="statistics-form">
+		
+		<div class="row-fluid button-top"><?php echo $this->formButton($form->get('submit')) ?></div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3"><?php echo $this->formLabel($form->get('gameid')); ?> :</div>
+			<div class="block-right span9 select-input">
+				<?php echo $this->formInput($form->get('gameid')) ?>
+				<?php echo $this->formElementErrors($form->get('gameid')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3"><?php echo $this->formLabel($form->get('lastname')); ?> :</div>
+			<div class="block-right span9 select-input">
+				<?php echo $this->formSelect($form->get('lastname')) ?>
+				<?php echo $this->formElementErrors($form->get('lastname')) ?>
+				<?php echo $this->formInput($form->get('lastname-input')) ?>
+				<?php echo $this->formElementErrors($form->get('lastname-input')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3"><?php echo $this->formLabel($form->get('firstname')); ?> :</div>
+			<div class="block-right span9 select-input">
+				<?php echo $this->formSelect($form->get('firstname')) ?>
+				<?php echo $this->formElementErrors($form->get('firstname')) ?>
+				<?php echo $this->formInput($form->get('firstname-input')) ?>
+				<?php echo $this->formElementErrors($form->get('firstname-input')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3"><?php echo $this->formLabel($form->get('sexe')); ?> :</div>
+			<div class="block-right span9">
+				<?php echo $this->formSelect($form->get('sexe')) ?>
+				<?php echo $this->formElementErrors($form->get('sexe')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3"><?php echo $this->formLabel($form->get('memberid')); ?> :</div>
+			<div class="block-right span9 member-id">
+				<?php echo $this->formRadio($form->get('memberid')) ?>
+				<?php echo $this->formElementErrors($form->get('memberid')) ?>
+				<?php echo $this->formInput($form->get('memberid-input')) ?>
+				<?php echo $this->formElementErrors($form->get('memberid-input')) ?>
+				</label>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3"><?php echo $this->formLabel($form->get('email')); ?> :</div>
+			<div class="block-right span9 select-input">
+				<?php echo $this->formSelect($form->get('email')) ?>
+				<?php echo $this->formElementErrors($form->get('email')) ?>
+				<?php echo $this->formInput($form->get('email-input')) ?>
+				<?php echo $this->formElementErrors($form->get('email-input')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3"><?php echo $this->formLabel($form->get('zipcode')); ?> :</div>
+			<div class="block-right span9 select-input">
+				<?php echo $this->formSelect($form->get('zipcode')) ?>
+				<?php echo $this->formElementErrors($form->get('zipcode')) ?>
+				<?php echo $this->formInput($form->get('zipcode-input')) ?>
+				<?php echo $this->formElementErrors($form->get('zipcode-input')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('birthdate')); ?> :</div>
+			<div class="block-right span9">
+				<div class="birthdateform-radio">
+					<?php echo $this->formRadio($form->get('birthdate')) ?>
+					<?php echo $this->formElementErrors($form->get('birthdate')) ?>
+				</div>
+				<div class="birthdateform-between">
+					<?php echo $this->formInput($form->get('birthdate-start')) ?> et le <?php echo $this->formInput($form->get('birthdate-end')) ?>
+					<?php echo $this->formElementErrors($form->get('birthdate-start')) ?>
+					<?php echo $this->formElementErrors($form->get('birthdate-end')) ?>
+				</div>
+				<?php echo $this->formInput($form->get('birthdate-equal')) ?>
+				<?php echo $this->formElementErrors($form->get('birthdate-equal')) ?>
+			</div>
+		</div>
+		
+	    <div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('prizeCategory')); ?> :</div>
+			<div class="block-right span9 prizecategories">
+		        <?php echo $this->formMultiCheckbox($form->get('prizeCategory')); ?>
+		        <?php echo $this->formElementErrors($form->get('prizeCategory')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('optin')); ?> :</div>
+			<div class="block-right span9 optin">
+				<?php echo $this->formRadio($form->get('optin')); ?>
+		        <?php echo $this->formElementErrors($form->get('optin')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('optinpartner')); ?> :</div>
+			<div class="block-right span9 optin">
+				<?php echo $this->formRadio($form->get('optinpartner')); ?>
+		        <?php echo $this->formElementErrors($form->get('optinpartner')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><div class="label-radio"><?php echo $this->formLabel($form->get('inscriptiondate')); ?> :</div></div>
+			<div class="block-right span9">
+				<div class="inscriptionform-radio">
+					<?php echo $this->formRadio($form->get('inscriptiondate')); ?>
+			        <?php echo $this->formElementErrors($form->get('inscriptiondate')) ?>
+			    </div>
+		        <div class="inscriptionform-between">
+			        <?php echo $this->formInput($form->get('inscriptiondate-start')) ?> et le <?php echo $this->formInput($form->get('inscriptiondate-end')) ?>
+					<?php echo $this->formElementErrors($form->get('inscriptiondate-start')) ?>
+					<?php echo $this->formElementErrors($form->get('inscriptiondate-end')) ?>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><div class="label-radio"><?php echo $this->formLabel($form->get('hardbounce')); ?> :</div></div>
+			<div class="block-right span9">
+				<div class="hardbounceform-radio">
+					<?php echo $this->formRadio($form->get('hardbounce')); ?>
+			        <?php echo $this->formElementErrors($form->get('hardbounce')) ?>
+			    </div>
+		        <div class="hardbounceform-between">
+			        <?php echo $this->formInput($form->get('hardbounce-start')) ?> et le <?php echo $this->formInput($form->get('hardbounce-end')) ?>
+					<?php echo $this->formElementErrors($form->get('hardbounce-start')) ?>
+					<?php echo $this->formElementErrors($form->get('hardbounce-end')) ?>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('nbpart')); ?> :</div>
+			<div class="block-right span9">
+				<div class="nbpartform-radio">
+					<?php echo $this->formRadio($form->get('nbpart')); ?>
+			        <?php echo $this->formElementErrors($form->get('nbpart')) ?>
+		        </div>
+		       
+		       
+		        <div class="nbpartform-betweennb">
+		        	<!--
+			        <?php echo $this->formInput($form->get('nbpart-min')) ?> et le <?php echo $this->formInput($form->get('nbpart-max')) ?>
+					<?php echo $this->formElementErrors($form->get('nbpart-min')) ?>
+					<?php echo $this->formElementErrors($form->get('nbpart-max')) ?>
+					-->
+				</div>
+				
+				
+				<div class="nbpartform-between">
+			        <?php echo $this->formInput($form->get('nbpart-start')) ?> et le <?php echo $this->formInput($form->get('nbpart-end')) ?>
+					<?php echo $this->formElementErrors($form->get('nbpart-start')) ?>
+					<?php echo $this->formElementErrors($form->get('nbpart-end')) ?>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('validatedemail')); ?> :</div>
+			<div class="block-right span9 validatedemail">
+				<?php echo $this->formRadio($form->get('validatedemail')); ?>
+		        <?php echo $this->formElementErrors($form->get('validatedemail')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('player')); ?> :</div>
+			<div class="block-right span9 badges">
+				<?php echo $this->formRadio($form->get('player')); ?>
+		        <?php echo $this->formElementErrors($form->get('player')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('goldfather')); ?> :</div>
+			<div class="block-right span9 badges">
+				<?php echo $this->formRadio($form->get('goldfather')); ?>
+		        <?php echo $this->formElementErrors($form->get('goldfather')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('brain')); ?> :</div>
+			<div class="block-right span9 badges">
+				<?php echo $this->formRadio($form->get('brain')); ?>
+		        <?php echo $this->formElementErrors($form->get('brain')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('ambassador')); ?> :</div>
+			<div class="block-right span9 badges">
+				<?php echo $this->formRadio($form->get('ambassador')); ?>
+		        <?php echo $this->formElementErrors($form->get('ambassador')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="block-left span3 label-radio"><?php echo $this->formLabel($form->get('anniversary')); ?> :</div>
+			<div class="block-right span9 badges">
+				<?php echo $this->formRadio($form->get('anniversary')); ?>
+		        <?php echo $this->formElementErrors($form->get('anniversary')) ?>
+			</div>
+		</div>
+		
+		<div class="row-fluid button-bottom"><?php echo $this->formButton($form->get('submit')) ?></div>
+	</div>
+	<?php endif ?>
+	
+	<?php if (isset($this->data) && $this->data != '') :
+		if($this->form->isValid()) : ?>
+		<div class="result">
+			Il y a <?php echo $this->records ?> <?php if($this->records <= 1) : echo 'enregistrement'; else : echo 'enregistrements'; endif ?> dans votre export.<br/><br/>
+			<a href="<?php echo $this->url('admin/stats/downloadexport');?>">Télécharger le fichier CSV.</a><br/><br/>
+			<a href="" class="right">Revenir à l'accueil des exports</a>
+		</div>
+		<?php endif;
+	endif ?>
+
+</div>
+
+<?php echo $this->form()->closeTag($form) ?>

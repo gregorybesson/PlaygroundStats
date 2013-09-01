@@ -1,0 +1,58 @@
+<table class="table">
+	<tr>
+		<th></th>
+		<th><?php echo $this->translate('Total') ?></th>
+		<th><?php echo $this->translate('Bronze') ?></th>
+		<th><?php echo $this->translate('Argent') ?></th>
+		<th><?php echo $this->translate('Or') ?></th>
+	</tr>
+	<tr class="light">
+		<td><?php echo $this->translate('Nb de badges') ?></td>
+		<?php foreach($this->players as $player): ?>
+		<?php if($player['badge'] == 'total'): ?>
+		<td><?php echo number_format($player['user'], 0, ' ', ' ') ?></td>
+		<?php endif; ?>
+		<?php endforeach ?>
+	</tr>
+	<tr>
+		<td><?php echo $this->translate('Badge Parrain') ?></td>
+		<?php foreach($this->players as $player): ?>
+		<?php if($player['badge'] == 'goldfather'): ?>
+		<td><?php echo number_format($player['user'], 0, ' ', ' ') ?></td>
+		<?php endif; ?>
+		<?php endforeach ?>
+    </tr>
+    <tr class="light">
+		<td><?php echo $this->translate('Badge Cerveau') ?></td>
+		<?php foreach($this->players as $player): ?>
+		<?php if($player['badge'] == 'brain'): ?>
+		<td><?php echo number_format($player['user'], 0, ' ', ' ') ?></td>
+		<?php endif; ?>
+		<?php endforeach ?>
+    </tr>
+    <tr>
+		<td><?php echo $this->translate('Badge Ambassadeur') ?></td>
+		<?php foreach($this->players as $player): ?>
+		<?php if($player['badge'] == 'ambassador'): ?>
+		<td><?php echo number_format($player['user'], 0, ' ', ' ') ?></td>
+		<?php endif; ?>
+		<?php endforeach ?>
+    </tr>
+    <tr class="light">
+		<td><?php echo $this->translate('Badge Anniversaire') ?></td>
+		<?php foreach($this->players as $player): ?>
+		<?php if($player['badge'] == 'anniversary'): ?>
+		<td><?php echo number_format($player['user'], 0, ' ', ' ') ?></td>
+		<?php endif; ?>
+		<?php endforeach ?>
+    </tr>
+    <tr>
+		<td><?php echo $this->translate('Badge Joueur') ?></td>
+		<?php foreach($this->players as $player): ?>
+		<?php if($player['badge'] == 'player'): ?>
+		<td><?php echo number_format($player['user'], 0, ' ', ' ') ?></td>
+		<?php endif; ?>
+		<?php endforeach ?>
+    </tr>
+	
+</table>

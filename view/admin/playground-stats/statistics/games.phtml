@@ -1,0 +1,42 @@
+<?php $this->plugin('translate')->setTranslatorTextDomain('application');// Pour le texte ?>
+<?php
+	$form = $this->form;
+	$form->prepare();
+	//$form->setAttribute('action', $this->url('admin/stats/statisticsgames'));
+?>
+
+<!-- Statistiques des jeux -->
+<h1><?php echo $this->translate('Statistiques des jeux'); ?></h1>
+
+<?php echo $this->form()->openTag($form); ?>
+
+<div id="statistics-games" class="statistics-tab">
+	
+	<div class="statistics-form">
+		<label><b>Indiquez l'ID du jeu : </b></label><input type="text" name="gameId" value="<?php if($this->gameId != '') : echo $this->gameId; endif ?>" /><input type="submit" value="Go">
+	</div>
+	
+	<?php if($this->gameId != '') : ?>
+	<table class="table">
+		<tr>
+			<td><?php echo $this->translate('Nb de participants') ?></td>
+			<td><?php echo number_format($this->participants, 0, ' ', ' ') ?></td>
+		</tr>
+		<tr class="light">
+			<td><?php echo $this->translate('Nb d\'optin NL Metro') ?></td>
+			<td><?php echo number_format($this->optinUser, 0, ' ', ' ') ?></td>
+		</tr>
+		<tr>
+			<td><?php echo $this->translate('Nb d\'optin partenaires') ?></td>
+			<td><?php echo number_format($this->optinPartner, 0, ' ', ' ') ?></td>
+		</tr>
+		<tr class="light">
+			<td><?php echo $this->translate('Nb de nouveaux inscrits') ?></td>
+			<td><?php if($this->newUsers != '') : echo number_format($this->newUsers, 0, ' ', ' '); else : echo '0'; endif ?></td>
+		</tr>
+	</table>
+	<?php endif ?>
+	
+</div>
+
+<?php echo $this->form()->closeTag($form) ?>

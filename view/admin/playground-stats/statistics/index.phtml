@@ -1,0 +1,117 @@
+<?php $this->plugin('translate')->setTranslatorTextDomain('application');// Pour le texte ?>
+<?php
+	$form = $this->form;
+	$form->prepare();
+	$form->setAttribute('action', $this->url('admin/stats'));
+	
+	$startDate = isset($this->data['statsDateStart']) ? $this->data['statsDateStart'] : '';
+	$endDate = isset($this->data['statsDateEnd']) ? $this->data['statsDateEnd'] : '';
+?>
+
+<!-- STATS DASHBOARD -->
+<h1><?php echo $this->translate('Statistiques générales de la plate-forme'); ?></h1>
+
+<?php echo $this->form()->openTag($form); ?>
+
+<!--<a href="<?php echo $this->url('admin/stats/download');?>">Export CSV</a>-->
+
+<div id="statistics" class="statistics-tab">
+	
+	<div class="statistics-form">
+		<label><b>Afficher les statistiques du : </b></label>
+		<input type="datetime" name="statsDateStart" value="<?php echo $startDate ?>" placeholder="Date de début" class="date" /> <b>au</b> <input type="datetime" name="statsDateEnd" value="<?php echo $endDate ?>" placeholder="Date de fin" class="date" />
+		<input type="submit" value="Go">
+	</div>
+	
+	<table class="table">
+		<tr>
+			<th></th>
+			<th><?php echo $this->translate('Total') ?></th>
+			<th><?php echo $this->translate('Hommes') ?></th>
+			<th><?php echo $this->translate('Femmes') ?></th>
+		</tr>
+		<tr class="light">
+	        <td><?php echo $this->translate('Nb total de membres'); ?></td>
+	        <td><?php echo number_format($this->members, 0, ' ', ' ') ?></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr>
+	        <td><?php echo $this->translate('Nb de membres validés'); ?></td>
+	        <td><?php echo number_format($this->validatedMembers, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->maleMembers, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->femaleMembers, 0, ' ', ' ') ?></td>
+	    </tr>
+	    <tr class="light">
+	        <td><?php echo $this->translate('Nb de membres actifs'); ?></td>
+	        <td><?php echo number_format($this->active, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->maleActive, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->femaleActive, 0, ' ', ' ') ?></td>
+	    </tr>
+	    <tr>
+	        <td><?php echo $this->translate('Nb d\'optins NL Metro'); ?></td>
+	        <td><?php echo number_format($this->optin, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->maleOptin, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->femaleOptin, 0, ' ', ' ') ?></td>
+	    </tr>
+	    <tr class="light">
+	        <td><?php echo $this->translate('Nb d\'optins NL partenaires'); ?></td>
+	        <td><?php echo number_format($this->optinPartners, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->maleOptinPartners, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->femaleOptinPartners, 0, ' ', ' ') ?></td>
+	    </tr>
+	    <tr height="50">
+	        <td></td>
+	        <td></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr class="light">
+	        <td><?php echo $this->translate('Nb d\'inscriptions non validées'); ?></td>
+	        <td><?php echo number_format($this->unregistered, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->maleUnregistered, 0, ' ', ' ') ?></td>
+	        <td><?php echo number_format($this->femaleUnregistered, 0, ' ', ' ') ?></td>
+	    </tr>
+	    <tr>
+	        <td><?php echo $this->translate('Nb de membres suspendus'); ?></td>
+	        <td><?php echo number_format($this->suspended, 0, ' ', ' ') ?></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr height="50">
+	        <td></td>
+	        <td></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr class="light">
+	        <td><?php echo $this->translate('Nb de participations'); ?></td>
+	        <td><?php echo number_format($this->participations, 0, ' ', ' ') ?></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr>
+	        <td><?php echo $this->translate('Nb de jeux actifs'); ?></td>
+	        <td><?php echo number_format($this->activeGames, 0, ' ', ' ') ?></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr class="light">
+	        <td><?php echo $this->translate('Nb d\'articles actifs'); ?></td>
+	        <td><?php echo number_format($this->activeArticles, 0, ' ', ' ') ?></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	    <tr height="50" id="statistic-share">
+	        <td></td>
+	        <td></td>
+	        <td></td>
+	        <td></td>
+	    </tr>
+	</table>
+	<a href="<?php echo $this->url('admin/stats/share'); ?>" id="load-statistic-share"><?php echo $this->translate('Load shared statistics'); ?></a>
+	<a href="<?php echo $this->url('admin/stats/badge'); ?>" id="load-statistic-achievement"><?php echo $this->translate('Load achievement statistics'); ?></a>
+	
+</div>
+
+<?php echo $this->form()->closeTag($form) ?>
