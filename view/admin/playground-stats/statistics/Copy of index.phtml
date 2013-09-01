@@ -7,49 +7,13 @@
 	$startDate = isset($this->data['statsDateStart']) ? $this->data['statsDateStart'] : '';
 	$endDate = isset($this->data['statsDateEnd']) ? $this->data['statsDateEnd'] : '';
 ?>
+
 <!-- STATS DASHBOARD -->
-<section class="demo">
-	<div class="gridster">
-	    <ul>
-	        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-	        	 <div style="font-size:60px; margin:60px 0 0 15px"><?php echo date("H:i"); ?></div><br/>
-	        	<div style="margin-left:15px;color:#888"><?php echo date("D d F y"); ?></div>
-	        </li>
-	        <li data-row="1" data-col="2" data-sizex="2" data-sizey="1">
-	        	<img src="<?php echo $this->adminAssetPath('images/gridster/norio5.png');?>" width="520" height="250"/>
-	        </li>
-	        <li data-row="1" data-col="4" data-sizex="1" data-sizey="1">
-	        	<div style="font-size:60px; margin:60px 0 0 15px"><?php echo number_format($this->members, 0, ' ', ' ') ?></div><br/>
-	        	<div style="margin-left:15px;color:#888"><span style="color:#2CD35B">+<?php echo number_format($this->active, 0, ' ', ' ') ?></span> nouveaux membres</div>
-	        </li>
-	        
-	        <li data-row="2" data-col="1" data-sizex="2" data-sizey="2" style="background-image:url('<?php echo $this->adminAssetPath('images/gridster/graphique.jpg');?>');background-repeat:no-repeat;background-position:bottom;">
-	        	<div style="font-size:80px; margin:60px 0 0 50px"><?php echo number_format($this->participations, 0, ' ', ' ') ?></div>
-	        	<div style="margin:30px 0 0 50px;color:#888"><span style="color:#2CD35B">+27%</span> participations depuis le mois dernier</div>
-	        </li>
-	        <li data-row="2" data-col="3" data-sizex="1" data-sizey="1">
-	        	<div style="font-size:40px; margin:60px 0 0 15px">154 jeux</div><br/>
-	        	<div style="font-size:20px; margin-left:35px;color:#888"><span style="color:#2CD35B"><?php echo number_format($this->activeGames, 0, ' ', ' ') ?></span> en cours</div>
-	        </li>
-	        <li data-row="2" data-col="4" data-sizex="1" data-sizey="1">
-	        	<div style="font-size:60px; margin:60px 0 0 15px"><?php echo number_format($this->optin, 0, ' ', ' ') ?></div><br/>
-	        	<div style="margin-left:15px;color:#888">optins Playground</div>
-	        </li>
-
-	        <li data-row="3" data-col="3" data-sizex="1" data-sizey="1">
-	        	<div style="font-size:40px; margin:60px 0 0 15px">154 articles</div><br/>
-	        	<div style="font-size:20px; margin-left:35px;color:#888"><span style="color:#2CD35B"><?php echo number_format($this->activeArticles, 0, ' ', ' ') ?></span> en cours</div>
-	        </li>
-	        <li data-row="3" data-col="4" data-sizex="1" data-sizey="1">
-	        	<div style="font-size:60px; margin:60px 0 0 15px"><?php echo number_format($this->optinPartners, 0, ' ', ' ') ?></div><br/>
-	        	<div style="margin-left:15px;color:#888">optins Playground</div>
-	        </li>
-	    </ul>
-	</div>
-</section>
-
+<h1><?php echo $this->translate('Statistiques générales de la plate-forme'); ?></h1>
 
 <?php echo $this->form()->openTag($form); ?>
+
+<!--<a href="<?php echo $this->url('admin/stats/download');?>">Export CSV</a>-->
 
 <div id="statistics" class="statistics-tab">
 	
@@ -151,14 +115,3 @@
 </div>
 
 <?php echo $this->form()->closeTag($form) ?>
-
-<script type="text/javascript">
-	$(function(){ //DOM Ready
-	 
-	    $(".gridster ul").gridster({
-	        widget_margins: [10, 10],
-	        widget_base_dimensions: [250, 250]
-	    });
-	 
-	});
-</script>

@@ -1,6 +1,62 @@
 <?php
 
 return array(
+		
+	'assetic_configuration' => array(
+		'modules' => array(
+			'admin' => array(
+				# module root path for your css and js files
+				'root_path' => array(
+						__DIR__ . '/../view/admin/assets',
+				),
+				# collection of assets
+				'collections' => array(
+					'admin_css' => array(
+						'assets' => array(
+							'jquery-gridster.css'   => 'css/jquery.gridster.min.css',
+							'gridster.css' 			=> 'css/gridster.css',
+						),
+					),
+					'head_admin_js' => array(
+						'assets' => array(
+							'jquery-gridster.js' 			 => 'js/jquery.gridster.min.js',
+						),
+					),
+					'gridster_images' => array(
+						'assets' => array(
+							'images/**/*.jpg',
+							'images/**/*.png',
+				
+						),
+						'options' => array(
+							'move_raw' => true,
+							'output' => 'zfcadmin',
+						)
+					),
+				),
+			),
+			'stats' => array(
+				# module root path for your css and js files
+				'root_path' => array(
+					__DIR__ . '/../view/admin/assets',
+				),
+				# collection of assets
+				'collections' => array(
+					'gridster_images' => array(
+						'assets' => array(
+							'images/**/*.jpg',
+							'images/**/*.png',
+						),
+						'options' => array(
+							'move_raw' => true,
+							'output' => 'zfcadmin',
+						)
+					),
+				),
+			),
+		),
+	),
+										
     'router' => array(
         'routes' => array(
              'admin' => array(
