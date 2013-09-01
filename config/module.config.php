@@ -132,16 +132,24 @@ return array(
 		'admin' => array(
 			'statisticsgames' => array(
 				'order' => 1,
-				'label' => 'Statistiques des jeux',
+				'label' => 'Statistiques',
 				'route' => 'admin/stats/games',
 				'resource' => 'stats',
 				'privilege' => 'list',
-			),
-			'export' => array(
-				'label' => 'Export',
-				'route' => 'admin/stats/export',
-				'resource' => 'stats',
-				'privilege' => 'list',
+				'pages' => array(
+					'list' => array(
+						'label' => 'Statistiques des jeux',
+						'route' => 'admin/stats/games',
+						'resource' => 'stats',
+						'privilege' => 'list',
+					),
+					'export' => array(
+						'label' => 'Export',
+						'route' => 'admin/stats/export',
+						'resource' => 'stats',
+						'privilege' => 'list',
+					),
+				),
 			),
 		),
 	),
