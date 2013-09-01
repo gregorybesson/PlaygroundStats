@@ -566,6 +566,9 @@ class Export extends ProvidesEventsForm
         	
             $categories[$result->getId()] = $result->getTitle();
         }
+        if (count($categories) == 0){
+        	$categories[0] = 'No Category';
+        }
         return $categories;
     }
 

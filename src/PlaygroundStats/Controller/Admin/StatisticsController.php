@@ -1,6 +1,5 @@
 <?php
 namespace PlaygroundStats\Controller\Admin;
-
 use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
@@ -11,319 +10,321 @@ use Zend\View\Model\ViewModel;
 
 class StatisticsController extends AbstractActionController
 {
-    /**
-     * @var gameService
-     */
-    protected $gameService;
+	/**
+	 * @var gameService
+	 */
+	protected $gameService;
 
-    /**
-     * @var pageService
-     */
-    protected $pageService;
+	/**
+	 * @var pageService
+	 */
+	protected $pageService;
 
-    /**
-     * @var gameService
-     */
-    protected $rewardService;
+	/**
+	 * @var gameService
+	 */
+	protected $rewardService;
 
-    /**
-     * @var achievementService
-     */
-    protected $achievementService;
+	/**
+	 * @var achievementService
+	 */
+	protected $achievementService;
 
-    /**
-     * @var userService
-     */
-    protected $userService;
+	/**
+	 * @var userService
+	 */
+	protected $userService;
 
-    /**
-     * @var achievementListenerService
-     */
-    protected $achievementListenerService;
-    
-    /**
-     * @var applicationService
-     */
-    protected $applicationService;
-    
-    protected $myExportedResult;
+	/**
+	 * @var achievementListenerService
+	 */
+	protected $achievementListenerService;
+
+	/**
+	 * @var applicationService
+	 */
+	protected $applicationService;
+
+	protected $myExportedResult;
+
+	protected $prizeCategoriesExport;
 
 	public function indexAction()
 	{
 		$ap 				= $this->getApplicationService();
-	    list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
-		
+		list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
+
 		list(
-		    $members,$male,$female,
-		    $validatedMembers,$maleMembers,$femaleMembers,
-		    $active,$maleActive,$femaleActive,
-		    $optin,$maleOptin,$femaleOptin,
-		    $optinPartners,$maleOptinPartners,$femaleOptinPartners,
-		    $unregistered,$maleUnregistered,$femaleUnregistered,
-		    $suspended,$maleSuspended,$femaleSuspended
+				$members,$male,$female,
+				$validatedMembers,$maleMembers,$femaleMembers,
+				$active,$maleActive,$femaleActive,
+				$optin,$maleOptin,$femaleOptin,
+				$optinPartners,$maleOptinPartners,$femaleOptinPartners,
+				$unregistered,$maleUnregistered,$femaleUnregistered,
+				$suspended,$maleSuspended,$femaleSuspended
 		) = $ap->getListUserCountByRangeDate(array(
-		    'members','validatedMembers','activeMembers','optin','optinPartners','unregistered','suspended'
+				'members','validatedMembers','activeMembers','optin','optinPartners','unregistered','suspended'
 		),$startDate, $endDate);
-		
+
 		$participations 	= $ap->getParticipationsByRangeDate($startDate, $endDate);
 		$activeGames 		= $ap->getGamesByRangeDate($startDate, $endDate);
 		$activeArticles 	= $ap->getArticlesByRangeDate($startDate, $endDate);
-		
+
 		return new ViewModel(
-			array(
-				'members' 			=> $members,
-	            'validatedMembers'  => $validatedMembers,
-	            'maleMembers' 		=> $maleMembers,
-	            'femaleMembers' 	=> $femaleMembers,
-	            'active' 			=> $active,
-	            'maleActive' 		=> $maleActive,
-	            'femaleActive' 		=> $femaleActive,
-	            'optin' 			=> $optin,
-	            'maleOptin' 		=> $maleOptin,
-	            'femaleOptin' 		=> $femaleOptin,
-	            'optinPartners' 	=> $optinPartners,
-	            'maleOptinPartners' => $maleOptinPartners,
-	            'femaleOptinPartners' => $femaleOptinPartners,
-	            
-	            'unregistered' 		=> $unregistered,
-	            'maleUnregistered' 	=> $maleUnregistered,
-	            'femaleUnregistered'=> $femaleUnregistered,
-	            'suspended' 		=> $suspended,
-	            
-				'participations' 	=> $participations,
-				'activeGames' 		=> $activeGames,
-				'activeArticles' 	=> $activeArticles,
-	            
-				'form' 				=> $form,
-				'data' 				=> $data,
-            )
-        );
+				array(
+						'members' 			=> $members,
+						'validatedMembers'  => $validatedMembers,
+						'maleMembers' 		=> $maleMembers,
+						'femaleMembers' 	=> $femaleMembers,
+						'active' 			=> $active,
+						'maleActive' 		=> $maleActive,
+						'femaleActive' 		=> $femaleActive,
+						'optin' 			=> $optin,
+						'maleOptin' 		=> $maleOptin,
+						'femaleOptin' 		=> $femaleOptin,
+						'optinPartners' 	=> $optinPartners,
+						'maleOptinPartners' => $maleOptinPartners,
+						'femaleOptinPartners' => $femaleOptinPartners,
+	      
+						'unregistered' 		=> $unregistered,
+						'maleUnregistered' 	=> $maleUnregistered,
+						'femaleUnregistered'=> $femaleUnregistered,
+						'suspended' 		=> $suspended,
+	      
+						'participations' 	=> $participations,
+						'activeGames' 		=> $activeGames,
+						'activeArticles' 	=> $activeArticles,
+	      
+						'form' 				=> $form,
+						'data' 				=> $data,
+				)
+		);
 	}
 
 	public function badgeAction() {
-	    $ap = $this->getApplicationService();
-	    list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
-	    $badges = array (
-	        'total' => array (0, 1, 2, 3),
-	        'goldfather' => array (0, 1, 2, 3),
-	        'brain' => array (0, 1, 2, 3),
-	        'ambassador' => array (0, 1, 2, 3),
-	        'anniversary' => array (0, 1, 2, 3),
-	        'player' => array (0, 1, 2, 3),
-	    );
-	    
-	    $players = array();
-	    
-	    $badgeResults = $ap->getListBadgeCountByRangeDate($badges,$startDate, $endDate);
-	    $badgeResult = current($badgeResults);
-	    
-	    foreach($badges as $badge => $levels) {
-	        foreach($levels as $level) {
-	            $players[] = array(
-	                'badge' => $badge,
-	                'level' => $level,
-	                'user' => $badgeResult
-	            );
-	            $badgeResult = next( $badgeResults );
-	        }
-	    }
-	   
-	    $model = new ViewModel(
-	        array(
-	            'players' 			=> $players,
-	        )
-	    );
-	    $model->setTerminal(true);
-	    return $model;
-	}
-	
-	protected function getStartEndDateValues() {
-	    $data 				= '';
-	    $startDate 			= '';
-	    $endDate 			= '';
-	    
-	    $request 			= $this->getRequest();
-	    $form 				= new Form();
-	    $form->setAttribute('method', 'post');
-	    
-	    if ($request->isPost()) {
-	        $data = $request->getPost()->toArray();
-	        $form->setData($data);
-	        if ($form->isValid()) {
-	            $startDate 	= $data['statsDateStart'];
-	            $endDate 	= $data['statsDateEnd'];
-	        }
-	    }
-        return array($startDate,$endDate,$form,$data);
-	}
-
-	
-	public function shareAction() {
-	    $ap = $this->getApplicationService();
-	    list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
-	    list(
-	        $sponsoredMembers,
-	        $shares,
-	        $profilShares,
-	        $fbInvit,
-	        $twInvit,
-	        $glInvit,
-	        $mailInvit
-	    ) = $ap->getListShareCountByRangeDate(array(
-	        'sponsoredMembers','shares','profilShares','fbInvit','twInvit','glInvit','mailInvit'
-	    ),$startDate, $endDate);
-	    $model = new ViewModel(
-	        array(
-	            'sponsoredMembers' 	=> $sponsoredMembers,
-	            'shares' 			=> $shares,
-	            'profilShares' 		=> $profilShares,
-	            'fbInvit' 			=> $fbInvit,
-	            'twInvit' 			=> $twInvit,
-	            'glInvit' 			=> $glInvit,
-	            'mailInvit' 		=> $mailInvit
-	        )
-	    );
-	    $model->setTerminal(true);
-	    return $model;
-	}
-
-    /*public function indexAction()
-    {
-		$request 		= $this->getRequest();
-        $su 			= $this->getUserService();
-        $sg 			= $this->getGameService();
-        $sr 			= $this->getRewardService();
-
-        $allUser 		= count($su->findAll());
-        $activeUser 	= count($su->findByState(1));
-        $inactiveUser 	= $allUser - $activeUser;
-
-        $maleUser 		= count($su->findByTitle('M'));
-        $femaleUser 	= count($su->findByTitle('Me'));
-
-        $optinUser 		= count($su->findByOptin(1));
-        //$optinUserPartner 	= count($su->findByOptin(1, true));
-
-        $activeGame 	= count($sg->getActiveGames());
-
-        $allGames 		= count($sg->findAll());
-        $allEntries 	= count($sg->findAllEntry());
-        $userPerGames 	= $allEntries/$allGames;
-
-        $activePage 	= count($this->getPageService()->getActivePages());
-
-        $shareAction 	= count($sr->findBy(array('actionId' => array(13,14,15,16))));
-        $sharePerGames 	= $allGames/$shareAction;
-
-        $userPerBadges = array();
-        $badges 	= $this->getRewardAchievementListenerService()->getBadges();
-
-        foreach ($badges as $keyBadge => $badge) {
-            foreach ($badge['levels'] as $keyLevel => $level) {
-                $userPerBadges[] = array(
-                    'badge' => $keyBadge,
-                    'level' => $level['label'],
-                    'user'  => count($this->getAchievementService()->findBy(array('type' => 'badge', 'category'=> $keyBadge, 'level' => $keyLevel))),
-                );
-
-            }
-        }
-		
-		$form = new Form();
-        $form->setAttribute('method', 'post');		
-		
-		if ($request->isPost()) {
-            $data = $request->getPost()->toArray();
+		$ap = $this->getApplicationService();
+		list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
+		$badges = array (
+				'total' => array (0, 1, 2, 3),
+				'goldfather' => array (0, 1, 2, 3),
+				'brain' => array (0, 1, 2, 3),
+				'ambassador' => array (0, 1, 2, 3),
+				'anniversary' => array (0, 1, 2, 3),
+				'player' => array (0, 1, 2, 3),
+		);
+	  
+		$players = array();
+	  
+		$badgeResults = $ap->getListBadgeCountByRangeDate($badges,$startDate, $endDate);
+		$badgeResult = current($badgeResults);
+	  
+		foreach($badges as $badge => $levels) {
+			foreach($levels as $level) {
+				$players[] = array(
+						'badge' => $badge,
+						'level' => $level,
+						'user' => $badgeResult
+				);
+				$badgeResult = next( $badgeResults );
+			}
 		}
 
-        return new ViewModel(array(
-             'activeUser' 	=> $activeUser,
-             'inactiveUser' => $inactiveUser,
-             'maleUser' 	=> $maleUser,
-             'femaleUser' 	=> $femaleUser,
-             'optinUser' 	=> $optinUser,
-             //'optinUserPartner' => $optinUserPartner,
+		$model = new ViewModel(
+				array(
+						'players' 			=> $players,
+				)
+		);
+		$model->setTerminal(true);
+		return $model;
+	}
 
-             'activeGame' 	=> $activeGame,
-             'activePage' 	=> $activePage,
+	protected function getStartEndDateValues() {
+		$data 				= '';
+		$startDate 			= '';
+		$endDate 			= '';
+	  
+		$request 			= $this->getRequest();
+		$form 				= new Form();
+		$form->setAttribute('method', 'post');
+	  
+		if ($request->isPost()) {
+			$data = $request->getPost()->toArray();
+			$form->setData($data);
+			if ($form->isValid()) {
+				$startDate 	= $data['statsDateStart'];
+				$endDate 	= $data['statsDateEnd'];
+			}
+		}
+		return array($startDate,$endDate,$form,$data);
+	}
 
-             'userPerGames'	=> $userPerGames,
-             'sharePerGames'=> $sharePerGames,
 
-             'userPerBadges'=> $userPerBadges,
-             
-			 'form' 		=> $form,
-            )
-        );
-    }*/
+	public function shareAction() {
+		$ap = $this->getApplicationService();
+		list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
+		list(
+				$sponsoredMembers,
+				$shares,
+				$profilShares,
+				$fbInvit,
+				$twInvit,
+				$glInvit,
+				$mailInvit
+		) = $ap->getListShareCountByRangeDate(array(
+				'sponsoredMembers','shares','profilShares','fbInvit','twInvit','glInvit','mailInvit'
+		),$startDate, $endDate);
+		$model = new ViewModel(
+				array(
+						'sponsoredMembers' 	=> $sponsoredMembers,
+						'shares' 			=> $shares,
+						'profilShares' 		=> $profilShares,
+						'fbInvit' 			=> $fbInvit,
+						'twInvit' 			=> $twInvit,
+						'glInvit' 			=> $glInvit,
+						'mailInvit' 		=> $mailInvit
+				)
+		);
+		$model->setTerminal(true);
+		return $model;
+	}
 
-	public function 	gamesAction()
+	/*public function indexAction()
+	 {
+	$request 		= $this->getRequest();
+	$su 			= $this->getUserService();
+	$sg 			= $this->getGameService();
+	$sr 			= $this->getRewardService();
+
+	$allUser 		= count($su->findAll());
+	$activeUser 	= count($su->findByState(1));
+	$inactiveUser 	= $allUser - $activeUser;
+
+	$maleUser 		= count($su->findByTitle('M'));
+	$femaleUser 	= count($su->findByTitle('Me'));
+
+	$optinUser 		= count($su->findByOptin(1));
+	//$optinUserPartner 	= count($su->findByOptin(1, true));
+
+	$activeGame 	= count($sg->getActiveGames());
+
+	$allGames 		= count($sg->findAll());
+	$allEntries 	= count($sg->findAllEntry());
+	$userPerGames 	= $allEntries/$allGames;
+
+	$activePage 	= count($this->getPageService()->getActivePages());
+
+	$shareAction 	= count($sr->findBy(array('actionId' => array(13,14,15,16))));
+	$sharePerGames 	= $allGames/$shareAction;
+
+	$userPerBadges = array();
+	$badges 	= $this->getRewardAchievementListenerService()->getBadges();
+
+	foreach ($badges as $keyBadge => $badge) {
+	foreach ($badge['levels'] as $keyLevel => $level) {
+	$userPerBadges[] = array(
+			'badge' => $keyBadge,
+			'level' => $level['label'],
+			'user'  => count($this->getAchievementService()->findBy(array('type' => 'badge', 'category'=> $keyBadge, 'level' => $keyLevel))),
+	);
+
+	}
+	}
+
+	$form = new Form();
+	$form->setAttribute('method', 'post');
+
+	if ($request->isPost()) {
+	$data = $request->getPost()->toArray();
+	}
+
+	return new ViewModel(array(
+			'activeUser' 	=> $activeUser,
+			'inactiveUser' => $inactiveUser,
+			'maleUser' 	=> $maleUser,
+			'femaleUser' 	=> $femaleUser,
+			'optinUser' 	=> $optinUser,
+			//'optinUserPartner' => $optinUserPartner,
+
+			'activeGame' 	=> $activeGame,
+			'activePage' 	=> $activePage,
+
+			'userPerGames'	=> $userPerGames,
+			'sharePerGames'=> $sharePerGames,
+
+			'userPerBadges'=> $userPerBadges,
+			 
+			'form' 		=> $form,
+	)
+	);
+	}*/
+
+	public function gamesAction()
 	{
 		$ap 			= $this->getApplicationService();
 		$sg 			= $this->getGameService();
 		$su 			= $this->getUserService();
-		
+
 		// initialize default stats
 		$gameId 		= '';
 		$participants 	= '';
 		$optinUser 		= '';
 		$optinPartner 	= '';
 		$newUsers 		= '';
-				
+
 		$request 		= $this->getRequest();
 		$form 			= new Form();
-        $form->setAttribute('method', 'post');
-		
+		$form->setAttribute('method', 'post');
+
 		// Form send
 		if ($request->isPost()) {
 			$data = $request->getPost()->toArray();
-            $form->setData($data);
+			$form->setData($data);
 			if ($form->isValid()) {
 				// Change stats with gameId
-				$gameId 		= $data['gameId'];				
+				$gameId 		= $data['gameId'];
 				$participants 	= $ap->findEntries($gameId, false);
 				$optinUser 		= $ap->findOptin('optin', $gameId);
 				$optinPartner 	= $ap->findOptin('optinPartner', $gameId);
 				$newUsers 		= $ap->findEntries($gameId, true);
-				
+
 			}
 		}
-		
+
 		return new ViewModel(
-			array(
-				'form' 			=> $form,
-				'gameId' 		=> $gameId,
-				'participants'	=> $participants,
-				'optinUser' 	=> $optinUser,
-				'optinPartner'  => $optinPartner,
-				'newUsers' 		=> $newUsers,
-			)
+				array(
+						'form' 			=> $form,
+						'gameId' 		=> $gameId,
+						'participants'	=> $participants,
+						'optinUser' 	=> $optinUser,
+						'optinPartner'  => $optinPartner,
+						'newUsers' 		=> $newUsers,
+				)
 		);
 	}
-	
+
 	public function exportAction()
-    {
-    	$ap 	 	= $this->getApplicationService();
-		
+	{
+		$ap 	 	= $this->getApplicationService();
+
 		$data 	 	= '';
 		$records 	= '';
 		$results 	= '';
-		
+
 		$request 	= $this->getRequest();
 		$form 	 	= $this->getServiceLocator()->get('playgroundstats_export_form');
-        $form->setAttribute('method', 'post');
-		
+		$form->setAttribute('method', 'post');
+
 		$category = $form->get('prizeCategory');
-		
+
 		// Form send
 		if ($request->isPost()) {
 			$data = $request->getPost()->toArray();
-            $form->setData($data);
-			
+			$form->setData($data);
+				
 			$inputFilter = $form->getInputFilter();
 			$inputFilter->get('prizeCategory')->setRequired(FALSE);
 			//$inputFilter->get('memberid')->setRequired(FALSE);
-			
+				
 			if ($form->isValid()) {
 				$data 		= $form->getData();
 				$results 	= $ap->getExportRecords($data);
@@ -338,17 +339,17 @@ class StatisticsController extends AbstractActionController
 				$data = '';
 			}
 		}
-		
+
 		return new ViewModel(
-			array(
-				'form' 		=> $form,
-				'data' 		=> $data,
-				'records' 	=> $records,
-			)
+				array(
+						'form' 		=> $form,
+						'data' 		=> $data,
+						'records' 	=> $records,
+				)
 		);
 	}
 
-	public function downloadexportAction() 
+	public function downloadexportAction()
 	{
 		$dataContainer 	= new Container('Export');
 		$ap = $this->getApplicationService();
@@ -362,39 +363,31 @@ class StatisticsController extends AbstractActionController
 			$this->downloadexportActionObject();
 		}
 	}
-	
+
 	protected function downloadexportActionResultSetSQL()
 	{
 		header('Content-Encoding: UTF-8');
-        header('Content-Type: text/csv; charset=UTF-8');
-        header('Content-Disposition: attachment; filename="export.csv"');
-        header('Accept-Ranges: bytes');
-		
+		header('Content-Type: text/csv; charset=UTF-8');
+		header('Content-Disposition: attachment; filename="export.csv"');
+		header('Accept-Ranges: bytes');
+
 		$ap 			= $this->getApplicationService();
 		$dataContainer 	= new Container('Export');
-		
+
 		if ($this->myExportedResult && $dataContainer->offsetExists('data')) {
 			$result 	= $this->myExportedResult;
 			$data 		= $dataContainer->offsetGet('data');
-			
+				
 			echo "\xEF\xBB\xBF"; // UTF-8 BOM
 			if($data['gameid'] != '') : echo "Id du jeu;"; endif;
-	        echo "ID du membre;Civilité;Nom;Prénom;Email;Adresse;CP;Ville;";
-			if($data['birthdate'] != 'all') : echo "Date de naissance;"; endif;
-	        echo "Tél fixe;Tél mobile;";
-	        if($data['optin'] != 'all') : echo "Optin NL Metro;"; endif;
-	        echo "Optin NL partenaires;Nb enfants;";
-	        if($data['inscriptiondate'] != 'all') : echo "Date d'inscription;"; endif;
-			echo "Source d'inscription;";
-			if($data['hardbounce'] != 'all') : echo "Hard Bounce;"; endif;
-			if($data['validatedemail'] != 'all') : echo "Email validé;"; endif;
+			echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;Optin NL Metro;Optin NL partenaires;Nb enfants;Date d'inscription;Source d'inscription;Hard Bounce;Email validé;";
 			if($data['player'] != 'all') : echo "Badge Joueur;"; endif;
 			if($data['goldfather'] != 'all') : echo "Badge Parrain;"; endif;
 			if($data['brain'] != 'all') : echo "Badge Cerveau;"; endif;
 			if($data['ambassador'] != 'all') : echo "Badge Ambassadeur;"; endif;
 			if($data['anniversary'] != 'all') : echo "Badge Anniversaire;"; endif;
-	        echo "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;";
-	        echo "\n";
+			echo "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;Centres d'intérêts;Nb participations";
+			echo "\n";
 			while ( $row = $result->fetch() ) {
 				//var_dump($row);
 				$userId 		= $row['user_id'];
@@ -403,64 +396,73 @@ class StatisticsController extends AbstractActionController
 				$twShares 		= $ap->getSharesByUser('twShares', $userId);
 				$glShares 		= $ap->getSharesByUser('glShares', $userId);
 				$mailShares 	= $ap->getSharesByUser('mailShares', $userId);
-				
+
+
+
+
+				//var_dump($row);exit;
 				if($data['gameid'] != '') : echo $data['gameid'] . ";"; endif;
-				echo $row['user_id'] . ";" . $row['title'] . ";" . $row['lastname'] . ";" . $row['firstname'] . ";" . $row['email'];
+				echo $row['user_id'] . ";" . $row['title'] . ";" . $row['lastname'] . ";" . $row['firstname'] . ";" . $row['username'] . ";" . $row['email'];
 				if($row['address2'] != '') : $address = $row['address'] . ' - ' . $row['address2']; else : $address = $row['address']; endif;
-				echo  ";" . $address . ";" . $row['postal_code'] . ";" . $row['city'];
-				if($data['birthdate'] != 'all') : echo  ";" . $row['dob']; endif;
+				echo  ";" . $address . ";" . $row['postal_code'] . ";" . $row['city'] . ";" . $row['dob'];
 				echo  ";" . $row['telephone'] . ";" . $row['mobile'];
-				if($data['optin'] != 'all') {
-					if($row['optin'] == true) : $optin = 'oui'; else : $optin = 'non'; endif;
-					echo  ";" . $optin;
-				}
+				if($row['optin'] == true) : $optin = 'oui'; else : $optin = 'non'; endif;
+				echo  ";" . $optin;
 				if($row['optin_partner'] == true) : $optinPartner = 'oui'; else : $optinPartner = 'non'; endif;
-				echo  ";" . $optinPartner . ";" . $row['children'];
-				if($data['inscriptiondate'] != 'all') : echo  ";" . $row['created_at']; endif;
-				echo  ";" . $row['registration_source'];
-				if($data['hardbounce'] != 'all') {
-					if($row['is_hardbounce'] == 1) : $hardbounce = 'oui'; else : $hardbounce = 'non'; endif;
-					echo  ";" . $hardbounce;
-				}
-				if($data['validatedemail'] != 'all') {
-					if($row['state']== NULL) : $validatedEmail = 'non'; else : $validatedEmail = 'oui'; endif;
-					echo  ";" . $validatedEmail;
-				}
+				echo  ";" . $optinPartner . ";";
+				echo   $row['created_at'] . ";" . $row['registration_source'];
+				if($row['state']== NULL) : $validatedEmail = 'non'; else : $validatedEmail = 'oui'; endif;
+				echo  ";" . $validatedEmail;
 				if($data['player'] != 'all') {
-					if($data['player'] == 'bronze') : $goldfather = 'Bronze'; 
+					if($data['player'] == 'bronze') : $goldfather = 'Bronze';
 					elseif($data['player'] == 'silver') : $goldfather = 'Argent';
 					else : $goldfather = 'Or'; endif;
 					echo  ";" . $goldfather;
 				}
 				if($data['goldfather'] != 'all') {
-					if($data['goldfather'] == 'bronze') : $goldfather = 'Bronze'; 
+					if($data['goldfather'] == 'bronze') : $goldfather = 'Bronze';
 					elseif($data['goldfather'] == 'silver') : $goldfather = 'Argent';
 					else : $goldfather = 'Or'; endif;
 					echo  ";" . $goldfather;
 				}
 				if($data['brain'] != 'all') {
-					if($data['brain'] == 'bronze') : $brain = 'Bronze'; 
+					if($data['brain'] == 'bronze') : $brain = 'Bronze';
 					elseif($data['brain'] == 'silver') : $brain = 'Argent';
 					else : $brain = 'Or'; endif;
 					echo  ";" . $brain;
 				}
 				if($data['ambassador'] != 'all') {
-					if($data['ambassador'] == 'bronze') : $ambassador = 'Bronze'; 
+					if($data['ambassador'] == 'bronze') : $ambassador = 'Bronze';
 					elseif($data['ambassador'] == 'silver') : $ambassador = 'Argent';
 					else : $ambassador = 'Or'; endif;
 					echo  ";" . $ambassador;
 				}
 				if($data['anniversary'] != 'all') {
-					if($data['anniversary'] == 'bronze') : $anniversary = 'Bronze'; 
+					if($data['anniversary'] == 'bronze') : $anniversary = 'Bronze';
 					elseif($data['anniversary'] == 'silver') : $anniversary = 'Argent';
 					else : $anniversary = 'Or'; endif;
 					echo  ";" . $anniversary;
 				}
 				echo  ";" . $totalShares
-							   	. ";" . $fbShares
-							   	. ";" . $twShares
-								. ";" . $glShares
-								. ";" . $mailShares;
+				. ";" . $fbShares
+				. ";" . $twShares
+				. ";" . $glShares
+				. ";" . $mailShares;
+
+
+				$this->prizeCategoriesExport = $ap->getPrizeCategoriesByUser($userId, $data['prizeCategory']);
+				$prizeCategoriesArray = array();
+				while( $prizeCategories = $this->prizeCategoriesExport->fetch() ) {
+					$prizeCategoriesArray[] .= $prizeCategories['title'];
+					unset($prizeCategories);
+				}
+				$prizeCategoriesString = implode(',',$prizeCategoriesArray);
+				echo ";" . $prizeCategoriesString;
+
+				$nbEntries = $ap->getNumberEntriesByUser($userId, $data);
+				echo ";" . $nbEntries;
+
+
 				echo  "\n";
 				unset($row);
 			}
@@ -472,17 +474,17 @@ class StatisticsController extends AbstractActionController
 	{
 		$ap = $this->getApplicationService();
 		$contentRecord  = '';
-		
+
 		$dataContainer 	= new Container('Export');
-		
+
 		if ( isset($this->myExportedResult) && $dataContainer->offsetExists('data')) {
 			$result 	= $this->myExportedResult;
 			$data 		= $dataContainer->offsetGet('data');
 			//var_dump($result);
 			//var_dump($data);
-			
-			foreach($result as $key => $record){
 				
+			foreach($result as $key => $record){
+
 				$userId 		= $record->getId();
 				$totalShares 	= $ap->getSharesByUser('shares', $userId);
 				$fbShares 		= $ap->getSharesByUser('fbShares', $userId);
@@ -491,24 +493,24 @@ class StatisticsController extends AbstractActionController
 				$mailShares 		= $ap->getSharesByUser('mailShares', $userId);
 				if($data['gameid'] != '') : $contentRecord .= $data['gameid'] . ";"; endif; // à déterminer
 				$contentRecord .= 		$record->getId()
-								. ";" . $record->getTitle()							
-								. ";" . $record->getLastname()
-								. ";" . $record->getFirstname()
-								. ";" . $record->getEmail();				
+				. ";" . $record->getTitle()
+				. ";" . $record->getLastname()
+				. ";" . $record->getFirstname()
+				. ";" . $record->getEmail();
 				if($record->getAddress2() != '') : $address = $record->getAddress() . ' - ' . $record->getAddress2(); else : $address = $record->getAddress(); endif;
 				$contentRecord .= ";" . $address
-						        . ";" . $record->getPostalCode()
-								. ";" . $record->getCity();
+				. ";" . $record->getPostalCode()
+				. ";" . $record->getCity();
 				if($data['birthdate'] != 'all') : $contentRecord .= ";" . $record->getDob()->format('d/m/Y'); endif;
 				$contentRecord .= ";" . $record->getTelephone()
-								. ";" . $record->getMobile();
+				. ";" . $record->getMobile();
 				if($data['optin'] != 'all') {
 					if($record->getOptin() == true) : $optin = 'oui'; else : $optin = 'non'; endif;
 					$contentRecord .= ";" . $optin;
 				}
 				if($record->getOptinPartner() == true) : $optinPartner = 'oui'; else : $optinPartner = 'non'; endif;
 				$contentRecord .= ";" . $optinPartner
-							   . ";" . $record->getChildren();
+				. ";" . $record->getChildren();
 				if($data['inscriptiondate'] != 'all') : $contentRecord .= ";" . $record->getCreatedAt()->format('d/m/Y'); endif;
 				$contentRecord .= ";" . $record->getRegistrationSource();
 				if($data['hardbounce'] != 'all') {
@@ -520,55 +522,55 @@ class StatisticsController extends AbstractActionController
 					$contentRecord .= ";" . $validatedEmail;
 				}
 				if($data['player'] != 'all') {
-					if($data['player'] == 'bronze') : $goldfather = 'Bronze'; 
+					if($data['player'] == 'bronze') : $goldfather = 'Bronze';
 					elseif($data['player'] == 'silver') : $goldfather = 'Argent';
 					else : $goldfather = 'Or'; endif;
 					$contentRecord .= ";" . $goldfather;
 				}
 				if($data['goldfather'] != 'all') {
-					if($data['goldfather'] == 'bronze') : $goldfather = 'Bronze'; 
+					if($data['goldfather'] == 'bronze') : $goldfather = 'Bronze';
 					elseif($data['goldfather'] == 'silver') : $goldfather = 'Argent';
 					else : $goldfather = 'Or'; endif;
 					$contentRecord .= ";" . $goldfather;
 				}
 				if($data['brain'] != 'all') {
-					if($data['brain'] == 'bronze') : $brain = 'Bronze'; 
+					if($data['brain'] == 'bronze') : $brain = 'Bronze';
 					elseif($data['brain'] == 'silver') : $brain = 'Argent';
 					else : $brain = 'Or'; endif;
 					$contentRecord .= ";" . $brain;
 				}
 				if($data['ambassador'] != 'all') {
-					if($data['ambassador'] == 'bronze') : $ambassador = 'Bronze'; 
+					if($data['ambassador'] == 'bronze') : $ambassador = 'Bronze';
 					elseif($data['ambassador'] == 'silver') : $ambassador = 'Argent';
 					else : $ambassador = 'Or'; endif;
 					$contentRecord .= ";" . $ambassador;
 				}
 				if($data['anniversary'] != 'all') {
-					if($data['anniversary'] == 'bronze') : $anniversary = 'Bronze'; 
+					if($data['anniversary'] == 'bronze') : $anniversary = 'Bronze';
 					elseif($data['anniversary'] == 'silver') : $anniversary = 'Argent';
 					else : $anniversary = 'Or'; endif;
 					$contentRecord .= ";" . $anniversary;
 				}
 				$contentRecord 	.= ";" . $totalShares
-							   	. ";" . $fbShares
-							   	. ";" . $twShares
-								. ";" . $glShares
-								. ";" . $mailShares;
+				. ";" . $fbShares
+				. ";" . $twShares
+				. ";" . $glShares
+				. ";" . $mailShares;
 				$contentRecord .= "\n";
 			}
 		}
-		
+
 		$content        = "\xEF\xBB\xBF"; // UTF-8 BOM
 		if($data['gameid'] != '') : $content .= "Id du jeu;"; endif;
-        $content 		.= "ID du membre;Civilité;";
-        $content 		.= "Nom;";
+		$content 		.= "ID du membre;Civilité;";
+		$content 		.= "Nom;";
 		$content 		.= "Prénom;";
-        $content 		.= "Email;Adresse;CP;Ville;";
+		$content 		.= "Email;Adresse;CP;Ville;";
 		if($data['birthdate'] != 'all') : $content .= "Date de naissance;"; endif;
-        $content       .= "Tél fixe;Tél mobile;";
-        if($data['optin'] != 'all') : $content .= "Optin NL Metro;"; endif;
-        $content       .= "Optin NL partenaires;Nb enfants;";
-        if($data['inscriptiondate'] != 'all') : $content .= "Date d'inscription;"; endif;
+		$content       .= "Tél fixe;Tél mobile;";
+		if($data['optin'] != 'all') : $content .= "Optin NL Metro;"; endif;
+		$content       .= "Optin NL partenaires;Nb enfants;";
+		if($data['inscriptiondate'] != 'all') : $content .= "Date d'inscription;"; endif;
 		$content 		.= "Source d'inscription;";
 		if($data['hardbounce'] != 'all') : $content .= "Hard Bounce;"; endif;
 		if($data['validatedemail'] != 'all') : $content .= "Email validé;"; endif;
@@ -577,216 +579,216 @@ class StatisticsController extends AbstractActionController
 		if($data['brain'] != 'all') : $content .= "Badge Cerveau;"; endif;
 		if($data['ambassador'] != 'all') : $content .= "Badge Ambassadeur;"; endif;
 		if($data['anniversary'] != 'all') : $content .= "Badge Anniversaire;"; endif;
-        $content       .= "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;";
+		$content       .= "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;";
 
-        $content       .= "\n";		
+		$content       .= "\n";
 		$content 	   .= $contentRecord;
-		
-        $response = $this->getResponse();
-        $headers = $response->getHeaders();
-        $headers->addHeaderLine('Content-Encoding: UTF-8');
-        $headers->addHeaderLine('Content-Type', 'text/csv; charset=UTF-8');
-        $headers->addHeaderLine('Content-Disposition', "attachment; filename=\"export.csv\"");
-        $headers->addHeaderLine('Accept-Ranges', 'bytes');
-        $headers->addHeaderLine('Content-Length', strlen($content));
 
-        $response->setContent($content);
+		$response = $this->getResponse();
+		$headers = $response->getHeaders();
+		$headers->addHeaderLine('Content-Encoding: UTF-8');
+		$headers->addHeaderLine('Content-Type', 'text/csv; charset=UTF-8');
+		$headers->addHeaderLine('Content-Disposition', "attachment; filename=\"export.csv\"");
+		$headers->addHeaderLine('Accept-Ranges', 'bytes');
+		$headers->addHeaderLine('Content-Length', strlen($content));
 
-        return $response;
+		$response->setContent($content);
+
+		return $response;
 	}
 
-    public function downloadAction()
-    {
-        $su 			= $this->getUserService();
-        $sg 			= $this->getGameService();
-        $sr 			= $this->getRewardService();
+	public function downloadAction()
+	{
+		$su 			= $this->getUserService();
+		$sg 			= $this->getGameService();
+		$sr 			= $this->getRewardService();
 
-        $allUser 		= count($su->findAll());
-        $activeUser 	= count($su->findByState(1));
-        $inactiveUser 	= $allUser - $activeUser;
+		$allUser 		= count($su->findAll());
+		$activeUser 	= count($su->findByState(1));
+		$inactiveUser 	= $allUser - $activeUser;
 
-        $maleUser 		= count($su->findByTitle('M'));
-        $femaleUser 	= count($su->findByTitle('Me'));
+		$maleUser 		= count($su->findByTitle('M'));
+		$femaleUser 	= count($su->findByTitle('Me'));
 
-        $optinUser 		= count($su->findByOptin(1));
+		$optinUser 		= count($su->findByOptin(1));
 
-        $activeGame 	= count($sg->getActiveGames());
+		$activeGame 	= count($sg->getActiveGames());
 
-        $allGames 		= count($sg->findAll());
-        $allEntries 	= count($sg->findAllEntry());
-        $userPerGames 	= $allEntries/$allGames;
+		$allGames 		= count($sg->findAll());
+		$allEntries 	= count($sg->findAllEntry());
+		$userPerGames 	= $allEntries/$allGames;
 
-        $activePage 	= count($this->getPageService()->getActivePages());
+		$activePage 	= count($this->getPageService()->getActivePages());
 
-        $shareAction 	= count($sr->findBy(array('action' => array(13,14,15,16))));
-        $sharePerGames 	= $allGames/$shareAction;
+		$shareAction 	= count($sr->findBy(array('action' => array(13,14,15,16))));
+		$sharePerGames 	= $allGames/$shareAction;
 
-        $userPerBadges = array();
-        $badges 	= $this->getRewardAchievementListenerService()->getBadges();
+		$userPerBadges = array();
+		$badges 	= $this->getRewardAchievementListenerService()->getBadges();
 
-        foreach ($badges as $keyBadge => $badge) {
-            foreach ($badge['levels'] as $keyLevel => $level) {
-                $userPerBadges[] = array(
-                    'badge' => $keyBadge,
-                    'level' => $level['label'],
-                    'user'  => count($this->getAchievementService()->findBy(array('type' => 'badge', 'category'=> $keyBadge, 'level' => $keyLevel))),
-                );
+		foreach ($badges as $keyBadge => $badge) {
+			foreach ($badge['levels'] as $keyLevel => $level) {
+				$userPerBadges[] = array(
+						'badge' => $keyBadge,
+						'level' => $level['label'],
+						'user'  => count($this->getAchievementService()->findBy(array('type' => 'badge', 'category'=> $keyBadge, 'level' => $keyLevel))),
+				);
 
-            }
-        }
+			}
+		}
 
-        $content        = "\xEF\xBB\xBF"; // UTF-8 BOM
-        $content       .= "Inscrits Actifs;Inscrits Suspendus;Inscrits Homme;Inscrits Femme;Abonnement Newsletter ClubMetro;Jeux Actifs;Articles Actifs;Participant par jeu;Partages par jeu;";
+		$content        = "\xEF\xBB\xBF"; // UTF-8 BOM
+		$content       .= "Inscrits Actifs;Inscrits Suspendus;Inscrits Homme;Inscrits Femme;Abonnement Newsletter ClubMetro;Jeux Actifs;Articles Actifs;Participant par jeu;Partages par jeu;";
 
-        foreach ($userPerBadges as $badge) {
-            $content .=  $badge['badge'].' '.$badge['level'].';';
-        }
+		foreach ($userPerBadges as $badge) {
+			$content .=  $badge['badge'].' '.$badge['level'].';';
+		}
 
-        $content       .= "\n";
+		$content       .= "\n";
 
-        $content   .= $activeUser
-        . ";" . $inactiveUser
-        . ";" . $maleUser
-        . ";" . $femaleUser
-        . ";" . $optinUser
-        . ";" . $activeGame
-        . ";" . $activePage
-        . ";" . number_format($userPerGames, 2)
-        . ";" . number_format($sharePerGames, 2);
+		$content   .= $activeUser
+		. ";" . $inactiveUser
+		. ";" . $maleUser
+		. ";" . $femaleUser
+		. ";" . $optinUser
+		. ";" . $activeGame
+		. ";" . $activePage
+		. ";" . number_format($userPerGames, 2)
+		. ";" . number_format($sharePerGames, 2);
 
-        foreach ($userPerBadges as $badge) {
-            $content .=  $badge['user'].';';
-        }
+		foreach ($userPerBadges as $badge) {
+			$content .=  $badge['user'].';';
+		}
 
-        $content       .= "\n";
+		$content       .= "\n";
 
-        $response = $this->getResponse();
-        $headers = $response->getHeaders();
-        $headers->addHeaderLine('Content-Encoding: UTF-8');
-        $headers->addHeaderLine('Content-Type', 'text/csv; charset=UTF-8');
-        $headers->addHeaderLine('Content-Disposition', "attachment; filename=\"statistics.csv\"");
-        $headers->addHeaderLine('Accept-Ranges', 'bytes');
-        $headers->addHeaderLine('Content-Length', strlen($content));
+		$response = $this->getResponse();
+		$headers = $response->getHeaders();
+		$headers->addHeaderLine('Content-Encoding: UTF-8');
+		$headers->addHeaderLine('Content-Type', 'text/csv; charset=UTF-8');
+		$headers->addHeaderLine('Content-Disposition', "attachment; filename=\"statistics.csv\"");
+		$headers->addHeaderLine('Accept-Ranges', 'bytes');
+		$headers->addHeaderLine('Content-Length', strlen($content));
 
-        $response->setContent($content);
+		$response->setContent($content);
 
-        return $response;
-    }
+		return $response;
+	}
 
-    public function getAchievementService()
-    {
-        if (!$this->achievementService) {
-            $this->achievementService = $this->getServiceLocator()->get('adfabreward_achievement_service');
-        }
+	public function getAchievementService()
+	{
+		if (!$this->achievementService) {
+			$this->achievementService = $this->getServiceLocator()->get('adfabreward_achievement_service');
+		}
 
-        return $this->achievementService;
-    }
+		return $this->achievementService;
+	}
 
-    public function setAchievementService($achievementService)
-    {
-        $this->achievementService = $achievementService;
+	public function setAchievementService($achievementService)
+	{
+		$this->achievementService = $achievementService;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getRewardService()
-    {
-        if (!$this->rewardService) {
-            $this->rewardService = $this->getServiceLocator()->get('adfabreward_event_service');
-        }
+	public function getRewardService()
+	{
+		if (!$this->rewardService) {
+			$this->rewardService = $this->getServiceLocator()->get('adfabreward_event_service');
+		}
 
-        return $this->rewardService;
-    }
+		return $this->rewardService;
+	}
 
-    public function setRewardService(GameService $rewardService)
-    {
-        $this->rewardService = $rewardService;
+	public function setRewardService(GameService $rewardService)
+	{
+		$this->rewardService = $rewardService;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getRewardAchievementListenerService()
-    {
-        if (!$this->achievementListenerService) {
-            $this->achievementListenerService = $this->getServiceLocator()->get('adfabreward_achievement_listener');
-        }
+	public function getRewardAchievementListenerService()
+	{
+		if (!$this->achievementListenerService) {
+			$this->achievementListenerService = $this->getServiceLocator()->get('adfabreward_achievement_listener');
+		}
 
-        return $this->achievementListenerService;
-    }
+		return $this->achievementListenerService;
+	}
 
-    public function setRewardAchievementListenerService(GameService $achievementListenerService)
-    {
-        $this->achievementListenerService = $achievementListenerService;
+	public function setRewardAchievementListenerService(GameService $achievementListenerService)
+	{
+		$this->achievementListenerService = $achievementListenerService;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getGameService()
-    {
-        if (!$this->gameService) {
-            $this->gameService = $this->getServiceLocator()->get('adfabgame_game_service');
-        }
+	public function getGameService()
+	{
+		if (!$this->gameService) {
+			$this->gameService = $this->getServiceLocator()->get('adfabgame_game_service');
+		}
 
-        return $this->gameService;
-    }
+		return $this->gameService;
+	}
 
-    public function setGameService(GameService $gameService)
-    {
-        $this->gameService = $gameService;
+	public function setGameService(GameService $gameService)
+	{
+		$this->gameService = $gameService;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPageService()
-    {
-        if (!$this->pageService) {
-            $this->pageService = $this->getServiceLocator()->get('adfabcms_page_service');
-        }
+	public function getPageService()
+	{
+		if (!$this->pageService) {
+			$this->pageService = $this->getServiceLocator()->get('adfabcms_page_service');
+		}
 
-        return $this->pageService;
-    }
+		return $this->pageService;
+	}
 
-    public function setPageService(\AdfabCms\Service\Page $pageService)
-    {
-        $this->pageService = $pageService;
+	public function setPageService(\AdfabCms\Service\Page $pageService)
+	{
+		$this->pageService = $pageService;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getUserService()
-    {
-        if (!$this->userService) {
-            $this->userService = $this->getServiceLocator()->get('adfabuser_user_service');
-        }
+	public function getUserService()
+	{
+		if (!$this->userService) {
+			$this->userService = $this->getServiceLocator()->get('adfabuser_user_service');
+		}
 
-        return $this->userService;
-    }
+		return $this->userService;
+	}
 
-    public function setUserService($userService)
-    {
-        $this->userService = $userService;
+	public function setUserService($userService)
+	{
+		$this->userService = $userService;
 
-        return $this;
-    }
-	
-    /**
-     * 
-     * @return \Application\Service\ApplicationService
-     */
+		return $this;
+	}
+
+	/**
+	 *
+	 * @return \Application\Service\ApplicationService
+	 */
 	public function getApplicationService()
-    {
-        if (!$this->applicationService) {
-            $this->applicationService = $this->getServiceLocator()->get('playgroundstats_stats_service');
-        }
+	{
+		if (!$this->applicationService) {
+			$this->applicationService = $this->getServiceLocator()->get('playgroundstats_stats_service');
+		}
 
-        return $this->applicationService;
-    }
+		return $this->applicationService;
+	}
 
-    public function setApplicationService($applicationService)
-    {
-        $this->applicationService = $applicationService;
+	public function setApplicationService($applicationService)
+	{
+		$this->applicationService = $applicationService;
 
-        return $this;
-    }
+		return $this;
+	}
 
-}
+} 
