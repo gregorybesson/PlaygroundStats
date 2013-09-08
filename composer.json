@@ -26,7 +26,7 @@
 		"zendframework/zend-loader" : "~2.1",
 		"zendframework/zend-servicemanager" : "~2.1",
 		"adfab/cms" : "dev-master",
-		"adfab/faq" : "dev-master",
+		"playground/faq" : "dev-master",
 		"adfab/facebook" : "dev-master",
         "adfab/game" : "dev-master", 
         "adfab/partnership" : "dev-master",
