@@ -758,7 +758,7 @@ class StatisticsController extends AbstractActionController
 	public function getUserService()
 	{
 		if (!$this->userService) {
-			$this->userService = $this->getServiceLocator()->get('adfabuser_user_service');
+			$this->userService = $this->getServiceLocator()->get('playgrounduser_user_service');
 		}
 
 		return $this->userService;

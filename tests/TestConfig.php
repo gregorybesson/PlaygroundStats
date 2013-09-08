@@ -9,7 +9,7 @@ return array(
     	'AsseticBundle',
     	'ZfcBase',
    		'AdfabCore',
-        'AdfabUser',
+        'PlaygroundUser',
    		'AdfabGame',
         'PlaygroundStats',
     ),
