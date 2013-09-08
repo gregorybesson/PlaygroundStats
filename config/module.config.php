@@ -60,6 +60,12 @@ return array(
     'router' => array(
         'routes' => array(
              'admin' => array(
+             	'options' => array(
+             		'defaults' => array(
+           				'controller' => 'adminstats',
+             			'action'     => 'index',
+             		),
+           		),
                 'child_routes' => array(
                     'stats' => array(
                 	    'type' => 'Literal',
