@@ -414,7 +414,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-			SELECT COUNT(e.id) FROM AdfabReward\Entity\Event e
+			SELECT COUNT(e.id) FROM PlaygroundReward\Entity\Event e
 			WHERE ' . $dateRange . '
 			AND ' . $filter . '
 		');
@@ -507,7 +507,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-			SELECT COUNT(a.id) FROM AdfabReward\Entity\Achievement a
+			SELECT COUNT(a.id) FROM PlaygroundReward\Entity\Achievement a
 			WHERE ' . $dateRange . '
 			' . $badgeType . '
 			' . $levelType . '
@@ -676,37 +676,37 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 
 		switch ($player){
 		case 'all' 		: $playerFilter = ""; break;
-		case 'bronze' 	: $playerFilter = "AND u.id IN (SELECT p FROM AdfabReward\Entity\Achievement h LEFT JOIN h.user p WHERE h.category = 'player' AND h.level = 1 GROUP BY h.user)"; break;
-		case 'silver' 	: $playerFilter = "AND u.id IN (SELECT p FROM AdfabReward\Entity\Achievement h LEFT JOIN h.user p WHERE h.category = 'player' AND h.level = 2 GROUP BY h.user)"; break;
-		case 'gold' 	: $playerFilter = "AND u.id IN (SELECT p FROM AdfabReward\Entity\Achievement h LEFT JOIN h.user p WHERE h.category = 'player' AND h.level = 3 GROUP BY h.user)"; break;
+		case 'bronze' 	: $playerFilter = "AND u.id IN (SELECT p FROM PlaygroundReward\Entity\Achievement h LEFT JOIN h.user p WHERE h.category = 'player' AND h.level = 1 GROUP BY h.user)"; break;
+		case 'silver' 	: $playerFilter = "AND u.id IN (SELECT p FROM PlaygroundReward\Entity\Achievement h LEFT JOIN h.user p WHERE h.category = 'player' AND h.level = 2 GROUP BY h.user)"; break;
+		case 'gold' 	: $playerFilter = "AND u.id IN (SELECT p FROM PlaygroundReward\Entity\Achievement h LEFT JOIN h.user p WHERE h.category = 'player' AND h.level = 3 GROUP BY h.user)"; break;
 		}
 
 		switch ($goldfather){
 		case 'all' 		: $goldfatherFilter = ""; break;
-		case 'bronze' 	: $goldfatherFilter = "AND u.id IN (SELECT s FROM AdfabReward\Entity\Achievement a LEFT JOIN a.user s WHERE a.category = 'goldfather' AND a.level = 1 GROUP BY a.user)"; break;
-		case 'silver' 	: $goldfatherFilter = "AND u.id IN (SELECT s FROM AdfabReward\Entity\Achievement a LEFT JOIN a.user s WHERE a.category = 'goldfather' AND a.level = 2 GROUP BY a.user)"; break;
-		case 'gold' 	: $goldfatherFilter = "AND u.id IN (SELECT s FROM AdfabReward\Entity\Achievement a LEFT JOIN a.user s WHERE a.category = 'goldfather' AND a.level = 3 GROUP BY a.user)"; break;
+		case 'bronze' 	: $goldfatherFilter = "AND u.id IN (SELECT s FROM PlaygroundReward\Entity\Achievement a LEFT JOIN a.user s WHERE a.category = 'goldfather' AND a.level = 1 GROUP BY a.user)"; break;
+		case 'silver' 	: $goldfatherFilter = "AND u.id IN (SELECT s FROM PlaygroundReward\Entity\Achievement a LEFT JOIN a.user s WHERE a.category = 'goldfather' AND a.level = 2 GROUP BY a.user)"; break;
+		case 'gold' 	: $goldfatherFilter = "AND u.id IN (SELECT s FROM PlaygroundReward\Entity\Achievement a LEFT JOIN a.user s WHERE a.category = 'goldfather' AND a.level = 3 GROUP BY a.user)"; break;
 		}
 
 		switch ($brain){
 		case 'all' 		: $brainFilter = ""; break;
-		case 'bronze' 	: $brainFilter = "AND u.id IN (SELECT b FROM AdfabReward\Entity\Achievement n LEFT JOIN n.user b WHERE n.category = 'brain' AND n.level = 1 GROUP BY n.user)"; break;
-		case 'silver' 	: $brainFilter = "AND u.id IN (SELECT b FROM AdfabReward\Entity\Achievement n LEFT JOIN n.user b WHERE n.category = 'brain' AND n.level = 2 GROUP BY n.user)"; break;
-		case 'gold' 	: $brainFilter = "AND u.id IN (SELECT b FROM AdfabReward\Entity\Achievement n LEFT JOIN n.user b WHERE n.category = 'brain' AND n.level = 3 GROUP BY n.user)"; break;
+		case 'bronze' 	: $brainFilter = "AND u.id IN (SELECT b FROM PlaygroundReward\Entity\Achievement n LEFT JOIN n.user b WHERE n.category = 'brain' AND n.level = 1 GROUP BY n.user)"; break;
+		case 'silver' 	: $brainFilter = "AND u.id IN (SELECT b FROM PlaygroundReward\Entity\Achievement n LEFT JOIN n.user b WHERE n.category = 'brain' AND n.level = 2 GROUP BY n.user)"; break;
+		case 'gold' 	: $brainFilter = "AND u.id IN (SELECT b FROM PlaygroundReward\Entity\Achievement n LEFT JOIN n.user b WHERE n.category = 'brain' AND n.level = 3 GROUP BY n.user)"; break;
 		}
 
 		switch ($ambassador){
 		case 'all' 		: $ambassadorFilter = ""; break;
-		case 'bronze' 	: $ambassadorFilter = "AND u.id IN (SELECT d FROM AdfabReward\Entity\Achievement f LEFT JOIN f.user d WHERE f.category = 'ambassador' AND f.level = 1 GROUP BY f.user)"; break;
-		case 'silver' 	: $ambassadorFilter = "AND u.id IN (SELECT d FROM AdfabReward\Entity\Achievement f LEFT JOIN f.user d WHERE f.category = 'ambassador' AND f.level = 2 GROUP BY f.user)"; break;
-		case 'gold' 	: $ambassadorFilter = "AND u.id IN (SELECT d FROM AdfabReward\Entity\Achievement f LEFT JOIN f.user d WHERE f.category = 'ambassador' AND f.level = 3 GROUP BY f.user)"; break;
+		case 'bronze' 	: $ambassadorFilter = "AND u.id IN (SELECT d FROM PlaygroundReward\Entity\Achievement f LEFT JOIN f.user d WHERE f.category = 'ambassador' AND f.level = 1 GROUP BY f.user)"; break;
+		case 'silver' 	: $ambassadorFilter = "AND u.id IN (SELECT d FROM PlaygroundReward\Entity\Achievement f LEFT JOIN f.user d WHERE f.category = 'ambassador' AND f.level = 2 GROUP BY f.user)"; break;
+		case 'gold' 	: $ambassadorFilter = "AND u.id IN (SELECT d FROM PlaygroundReward\Entity\Achievement f LEFT JOIN f.user d WHERE f.category = 'ambassador' AND f.level = 3 GROUP BY f.user)"; break;
 		}
 
 		switch ($anniversary){
 		case 'all' 		: $anniversaryFilter = ""; break;
-		case 'bronze' 	: $anniversaryFilter = "AND u.id IN (SELECT g FROM AdfabReward\Entity\Achievement j LEFT JOIN j.user g WHERE j.category = 'anniversary' AND j.level = 1 GROUP BY j.user)"; break;
-		case 'silver' 	: $anniversaryFilter = "AND u.id IN (SELECT g FROM AdfabReward\Entity\Achievement j LEFT JOIN j.user g WHERE j.category = 'anniversary' AND j.level = 2 GROUP BY j.user)"; break;
-		case 'gold' 	: $anniversaryFilter = "AND u.id IN (SELECT g FROM AdfabReward\Entity\Achievement j LEFT JOIN j.user g WHERE j.category = 'anniversary' AND j.level = 3 GROUP BY j.user)"; break;
+		case 'bronze' 	: $anniversaryFilter = "AND u.id IN (SELECT g FROM PlaygroundReward\Entity\Achievement j LEFT JOIN j.user g WHERE j.category = 'anniversary' AND j.level = 1 GROUP BY j.user)"; break;
+		case 'silver' 	: $anniversaryFilter = "AND u.id IN (SELECT g FROM PlaygroundReward\Entity\Achievement j LEFT JOIN j.user g WHERE j.category = 'anniversary' AND j.level = 2 GROUP BY j.user)"; break;
+		case 'gold' 	: $anniversaryFilter = "AND u.id IN (SELECT g FROM PlaygroundReward\Entity\Achievement j LEFT JOIN j.user g WHERE j.category = 'anniversary' AND j.level = 3 GROUP BY j.user)"; break;
 		}
 
 		$query = $em->createQuery('
@@ -940,7 +940,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-			SELECT COUNT(e.id) FROM AdfabReward\Entity\Event e
+			SELECT COUNT(e.id) FROM PlaygroundReward\Entity\Event e
 			WHERE e.user = :user
 			AND ' . $filter . '
 		');
