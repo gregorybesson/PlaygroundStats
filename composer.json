@@ -30,7 +30,7 @@
 		"adfab/facebook" : "dev-master",
         "adfab/game" : "dev-master", 
         "playground/partnership" : "dev-master",
-        "adfab/reward" : "dev-master",
+        "playground/reward" : "dev-master",
         "playground/flow" : "dev-master",
 		"zendframework/zend-modulemanager" : "~2.1"
 	},
