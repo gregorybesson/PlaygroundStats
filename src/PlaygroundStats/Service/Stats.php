@@ -296,7 +296,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-			SELECT COUNT(p.id) FROM AdfabCms\Entity\Page p
+			SELECT COUNT(p.id) FROM PlaygroundCms\Entity\Page p
 			WHERE ' . $dateRange . '
 			AND p.active=1
 		');

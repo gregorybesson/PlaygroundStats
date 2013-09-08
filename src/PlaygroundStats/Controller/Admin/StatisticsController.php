@@ -742,13 +742,13 @@ class StatisticsController extends AbstractActionController
 	public function getPageService()
 	{
 		if (!$this->pageService) {
-			$this->pageService = $this->getServiceLocator()->get('adfabcms_page_service');
+			$this->pageService = $this->getServiceLocator()->get('playgroundcms_page_service');
 		}
 
 		return $this->pageService;
 	}
 
-	public function setPageService(\AdfabCms\Service\Page $pageService)
+	public function setPageService(\PlaygroundCms\Service\Page $pageService)
 	{
 		$this->pageService = $pageService;
 
