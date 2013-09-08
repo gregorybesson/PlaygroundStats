@@ -28,7 +28,7 @@
 		"playground/cms" : "dev-master",
 		"playground/faq" : "dev-master",
 		"playground/facebook" : "dev-master",
-        "adfab/game" : "dev-master", 
+        "playground/game" : "dev-master", 
         "playground/partnership" : "dev-master",
         "playground/reward" : "dev-master",
         "playground/flow" : "dev-master",

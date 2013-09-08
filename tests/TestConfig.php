@@ -10,7 +10,7 @@ return array(
     	'ZfcBase',
    		'AdfabCore',
         'PlaygroundUser',
-   		'AdfabGame',
+   		'PlaygroundGame',
         'PlaygroundStats',
     ),
     'module_listener_options' => array(

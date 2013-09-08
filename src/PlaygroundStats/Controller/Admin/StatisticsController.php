@@ -726,7 +726,7 @@ class StatisticsController extends AbstractActionController
 	public function getGameService()
 	{
 		if (!$this->gameService) {
-			$this->gameService = $this->getServiceLocator()->get('adfabgame_game_service');
+			$this->gameService = $this->getServiceLocator()->get('playgroundgame_game_service');
 		}
 
 		return $this->gameService;

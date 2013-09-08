@@ -559,7 +559,7 @@ class Export extends ProvidesEventsForm
     public function getPrizeCategories ()
     {
         $categories = array();
-        $prizeCategoryService = $this->getServiceManager()->get('adfabgame_prizecategory_service');
+        $prizeCategoryService = $this->getServiceManager()->get('playgroundgame_prizecategory_service');
         $results = $prizeCategoryService->getActivePrizeCategories();
 
         foreach ($results as $result) {

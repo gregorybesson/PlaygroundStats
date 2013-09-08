@@ -56,7 +56,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 
 		$query = $em->createQuery('
 			SELECT COUNT(e.id)
-			FROM AdfabGame\Entity\Entry e
+			FROM PlaygroundGame\Entity\Entry e
 			JOIN e.user u
 			WHERE u.id = e.user
 			AND e.game = :game
@@ -234,7 +234,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-			SELECT COUNT(e.id) FROM AdfabGame\Entity\Entry e
+			SELECT COUNT(e.id) FROM PlaygroundGame\Entity\Entry e
 			WHERE ' . $dateRange . '
 			AND e.active=0
 		');
@@ -265,7 +265,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-			SELECT COUNT(g.id) FROM AdfabGame\Entity\Game g
+			SELECT COUNT(g.id) FROM PlaygroundGame\Entity\Game g
 			WHERE ' . $dateRange . '
 			AND g.active=1
 		');
@@ -591,7 +591,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		$anniversary 	= $data['anniversary'];
 
 		/*
-		 if($gameId != '') 	: $gameidFilter = "AND u.id IN (SELECT r FROM AdfabGame\Entity\Entry e LEFT JOIN e.user r WHERE e.game = " . $gameId . " GROUP BY e.user)"; else :	$gameidFilter = ""; endif;
+		 if($gameId != '') 	: $gameidFilter = "AND u.id IN (SELECT r FROM PlaygroundGame\Entity\Entry e LEFT JOIN e.user r WHERE e.game = " . $gameId . " GROUP BY e.user)"; else :	$gameidFilter = ""; endif;
 
 		switch ($lastName){
 		case 'all' 		: $lastnameFilter = "WHERE u.lastname IS NOT NULL"; break;
@@ -636,7 +636,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		if($hobbies != NULL) {
 		foreach($hobbies as $key => $hobby) : $hobbiesSql[] = '\''.$hobby.'\''; endforeach;
 		$hobbies = implode(',',$hobbiesSql);
-		$hobbiesFilter = "AND u.id IN (SELECT t FROM AdfabGame\Entity\PrizeCategoryUser c LEFT JOIN c.user t WHERE c.prizeCategory IN (" . $hobbies . ") GROUP BY c.user)";
+		$hobbiesFilter = "AND u.id IN (SELECT t FROM PlaygroundGame\Entity\PrizeCategoryUser c LEFT JOIN c.user t WHERE c.prizeCategory IN (" . $hobbies . ") GROUP BY c.user)";
 		} else {
 		$hobbiesFilter = "";
 		}
@@ -664,8 +664,8 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 
 		switch ($nbpart) {
 		case 'all' 		: $nbpartFilter = ""; break;
-		case 'betweennb': $nbpartFilter = "AND u.id IN (SELECT l FROM AdfabGame\Entity\Entry m LEFT JOIN m.user l GROUP BY m.user HAVING (COUNT(m.user) >= " . $nbpartMin . " AND COUNT(m.user) <= " . $nbpartMax . "))"; break;
-		case 'between' 	: $nbpartFilter = "AND u.id IN (SELECT l FROM AdfabGame\Entity\Entry m LEFT JOIN m.user l WHERE (m.created_at >= '" . $nbpartStart->format('Y-m-d') . " 00:00:00' AND m.created_at <= '" . $nbpartEnd->format('Y-m-d') . " 00:00:00') GROUP BY m.user)"; break;
+		case 'betweennb': $nbpartFilter = "AND u.id IN (SELECT l FROM PlaygroundGame\Entity\Entry m LEFT JOIN m.user l GROUP BY m.user HAVING (COUNT(m.user) >= " . $nbpartMin . " AND COUNT(m.user) <= " . $nbpartMax . "))"; break;
+		case 'between' 	: $nbpartFilter = "AND u.id IN (SELECT l FROM PlaygroundGame\Entity\Entry m LEFT JOIN m.user l WHERE (m.created_at >= '" . $nbpartStart->format('Y-m-d') . " 00:00:00' AND m.created_at <= '" . $nbpartEnd->format('Y-m-d') . " 00:00:00') GROUP BY m.user)"; break;
 		}
 
 		switch ($validatedemail){
@@ -989,7 +989,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-        	SELECT COUNT(e.id) FROM AdfabGame\Entity\Entry e
+        	SELECT COUNT(e.id) FROM PlaygroundGame\Entity\Entry e
         	WHERE e.user = :user
         	' . $sql . '
         ');

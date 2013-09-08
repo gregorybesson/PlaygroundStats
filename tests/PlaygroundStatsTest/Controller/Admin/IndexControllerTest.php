@@ -3,7 +3,7 @@
 namespace PlaygroundStatsTest\Controller\Admin;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
-use \AdfabGame\Entity\Game as GameEntity;
+use \PlaygroundGame\Entity\Game as GameEntity;
 
 class IndexControllerTest extends AbstractHttpControllerTestCase
 {
