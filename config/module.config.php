@@ -1,7 +1,7 @@
 <?php
 
 return array(
-		
+
 	'assetic_configuration' => array(
 		'modules' => array(
 			'admin' => array(
@@ -26,7 +26,7 @@ return array(
 						'assets' => array(
 							'images/**/*.jpg',
 							'images/**/*.png',
-				
+
 						),
 						'options' => array(
 							'move_raw' => true,
@@ -56,16 +56,10 @@ return array(
 			),
 		),
 	),
-										
+
     'router' => array(
         'routes' => array(
              'admin' => array(
-             	'options' => array(
-             		'defaults' => array(
-           				'controller' => 'adminstats',
-             			'action'     => 'index',
-             		),
-           		),
                 'child_routes' => array(
                     'stats' => array(
                 	    'type' => 'Literal',
@@ -176,20 +170,20 @@ return array(
             ),
         ),
     ),
-		
+
     'controllers' => array(
         'invokables' => array(
             'adminstats' => 'PlaygroundStats\Controller\Admin\StatisticsController',
         ),
     ),
-		
+
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view/admin',
             __DIR__ . '/../view/frontend',
         ),
     ),
-	
+
 	'navigation' => array(
 		'admin' => array(
 			'statisticsgames' => array(
