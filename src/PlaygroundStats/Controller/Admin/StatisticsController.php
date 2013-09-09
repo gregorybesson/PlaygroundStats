@@ -85,16 +85,16 @@ class StatisticsController extends AbstractActionController
 						'optinPartners' 	=> $optinPartners,
 						'maleOptinPartners' => $maleOptinPartners,
 						'femaleOptinPartners' => $femaleOptinPartners,
-	      
+
 						'unregistered' 		=> $unregistered,
 						'maleUnregistered' 	=> $maleUnregistered,
 						'femaleUnregistered'=> $femaleUnregistered,
 						'suspended' 		=> $suspended,
-	      
+
 						'participations' 	=> $participations,
 						'activeGames' 		=> $activeGames,
 						'activeArticles' 	=> $activeArticles,
-	      
+
 						'form' 				=> $form,
 						'data' 				=> $data,
 				)
@@ -112,12 +112,12 @@ class StatisticsController extends AbstractActionController
 				'anniversary' => array (0, 1, 2, 3),
 				'player' => array (0, 1, 2, 3),
 		);
-	  
+
 		$players = array();
-	  
+
 		$badgeResults = $ap->getListBadgeCountByRangeDate($badges,$startDate, $endDate);
 		$badgeResult = current($badgeResults);
-	  
+
 		foreach($badges as $badge => $levels) {
 			foreach($levels as $level) {
 				$players[] = array(
@@ -142,17 +142,25 @@ class StatisticsController extends AbstractActionController
 		$data 				= '';
 		$startDate 			= '';
 		$endDate 			= '';
-	  
+
 		$request 			= $this->getRequest();
 		$form 				= new Form();
 		$form->setAttribute('method', 'post');
-	  
+
+		$today    = new \DateTime("now");
+		$beginning      = new \DateTime("now");
+		$interval = 'P365D';
+		$beginning->sub(new \DateInterval($interval));
+
+		$startDate = $beginning->format('d/m/Y');
+		$endDate   = $today->format('d/m/Y');
+
 		if ($request->isPost()) {
 			$data = $request->getPost()->toArray();
 			$form->setData($data);
 			if ($form->isValid()) {
-				$startDate 	= $data['statsDateStart'];
-				$endDate 	= $data['statsDateEnd'];
+				if(isset($data['statsDateStart'])) $startDate =  $data['statsDateStart'];
+				if(isset($data['statsDateEnd'])) $endDate = $data['statsDateEnd'];
 			}
 		}
 		return array($startDate,$endDate,$form,$data);
@@ -252,7 +260,7 @@ class StatisticsController extends AbstractActionController
 			'sharePerGames'=> $sharePerGames,
 
 			'userPerBadges'=> $userPerBadges,
-			 
+
 			'form' 		=> $form,
 	)
 	);
@@ -320,11 +328,11 @@ class StatisticsController extends AbstractActionController
 		if ($request->isPost()) {
 			$data = $request->getPost()->toArray();
 			$form->setData($data);
-				
+
 			$inputFilter = $form->getInputFilter();
 			$inputFilter->get('prizeCategory')->setRequired(FALSE);
 			//$inputFilter->get('memberid')->setRequired(FALSE);
-				
+
 			if ($form->isValid()) {
 				$data 		= $form->getData();
 				$results 	= $ap->getExportRecords($data);
@@ -377,7 +385,7 @@ class StatisticsController extends AbstractActionController
 		if ($this->myExportedResult && $dataContainer->offsetExists('data')) {
 			$result 	= $this->myExportedResult;
 			$data 		= $dataContainer->offsetGet('data');
-				
+
 			echo "\xEF\xBB\xBF"; // UTF-8 BOM
 			if($data['gameid'] != '') : echo "Id du jeu;"; endif;
 			echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;Optin NL Metro;Optin NL partenaires;Nb enfants;Date d'inscription;Source d'inscription;Hard Bounce;Email validé;";
@@ -482,7 +490,7 @@ class StatisticsController extends AbstractActionController
 			$data 		= $dataContainer->offsetGet('data');
 			//var_dump($result);
 			//var_dump($data);
-				
+
 			foreach($result as $key => $record){
 
 				$userId 		= $record->getId();
@@ -791,4 +799,4 @@ class StatisticsController extends AbstractActionController
 		return $this;
 	}
 
-} 
+}
