@@ -258,7 +258,7 @@ class Export extends ProvidesEventsForm
             'name' => 'optin',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
-                'label' => $translator->translate('Optin Newsletter', 'application'),
+                'label' => $translator->translate('Optin NL Metro', 'application'),
                 'value_options' => array(
                     'all'		=>	$translator->translate('All', 'application'),
                     'yes' 		=> $translator->translate('Yes', 'application'),

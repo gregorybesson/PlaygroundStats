@@ -203,7 +203,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-			SELECT COUNT(u.id) FROM PlaygroundUser\Entity\User u
+			SELECT COUNT(u.id) FROM MetroUser\Entity\User u
 			WHERE ' . $dateRange . '
 			' . $filter . ' ' . $filterSexe . '
 		');
@@ -710,7 +710,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		}
 
 		$query = $em->createQuery('
-				SELECT u FROM PlaygroundUser\Entity\User u
+				SELECT u FROM MetroUser\Entity\User u
 				' . $lastnameFilter . '
 				' . $firstnameFilter . '
 				' . $sexeFilter . '

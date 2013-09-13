@@ -12,6 +12,7 @@ return array(
         'PlaygroundUser',
    		'PlaygroundGame',
         'PlaygroundStats',
+    	'Application'
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(
