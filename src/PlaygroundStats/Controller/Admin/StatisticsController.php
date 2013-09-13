@@ -380,7 +380,7 @@ class StatisticsController extends AbstractActionController
 				
 			echo "\xEF\xBB\xBF"; // UTF-8 BOM
 			if($data['gameid'] != '') : echo "Id du jeu;"; endif;
-			echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;Optin NL Metro;Optin NL partenaires;Nb enfants;Date d'inscription;Source d'inscription;Hard Bounce;Email validé;";
+			echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;Optin Newsletter;Optin NL partenaires;Nb enfants;Date d'inscription;Source d'inscription;Hard Bounce;Email validé;";
 			if($data['player'] != 'all') : echo "Badge Joueur;"; endif;
 			if($data['goldfather'] != 'all') : echo "Badge Parrain;"; endif;
 			if($data['brain'] != 'all') : echo "Badge Cerveau;"; endif;
@@ -568,7 +568,7 @@ class StatisticsController extends AbstractActionController
 		$content 		.= "Email;Adresse;CP;Ville;";
 		if($data['birthdate'] != 'all') : $content .= "Date de naissance;"; endif;
 		$content       .= "Tél fixe;Tél mobile;";
-		if($data['optin'] != 'all') : $content .= "Optin NL Metro;"; endif;
+		if($data['optin'] != 'all') : $content .= "Optin Newsletter;"; endif;
 		$content       .= "Optin NL partenaires;Nb enfants;";
 		if($data['inscriptiondate'] != 'all') : $content .= "Date d'inscription;"; endif;
 		$content 		.= "Source d'inscription;";
@@ -638,7 +638,7 @@ class StatisticsController extends AbstractActionController
 		}
 
 		$content        = "\xEF\xBB\xBF"; // UTF-8 BOM
-		$content       .= "Inscrits Actifs;Inscrits Suspendus;Inscrits Homme;Inscrits Femme;Abonnement Newsletter ClubMetro;Jeux Actifs;Articles Actifs;Participant par jeu;Partages par jeu;";
+		$content       .= "Inscrits Actifs;Inscrits Suspendus;Inscrits Homme;Inscrits Femme;Abonnement Newsletter;Jeux Actifs;Articles Actifs;Participant par jeu;Partages par jeu;";
 
 		foreach ($userPerBadges as $badge) {
 			$content .=  $badge['badge'].' '.$badge['level'].';';
