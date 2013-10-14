@@ -10,11 +10,23 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $eventManager = $e->getApplication()->getEventManager();
 
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
-        AbstractValidator::setDefaultTranslator($translator,'playgroundcore');
+        $options = $serviceManager->get('playgroundcore_module_options');
+        $locale = $options->getLocale();
+        $translator = $serviceManager->get('translator');
+        if (!empty($locale)) {
+            //translator
+            $translator->setLocale($locale);
 
-        $eventManager        = $e->getApplication()->getEventManager();
+            // plugins
+            $translate = $serviceManager->get('viewhelpermanager')->get('translate');
+            $translate->getTranslator()->setLocale($locale);
+        }
+        AbstractValidator::setDefaultTranslator($translator,'playgroundstats');
+
+        
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         
