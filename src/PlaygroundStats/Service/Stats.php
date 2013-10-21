@@ -24,7 +24,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	public function findEntries($game, $firstEntry=false)
 	{
 		$firstEntry = true;
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 		$rsm = new \Doctrine\ORM\Query\ResultSetMapping;
 		$rsm->addScalarResult('c', 'c');
 		$query = $em->createNativeQuery('
@@ -43,7 +43,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function findOptin($type, $game)
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		switch ($type){
 			case 'optin' :
@@ -80,7 +80,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		if ( empty($types) ) {
 			return array();
 		}
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$now = new \DateTime("now");
 		// $now->format('Y-m-d') . ' 23:59:59';
@@ -149,7 +149,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getUsersByRangeDate($type, $startDate='', $endDate='', $sexe='')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$now = new \DateTime("now");
 		//$now->format('Y-m-d') . ' 23:59:59';
@@ -218,7 +218,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getParticipationsByRangeDate($startDate='', $endDate='')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
 		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
@@ -249,7 +249,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getGamesByRangeDate($startDate='', $endDate='')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
 		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
@@ -280,7 +280,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getArticlesByRangeDate($startDate='', $endDate='')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
 		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
@@ -313,7 +313,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getListShareCountByRangeDate($types, $startDate = '', $endDate = '')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
 		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
@@ -374,7 +374,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getSharesByRangeDate($type, $startDate='', $endDate='')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
 		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
@@ -430,7 +430,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getListBadgeCountByRangeDate($badges, $startDate='', $endDate='')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
 		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
@@ -477,7 +477,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getBadgesByRangeDate($type, $level, $startDate='', $endDate='')
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
 		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
@@ -919,7 +919,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 */
 	public function getSharesByUser($type, $user)
 	{
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		switch ($type){
 			case 'shares' :
@@ -981,7 +981,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		$nbpartStart 	= \DateTime::createFromFormat('d/m/Y', $nbpartStartIni);
 		$nbpartEnd 		= \DateTime::createFromFormat('d/m/Y', $nbpartEndIni);
 
-		$em = $this->getServiceManager()->get('zfcuser_doctrine_em');
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 		$sql = '';
 		if( $nbpart == 'between' ){
