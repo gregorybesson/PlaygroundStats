@@ -184,7 +184,7 @@ return array(
         ),
     ),
 
-	'navigation' => array(
+	/*'navigation' => array(
 		'admin' => array(
 			'statisticsgames' => array(
 				'order' => 1,
@@ -208,5 +208,5 @@ return array(
 				),
 			),
 		),
-	),
+	),*/
 );
