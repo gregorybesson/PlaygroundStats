@@ -1,7 +1,64 @@
 <?php
 return array(
 
-	// Breadcrumbs
-    'Home' 	=> 'Accueil',
+	// Game stats
+	'Game stats' => 'Statistiques des jeux',
+	'Indicate game ID' => 'Indiquez l\'ID du jeu',
+	'Nb participants' => 'Nb de participants',
+	'Nb optin newsletter' => 'Nb d\'optin Newsletter',	
+	'Nb optin partners' => 'Nb d\'optin partenaires',
+	'Nb new registers' => 'Nb de nouveaux inscrits',
+		
+	// Export
+	'Export members' => 'Exporter des membres',
 
+	// Export form
+	'Game ID' => 'ID d\'un jeu',
+	'All' => 'Tous',
+	'Start with' => 'Commence par',
+	'Contains' => 'Contient',
+	'Equal to' => 'Egal à',
+	'Lastname' => 'Nom',
+	'Firstname' => 'Prénom',
+	'Gender' => 'Genre (H/F)',
+	'Male' => 'Homme',
+	'Female' => 'Femme',
+	'ID member' => 'ID d\'un membre',
+	'Email' => 'Email',
+	'Zipcode' => 'Code postal',
+	'Birth date' => 'Date de naissance',
+	'Interest center' => 'Centre d\'intérêts',
+	'Newsletter optin' => 'Optin Newsletter',
+	'Yes' => 'Oui',
+	'No' => 'Non',
+	'Partners NL optin' => 'Optin NL Partenaires',
+	'Registration date' => 'Date d\'inscription',
+	'Between' => 'Entre',
+	'Hard Bounce' => 'Email NPAI',
+	'Nb participants' => 'Nb de participations',
+	'Number' => 'Nombre',
+	'Nb participations' => 'Nb de participations',
+	'Email validated' => 'Email validé',
+	'Player badge' => 'Badge Joueur',
+	'Bronze' => 'Bronze',
+	'Silver' => 'Argent',
+	'Gold' => 'Or',
+	'Sponsor badge' => 'Badge Parrain',
+	'Brain badge' => 'Badge Cerveau',
+	'Ambassador badge' => 'Badge Ambassadeur',
+	'Birthday badge' => 'Badge Anniversaire',
+	'Generate export' => 'Générer un export',
+	'No Category' => 'Pas de catégories',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	'' => '',
+	
+		
 );
