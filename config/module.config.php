@@ -166,7 +166,8 @@ return array(
             array(
                 'type'     => 'phpArray',
                 'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.php'
+                'pattern'  => '%s.php',
+            	'text_domain'  => 'playgroundstats'
             ),
         ),
     ),
@@ -188,13 +189,13 @@ return array(
 		'admin' => array(
 			'statisticsgames' => array(
 				'order' => 1,
-				'label' => 'Statistiques',
+				'label' => 'Statistics',
 				'route' => 'admin/stats/games',
 				'resource' => 'stats',
 				'privilege' => 'list',
 				'pages' => array(
 					'list' => array(
-						'label' => 'Statistiques des jeux',
+						'label' => 'Game stats',
 						'route' => 'admin/stats/games',
 						'resource' => 'stats',
 						'privilege' => 'list',

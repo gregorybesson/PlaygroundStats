@@ -25,13 +25,6 @@
 		"zendframework/zend-form" : "~2.1",
 		"zendframework/zend-loader" : "~2.1",
 		"zendframework/zend-servicemanager" : "~2.1",
-		"playground/cms" : "dev-master",
-		"playground/faq" : "dev-master",
-		"playground/facebook" : "dev-master",
-        "playground/game" : "dev-master", 
-        "playground/partnership" : "dev-master",
-        "playground/reward" : "dev-master",
-        "playground/flow" : "dev-master",
 		"zendframework/zend-modulemanager" : "~2.1"
 	},
 	"require-dev" : {
