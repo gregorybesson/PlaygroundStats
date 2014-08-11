@@ -10,10 +10,7 @@ return array(
     	'ZfcBase',
    		'PlaygroundCore',
         'PlaygroundDesign',
-        'PlaygroundUser',
-   		'PlaygroundGame',
-        'PlaygroundStats',
-    	'Application'
+        'PlaygroundStats'
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(
