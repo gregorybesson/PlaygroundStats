@@ -1,5 +1,5 @@
 <?php
-namespace PlaygroundUserTest;
+namespace PlaygroundStatsTest;
 
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
@@ -51,7 +51,7 @@ class Bootstrap
         $config = ArrayUtils::merge($baseConfig, $testConfig);
 
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setService('PlaygroundStatsConfig', $config);
+        $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
 
         static::$serviceManager = $serviceManager;
