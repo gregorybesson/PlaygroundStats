@@ -2,6 +2,29 @@
 
 return array(
 
+    'bjyauthorize' => array(
+    
+        'resource_providers' => array(
+            'BjyAuthorize\Provider\Resource\Config' => array(
+                'stats'         => array(),
+            ),
+        ),
+    
+        'rule_providers' => array(
+            'BjyAuthorize\Provider\Rule\Config' => array(
+                'allow' => array(
+                    array(array('admin'), 'stats',          array('list')),
+                ),
+            ),
+        ),
+    
+        'guards' => array(
+            'BjyAuthorize\Guard\Controller' => array(
+                array('controller' => 'adminstats',                                             'roles' => array('admin')),
+            ),
+        ),
+    ),
+    
 	'assetic_configuration' => array(
 		'modules' => array(
 			'admin' => array(
