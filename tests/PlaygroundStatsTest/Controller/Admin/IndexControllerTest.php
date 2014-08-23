@@ -11,7 +11,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
     public function setUp()
     {
-        $this->setPlaygroundStatsConfig(
+        $this->setApplicationConfig(
             include __DIR__ . '/../../../TestConfig.php'
         );
 
