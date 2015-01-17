@@ -173,12 +173,16 @@ return array(
     ),
 
     'core_layout' => array(
-        'PlaygroundStats' => array(
-            'default_layout' => 'layout/admin',
-            'controllers' => array(
-            	'adminstats'   => array(
-            		'default_layout' => 'layout/admin',
-            	),
+        'frontend' => array(
+            'modules' => array(
+                'PlaygroundStats' => array(
+                    'default_layout' => 'layout/admin',
+                    'controllers' => array(
+                    	'adminstats'   => array(
+                    		'default_layout' => 'layout/admin',
+                    	),
+                    ),
+                ),
             ),
         ),
     ),
