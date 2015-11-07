@@ -52,7 +52,8 @@ class StatisticsController extends AbstractActionController
 
 	public function indexAction()
 	{
-		$ap 				= $this->getApplicationService();
+		$ap = $this->getApplicationService();
+		
 		list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
 
 		list(
@@ -67,9 +68,32 @@ class StatisticsController extends AbstractActionController
 				'members','validatedMembers','activeMembers','optin','optinPartners','unregistered','suspended'
 		),$startDate, $endDate);
 
-		$participations 	= $ap->getParticipationsByRangeDate($startDate, $endDate);
-		$activeGames 		= $ap->getGamesByRangeDate($startDate, $endDate);
-		$activeArticles 	= $ap->getArticlesByRangeDate($startDate, $endDate);
+		$participations 		= $ap->getParticipationsByRangeDate($startDate, $endDate);
+		$now 		= new \DateTime("now");
+		$interval 	= 'P1W';
+		$beginning 	= new \DateTime("now");
+		$beginning->sub(new \DateInterval($interval));
+		$sDate = $beginning->format('d/m/Y');
+		$eDate   = $now->format('d/m/Y');
+		
+		$participationsLastWeek	= $ap->getParticipationsByRangeDate($sDate, $eDate);
+
+		$partArray = $ap->getParticipationsByDayByRangeDate($startDate, $endDate);
+
+		$labels = array();
+		$series = array();
+		foreach($partArray as $v){
+			$labels[] = substr($v['date'], 8, 2);
+			$series[] = intval($v['qty']);
+		}
+		$participationsSerie = array('labels' => $labels, 'series' => array($series));
+
+		$subscribers = $ap->getSubscribersByRangeDate($startDate, $endDate);
+		$subscribersLastWeek	= $ap->getSubscribersByRangeDate($sDate, $eDate);
+
+		$totalGames 			= $ap->getGamesByRangeDate($startDate, $endDate, false);
+		$activeGames 			= $ap->getGamesByRangeDate($startDate, $endDate, true);
+		$activeArticles 		= $ap->getArticlesByRangeDate($startDate, $endDate);
 
 		return new ViewModel(
 				array(
@@ -92,9 +116,15 @@ class StatisticsController extends AbstractActionController
 						'femaleUnregistered'=> $femaleUnregistered,
 						'suspended' 		=> $suspended,
 
+						'participationsJSON'=> json_encode($participationsSerie),
 						'participations' 	=> $participations,
+						'participationsLastWeek' => $participationsLastWeek,
+						'totalGames' 		=> $totalGames,
 						'activeGames' 		=> $activeGames,
 						'activeArticles' 	=> $activeArticles,
+
+						'subscribers'		=> $subscribers,
+						'subscribersLastWeek' => $subscribersLastWeek,
 
 						'form' 				=> $form,
 						'data' 				=> $data,

@@ -211,6 +211,40 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 		return $count;
 	}
 
+    /**
+	 * Return count of participation between $startDate and $endDate
+	 * @param number|unknown $startDate
+	 * @param number|unknown $endDate
+	 */
+	public function getParticipationsByDayByRangeDate($startDate='', $endDate='')
+	{
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
+		$emConfig = $em->getConfiguration();
+	    $emConfig->addCustomDatetimeFunction('DATE', '\DoctrineExtensions\Query\Mysql\Date');
+
+		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
+		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
+
+		if ($startDate != '' && $endDate != '') {
+			$dateRange = "(e.created_at >='" . $startDateTime->format('Y-m-d') . " 0:0:0' AND e.created_at <= '" . $endDateTime->format('Y-m-d') . " 0:0:0')";
+		} elseif ($startDate == '' && $endDate != '') {
+			$dateRange = "e.created_at <= '" . $endDateTime->format('Y-m-d') . " 0:0:0'";
+		} elseif ($startDate != '' && $endDate == '') {
+			$dateRange = "e.created_at >='" . $startDateTime->format('Y-m-d') . " 0:0:0'";
+		} else {
+			$dateRange = "e.created_at IS NOT NULL";
+		}
+
+		$query = $em->createQuery('
+			SELECT DATE(e.created_at) as date, COUNT(e.id) as qty FROM PlaygroundGame\Entity\Entry e
+			WHERE ' . $dateRange . '
+			AND e.active=0
+			GROUP BY date
+		');
+		$result = $query->getResult();
+		return $result;
+	}
+
 	/**
 	 * Return count of participation between $startDate and $endDate
 	 * @param number|unknown $startDate
@@ -247,7 +281,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 	 * @param number|unknown $startDate
 	 * @param number|unknown $endDate
 	 */
-	public function getGamesByRangeDate($startDate='', $endDate='')
+	public function getGamesByRangeDate($startDate='', $endDate='', $onlyActive = false)
 	{
 		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
@@ -264,11 +298,43 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
 			$dateRange = "g.publicationDate IS NOT NULL";
 		}
 
+		$active = '';
+		if($onlyActive){
+			$active = ' AND g.active=1';
+		}
+
 		$query = $em->createQuery('
 			SELECT COUNT(g.id) FROM PlaygroundGame\Entity\Game g
-			WHERE ' . $dateRange . '
-			AND g.active=1
-		');
+			WHERE ' . $dateRange . $active);
+		$count = $query->getSingleScalarResult();
+		return $count;
+	}
+	
+	/**
+	 * Return count of active games between $startDate and $endDate
+	 * @param number|unknown $startDate
+	 * @param number|unknown $endDate
+	 */
+	public function getSubscribersByRangeDate($startDate='', $endDate='')
+	{
+		$em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
+
+		$startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
+		$endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
+
+		if ($startDate != '' && $endDate != '') {
+			$dateRange = "(e.created_at >='" . $startDateTime->format('Y-m-d') . " 0:0:0' AND e.created_at <= '" . $endDateTime->format('Y-m-d') . " 0:0:0')";
+		} elseif ($startDate == '' && $endDate != '') {
+			$dateRange = "e.created_at <= '" . $endDateTime->format('Y-m-d') . " 0:0:0'";
+		} elseif ($startDate != '' && $endDate == '') {
+			$dateRange = "e.created_at >='" . $startDateTime->format('Y-m-d') . " 0:0:0'";
+		} else {
+			$dateRange = "e.created_at IS NOT NULL";
+		}
+
+		$query = $em->createQuery('
+			SELECT COUNT(e.id) FROM PlaygroundGame\Entity\Entry e
+			WHERE ' . $dateRange . ' AND e.playerData IS NOT NULL');
 		$count = $query->getSingleScalarResult();
 		return $count;
 	}
