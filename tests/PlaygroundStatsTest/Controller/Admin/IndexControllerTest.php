@@ -20,6 +20,6 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
     public function testIndexAction()
     {
-    	$this->assertTrue(true);
+        $this->assertTrue(true);
     }
 }

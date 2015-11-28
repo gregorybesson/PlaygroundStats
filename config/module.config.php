@@ -6,21 +6,21 @@ return array(
     
         'resource_providers' => array(
             'BjyAuthorize\Provider\Resource\Config' => array(
-                'stats'         => array(),
+                'stats' => array(),
             ),
         ),
     
         'rule_providers' => array(
             'BjyAuthorize\Provider\Rule\Config' => array(
                 'allow' => array(
-                    array(array('admin'), 'stats',          array('list')),
+                    array(array('admin'), 'stats', array('list')),
                 ),
             ),
         ),
     
         'guards' => array(
             'BjyAuthorize\Guard\Controller' => array(
-                array('controller' => 'adminstats',                                             'roles' => array('admin')),
+                array('controller' => 'adminstats', 'roles' => array('admin')),
             ),
         ),
     ),
@@ -42,7 +42,7 @@ return array(
 					),
 					'head_admin_js' => array(
 						'assets' => array(
-							'jquery-gridster.js' 			 => 'js/jquery.gridster.min.js',
+							'jquery-gridster.js' => 'js/jquery.gridster.min.js',
 						),
 					),
 					'gridster_images' => array(

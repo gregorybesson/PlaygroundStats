@@ -25,7 +25,7 @@ class Module
             $translate->getTranslator()->setLocale($locale);
            
         }
-        AbstractValidator::setDefaultTranslator($translator,'playgroundstats');
+        AbstractValidator::setDefaultTranslator($translator, 'playgroundstats');
 
         
         $moduleRouteListener = new ModuleRouteListener();
@@ -51,20 +51,20 @@ class Module
     
     public function getServiceConfig()
     {
-    	return array(
+        return array(
     
-    		'invokables' => array(
-    			'playgroundstats_stats_service' => 'PlaygroundStats\Service\Stats',
-   			),
+            'invokables' => array(
+                'playgroundstats_stats_service' => 'PlaygroundStats\Service\Stats',
+            ),
     
-    		'factories' => array(
-    			'playgroundstats_export_form' => function($sm) {
-    				$translator = $sm->get('translator');
-    				$form = new Form\Export(null, $sm, $translator);
+            'factories' => array(
+                'playgroundstats_export_form' => function ($sm) {
+                    $translator = $sm->get('translator');
+                    $form = new Form\Export(null, $sm, $translator);
     
-    				return $form;
-    			},
-    		),
-    	);
+                    return $form;
+                },
+            ),
+        );
     }
 }

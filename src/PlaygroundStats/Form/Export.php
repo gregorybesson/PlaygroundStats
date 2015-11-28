@@ -13,7 +13,7 @@ class Export extends ProvidesEventsForm
 
     protected $serviceManager;
 
-    public function __construct ($name = null, ServiceManager $sm, Translator $translator)
+    public function __construct($name = null, ServiceManager $sm, Translator $translator)
     {
 
         parent::__construct($name);
@@ -29,25 +29,25 @@ class Export extends ProvidesEventsForm
                 'placeholder' => $translator->translate('Game ID', 'playgroundstats'),
             ),
         ));
-		
-		$this->add(array(
-			'name' => 'lastname',
+        
+        $this->add(array(
+            'name' => 'lastname',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => $translator->translate('Lastname', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'start'		=>	$translator->translate('Start with', 'playgroundstats'),
-                    'contain'	=>	$translator->translate('Contains', 'playgroundstats'),
-                    'equal'		=>	$translator->translate('Equal to', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'start'         =>  $translator->translate('Start with', 'playgroundstats'),
+                    'contain'   =>  $translator->translate('Contains', 'playgroundstats'),
+                    'equal'         =>  $translator->translate('Equal to', 'playgroundstats'),
                 ),
             ),
             'attributes' => array(
                 'id' => 'lastname-select',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'lastname-input',
             'options' => array(
                 'label' => $translator->translate('Lastname', 'playgroundstats'),
@@ -60,23 +60,23 @@ class Export extends ProvidesEventsForm
         ));
 
         $this->add(array(
-       		'name' => 'firstname',
+            'name' => 'firstname',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => $translator->translate('Firstname', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'start'		=>	$translator->translate('Start with', 'playgroundstats'),
-                    'contain'	=>	$translator->translate('Contains', 'playgroundstats'),
-                    'equal'		=>	$translator->translate('Equal to', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'start'         =>  $translator->translate('Start with', 'playgroundstats'),
+                    'contain'   =>  $translator->translate('Contains', 'playgroundstats'),
+                    'equal'         =>  $translator->translate('Equal to', 'playgroundstats'),
                 ),
             ),
             'attributes' => array(
                 'id' => 'firstname-select',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'firstname-input',
             'options' => array(
                 'label' => $translator->translate('Firstname', 'playgroundstats'),
@@ -87,40 +87,40 @@ class Export extends ProvidesEventsForm
                 'id' => 'firstname-input',
             ),
         ));
-		
-		$this->add(array(
-			'name' => 'sexe',
+        
+        $this->add(array(
+            'name' => 'sexe',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => $translator->translate('Gender', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'male'		=>	$translator->translate('Male', 'playgroundstats'),
-                    'female'	=>	$translator->translate('Female', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'male'      =>  $translator->translate('Male', 'playgroundstats'),
+                    'female'    =>  $translator->translate('Female', 'playgroundstats'),
                 ),
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'memberid',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('ID member', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'equal'		=>	$translator->translate('Equal to', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'equal'         =>  $translator->translate('Equal to', 'playgroundstats'),
                 )
             ),
             'attributes' => array(
-            	'value' => 'all',
+                'value' => 'all',
                 'class' => 'memberid-radio',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'memberid-input',
             'options' => array(
                 'label' => $translator->translate('ID member', 'playgroundstats'),
@@ -133,22 +133,22 @@ class Export extends ProvidesEventsForm
         ));
 
         $this->add(array(
-        	'name' => 'email',
+            'name' => 'email',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => $translator->translate('Email', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'contain'	=>	$translator->translate('Contains', 'playgroundstats'),
-                    'equal'		=>	$translator->translate('Equal to', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'contain'   =>  $translator->translate('Contains', 'playgroundstats'),
+                    'equal'         =>  $translator->translate('Equal to', 'playgroundstats'),
                 ),
             ),
             'attributes' => array(
                 'id' => 'email-select',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'email-input',
             'options' => array(
                 'label' => $translator->translate('Email', 'playgroundstats'),
@@ -159,24 +159,24 @@ class Export extends ProvidesEventsForm
                 'id' => 'email-input',
             ),
         ));
-		
-		$this->add(array(
-			'name' => 'zipcode',
+        
+        $this->add(array(
+            'name' => 'zipcode',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => $translator->translate('Zipcode', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'start'		=>	$translator->translate('Start with', 'playgroundstats'),
-                    'equal'		=>	$translator->translate('Equal to', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'start'         =>  $translator->translate('Start with', 'playgroundstats'),
+                    'equal'         =>  $translator->translate('Equal to', 'playgroundstats'),
                 ),
             ),
             'attributes' => array(
                 'id' => 'zipcode-select',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'zipcode-input',
             'options' => array(
                 'label' => $translator->translate('Zipcode', 'playgroundstats'),
@@ -187,16 +187,16 @@ class Export extends ProvidesEventsForm
                 'id' => 'zipcode-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'birthdate',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Birth date', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'between' 	=> $translator->translate('Between', 'playgroundstats'),
-                    'equal'		=>	$translator->translate('Equal to', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'between'   => $translator->translate('Between', 'playgroundstats'),
+                    'equal'         =>  $translator->translate('Equal to', 'playgroundstats'),
                 )
             ),
             'attributes' => array(
@@ -204,8 +204,8 @@ class Export extends ProvidesEventsForm
                 'class' => 'birthdate-radio',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'birthdate-start',
             'options' => array(
                 'label' => $translator->translate('Birth date', 'playgroundstats'),
@@ -217,8 +217,8 @@ class Export extends ProvidesEventsForm
                 'id' => 'birthdatestart-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'birthdate-end',
             'options' => array(
                 'label' => $translator->translate('Birth date', 'playgroundstats'),
@@ -230,8 +230,8 @@ class Export extends ProvidesEventsForm
                 'id' => 'birthdateend-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'birthdate-equal',
             'options' => array(
                 'label' => $translator->translate('Birth date', 'playgroundstats'),
@@ -243,61 +243,61 @@ class Export extends ProvidesEventsForm
                 'id' => 'birthdateequal-input',
             ),
         ));
-		
-		$categories = $this->getPrizeCategories();
-		$categories_label = array();
-		foreach($categories as $key => $title){
-			$categories_label[$key] = $translator->translate($title, 'playgroundstats');
-		}
+        
+        $categories = $this->getPrizeCategories();
+        $categories_label = array();
+        foreach ($categories as $key => $title) {
+            $categories_label[$key] = $translator->translate($title, 'playgroundstats');
+        }
         $this->add(array(
-        	'name' => 'prizeCategory',
+            'name' => 'prizeCategory',
             'type' => 'Zend\Form\Element\MultiCheckbox',
             'options' => array(
                 'value_options' => $categories_label,
                 'label' => $translator->translate('Interest center', 'playgroundstats'),
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'optin',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Newsletter optin', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'yes' 		=> $translator->translate('Yes', 'playgroundstats'),
-                    'no' 		=> $translator->translate('No', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'yes'       => $translator->translate('Yes', 'playgroundstats'),
+                    'no'        => $translator->translate('No', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'optinpartner',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Partners NL optin', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'yes' 		=> $translator->translate('Yes', 'playgroundstats'),
-                    'no' 		=> $translator->translate('No', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'yes'       => $translator->translate('Yes', 'playgroundstats'),
+                    'no'        => $translator->translate('No', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'inscriptiondate',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Registration date', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'between' 	=> $translator->translate('Between', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'between'   => $translator->translate('Between', 'playgroundstats'),
                 )
             ),
             'attributes' => array(
@@ -305,8 +305,8 @@ class Export extends ProvidesEventsForm
                 'class' => 'inscription-radio',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'inscriptiondate-start',
             'options' => array(
                 'label' => $translator->translate('Registration date', 'playgroundstats'),
@@ -318,8 +318,8 @@ class Export extends ProvidesEventsForm
                 'id' => 'inscriptionstart-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'inscriptiondate-end',
             'options' => array(
                 'label' => $translator->translate('Registration date', 'playgroundstats'),
@@ -331,17 +331,17 @@ class Export extends ProvidesEventsForm
                 'id' => 'inscriptionend-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'hardbounce',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Hard Bounce', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'yes' 		=> $translator->translate('Yes', 'playgroundstats'),
-                    'no' 		=> $translator->translate('No', 'playgroundstats'),
-                    'between' 	=> $translator->translate('Between', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'yes'       => $translator->translate('Yes', 'playgroundstats'),
+                    'no'        => $translator->translate('No', 'playgroundstats'),
+                    'between'   => $translator->translate('Between', 'playgroundstats'),
                 )
             ),
             'attributes' => array(
@@ -349,8 +349,8 @@ class Export extends ProvidesEventsForm
                 'class' => 'hardbounce-radio',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'hardbounce-start',
             'options' => array(
                 'label' => $translator->translate('Hard Bounce', 'playgroundstats'),
@@ -362,8 +362,8 @@ class Export extends ProvidesEventsForm
                 'id' => 'hardbouncestart-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'hardbounce-end',
             'options' => array(
                 'label' => $translator->translate('Hard Bounce', 'playgroundstats'),
@@ -375,16 +375,16 @@ class Export extends ProvidesEventsForm
                 'id' => 'hardbounceend-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'nbpart',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Nb participants', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    //'betweennb' => $translator->translate('Entre', 'playgroundstats'),					
-                    'between' 	=> $translator->translate('Between', 'playgroundstats'),
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    //'betweennb' => $translator->translate('Entre', 'playgroundstats'),
+                    'between'   => $translator->translate('Between', 'playgroundstats'),
                 )
             ),
             'attributes' => array(
@@ -392,8 +392,8 @@ class Export extends ProvidesEventsForm
                 'class' => 'nbpart',
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'nbpart-min',
             'options' => array(
                 'label' => $translator->translate('Nb participants', 'playgroundstats'),
@@ -404,8 +404,8 @@ class Export extends ProvidesEventsForm
                 'id' => 'nbpartmin-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'nbpart-max',
             'options' => array(
                 'label' => $translator->translate('Nb participations', 'playgroundstats'),
@@ -416,8 +416,8 @@ class Export extends ProvidesEventsForm
                 'id' => 'nbpartmax-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'nbpart-start',
             'options' => array(
                 'label' => $translator->translate('Nb participations', 'playgroundstats'),
@@ -429,8 +429,8 @@ class Export extends ProvidesEventsForm
                 'id' => 'nbpartstart-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'nbpart-end',
             'options' => array(
                 'label' => $translator->translate('Nb participations', 'playgroundstats'),
@@ -442,113 +442,113 @@ class Export extends ProvidesEventsForm
                 'id' => 'nbpartend-input',
             ),
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'validatedemail',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Email validated', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'yes' 		=> $translator->translate('Yes', 'playgroundstats'),					
-                    'no' 		=> $translator->translate('No', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'yes'       => $translator->translate('Yes', 'playgroundstats'),
+                    'no'        => $translator->translate('No', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'player',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Player badge', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'bronze' 	=> $translator->translate('Bronze', 'playgroundstats'),					
-                    'silver' 	=> $translator->translate('Silver', 'playgroundstats'),					
-                    'gold' 		=> $translator->translate('Gold', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
+                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
+                    'gold'      => $translator->translate('Gold', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'goldfather',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Sponsor badge', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'bronze' 	=> $translator->translate('Bronze', 'playgroundstats'),					
-                    'silver' 	=> $translator->translate('Silver', 'playgroundstats'),					
-                    'gold' 		=> $translator->translate('Gold', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
+                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
+                    'gold'      => $translator->translate('Gold', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'brain',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Brain badge', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'bronze' 	=> $translator->translate('Bronze', 'playgroundstats'),					
-                    'silver' 	=> $translator->translate('Silver', 'playgroundstats'),					
-                    'gold' 		=> $translator->translate('Gold', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
+                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
+                    'gold'      => $translator->translate('Gold', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'ambassador',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Ambassador badge', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'bronze' 	=> $translator->translate('Bronze', 'playgroundstats'),					
-                    'silver' 	=> $translator->translate('Silver', 'playgroundstats'),					
-                    'gold' 		=> $translator->translate('Gold', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
+                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
+                    'gold'      => $translator->translate('Gold', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-		
-		$this->add(array(
+        
+        $this->add(array(
             'name' => 'anniversary',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
                 'label' => $translator->translate('Birthday badge', 'playgroundstats'),
                 'value_options' => array(
-                    'all'		=>	$translator->translate('All', 'playgroundstats'),
-                    'bronze' 	=> $translator->translate('Bronze', 'playgroundstats'),					
-                    'silver' 	=> $translator->translate('Silver', 'playgroundstats'),					
-                    'gold' 		=> $translator->translate('Gold', 'playgroundstats')
+                    'all'       =>  $translator->translate('All', 'playgroundstats'),
+                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
+                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
+                    'gold'      => $translator->translate('Gold', 'playgroundstats')
                 )
             ),
             'attributes' => array(
                 'value' => 'all'
             )
         ));
-			
+            
         $submitElement = new Element\Button('submit');
         $submitElement->setLabel($translator->translate('Generate export', 'playgroundstats'))
             ->setAttributes(array(
             'type' => 'submit',
-        ));
+            ));
 
         $this->add($submitElement, array(
             //'priority' => - 100
@@ -556,22 +556,21 @@ class Export extends ProvidesEventsForm
 
     }
 
-	/**
+    /**
      *
      * @return array
      */
-    public function getPrizeCategories ()
+    public function getPrizeCategories()
     {
         $categories = array();
         $prizeCategoryService = $this->getServiceManager()->get('playgroundgame_prizecategory_service');
         $results = $prizeCategoryService->getActivePrizeCategories();
 
         foreach ($results as $result) {
-        	
             $categories[$result->getId()] = $result->getTitle();
         }
-        if (count($categories) == 0){
-        	$categories[0] = 'No Category';
+        if (count($categories) == 0) {
+            $categories[0] = 'No Category';
         }
         return $categories;
     }
@@ -581,7 +580,7 @@ class Export extends ProvidesEventsForm
      *
      * @return ServiceManager
      */
-    public function getServiceManager ()
+    public function getServiceManager()
     {
         return $this->serviceManager;
     }
@@ -592,11 +591,10 @@ class Export extends ProvidesEventsForm
      * @param  ServiceManager $serviceManager
      * @return User
      */
-    public function setServiceManager (ServiceManager $serviceManager)
+    public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
 
         return $this;
     }
-
 }
