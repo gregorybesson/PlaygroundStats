@@ -237,4 +237,12 @@ return array(
 			),
 		),
 	),
+	
+	// PlaygroundStats defines itself as the admin Dashboard controller
+	'playgrounduser' => array(
+		'admin' => array(
+            'controller' => 'adminstats',
+            'action' => 'index'
+        ),
+	)
 );
