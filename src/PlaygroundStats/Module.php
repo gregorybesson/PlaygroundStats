@@ -23,14 +23,12 @@ class Module
             // plugins
             $translate = $serviceManager->get('viewhelpermanager')->get('translate');
             $translate->getTranslator()->setLocale($locale);
-           
         }
         AbstractValidator::setDefaultTranslator($translator, 'playgroundstats');
 
         
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        
     }
 
     public function getConfig()
