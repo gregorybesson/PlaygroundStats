@@ -5,8 +5,6 @@ use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\Session\Container;
-
-
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -55,18 +53,18 @@ class StatisticsController extends AbstractActionController
     {
         $ap = $this->getApplicationService();
         
-        list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
+        list($startDate, $endDate, $form, $data) = $this->getStartEndDateValues();
 
         list(
-                $members,$male,$female,
-                $validatedMembers,$maleMembers,$femaleMembers,
-                $active,$maleActive,$femaleActive,
-                $optin,$maleOptin,$femaleOptin,
-                $optinPartners,$maleOptinPartners,$femaleOptinPartners,
-                $unregistered,$maleUnregistered,$femaleUnregistered,
-                $suspended,$maleSuspended,$femaleSuspended
+                $members, $male, $female,
+                $validatedMembers, $maleMembers, $femaleMembers,
+                $active, $maleActive, $femaleActive,
+                $optin, $maleOptin, $femaleOptin,
+                $optinPartners, $maleOptinPartners, $femaleOptinPartners,
+                $unregistered, $maleUnregistered, $femaleUnregistered,
+                $suspended, $maleSuspended, $femaleSuspended
         ) = $ap->getListUserCountByRangeDate(array(
-                'members','validatedMembers','activeMembers','optin','optinPartners','unregistered','suspended'
+                'members', 'validatedMembers', 'activeMembers', 'optin', 'optinPartners', 'unregistered', 'suspended'
         ), $startDate, $endDate);
 
         $participations         = $ap->getParticipationsByRangeDate($startDate, $endDate);
@@ -136,14 +134,14 @@ class StatisticsController extends AbstractActionController
     public function badgeAction()
     {
         $ap = $this->getApplicationService();
-        list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
-        $badges = array (
-                'total' => array (0, 1, 2, 3),
-                'goldfather' => array (0, 1, 2, 3),
-                'brain' => array (0, 1, 2, 3),
-                'ambassador' => array (0, 1, 2, 3),
-                'anniversary' => array (0, 1, 2, 3),
-                'player' => array (0, 1, 2, 3),
+        list($startDate, $endDate, $form, $data) = $this->getStartEndDateValues();
+        $badges = array(
+                'total' => array(0, 1, 2, 3),
+                'goldfather' => array(0, 1, 2, 3),
+                'brain' => array(0, 1, 2, 3),
+                'ambassador' => array(0, 1, 2, 3),
+                'anniversary' => array(0, 1, 2, 3),
+                'player' => array(0, 1, 2, 3),
         );
 
         $players = array();
@@ -208,7 +206,7 @@ class StatisticsController extends AbstractActionController
     public function shareAction()
     {
         $ap = $this->getApplicationService();
-        list($startDate, $endDate,$form,$data) = $this->getStartEndDateValues();
+        list($startDate, $endDate, $form, $data) = $this->getStartEndDateValues();
         list(
                 $sponsoredMembers,
                 $shares,
@@ -218,7 +216,7 @@ class StatisticsController extends AbstractActionController
                 $glInvit,
                 $mailInvit
         ) = $ap->getListShareCountByRangeDate(array(
-                'sponsoredMembers','shares','profilShares','fbInvit','twInvit','glInvit','mailInvit'
+                'sponsoredMembers', 'shares', 'profilShares', 'fbInvit', 'twInvit', 'glInvit', 'mailInvit'
         ), $startDate, $endDate);
         $model = new ViewModel(
             array(
@@ -236,74 +234,74 @@ class StatisticsController extends AbstractActionController
     }
 
     /*public function indexAction()
-	 {
-	$request 		= $this->getRequest();
-	$su 			= $this->getUserService();
-	$sg 			= $this->getGameService();
-	$sr 			= $this->getRewardService();
+     {
+    $request 		= $this->getRequest();
+    $su 			= $this->getUserService();
+    $sg 			= $this->getGameService();
+    $sr 			= $this->getRewardService();
 
-	$allUser 		= count($su->findAll());
-	$activeUser 	= count($su->findByState(1));
-	$inactiveUser 	= $allUser - $activeUser;
+    $allUser 		= count($su->findAll());
+    $activeUser 	= count($su->findByState(1));
+    $inactiveUser 	= $allUser - $activeUser;
 
-	$maleUser 		= count($su->findByTitle('M'));
-	$femaleUser 	= count($su->findByTitle('Me'));
+    $maleUser 		= count($su->findByTitle('M'));
+    $femaleUser 	= count($su->findByTitle('Me'));
 
-	$optinUser 		= count($su->findByOptin(1));
-	//$optinUserPartner 	= count($su->findByOptin(1, true));
+    $optinUser 		= count($su->findByOptin(1));
+    //$optinUserPartner 	= count($su->findByOptin(1, true));
 
-	$activeGame 	= count($sg->getActiveGames());
+    $activeGame 	= count($sg->getActiveGames());
 
-	$allGames 		= count($sg->findAll());
-	$allEntries 	= count($sg->findAllEntry());
-	$userPerGames 	= $allEntries/$allGames;
+    $allGames 		= count($sg->findAll());
+    $allEntries 	= count($sg->findAllEntry());
+    $userPerGames 	= $allEntries/$allGames;
 
-	$activePage 	= count($this->getPageService()->getActivePages());
+    $activePage 	= count($this->getPageService()->getActivePages());
 
-	$shareAction 	= count($sr->findBy(array('actionId' => array(13,14,15,16))));
-	$sharePerGames 	= $allGames/$shareAction;
+    $shareAction 	= count($sr->findBy(array('actionId' => array(13,14,15,16))));
+    $sharePerGames 	= $allGames/$shareAction;
 
-	$userPerBadges = array();
-	$badges 	= $this->getRewardAchievementListenerService()->getBadges();
+    $userPerBadges = array();
+    $badges 	= $this->getRewardAchievementListenerService()->getBadges();
 
-	foreach ($badges as $keyBadge => $badge) {
-	foreach ($badge['levels'] as $keyLevel => $level) {
-	$userPerBadges[] = array(
-			'badge' => $keyBadge,
-			'level' => $level['label'],
-			'user'  => count($this->getAchievementService()->findBy(array('type' => 'badge', 'category'=> $keyBadge, 'level' => $keyLevel))),
-	);
+    foreach ($badges as $keyBadge => $badge) {
+    foreach ($badge['levels'] as $keyLevel => $level) {
+    $userPerBadges[] = array(
+            'badge' => $keyBadge,
+            'level' => $level['label'],
+            'user'  => count($this->getAchievementService()->findBy(array('type' => 'badge', 'category'=> $keyBadge, 'level' => $keyLevel))),
+    );
 
-	}
-	}
+    }
+    }
 
-	$form = new Form();
-	$form->setAttribute('method', 'post');
+    $form = new Form();
+    $form->setAttribute('method', 'post');
 
-	if ($request->isPost()) {
-	$data = $request->getPost()->toArray();
-	}
+    if ($request->isPost()) {
+    $data = $request->getPost()->toArray();
+    }
 
-	return new ViewModel(array(
-			'activeUser' 	=> $activeUser,
-			'inactiveUser' => $inactiveUser,
-			'maleUser' 	=> $maleUser,
-			'femaleUser' 	=> $femaleUser,
-			'optinUser' 	=> $optinUser,
-			//'optinUserPartner' => $optinUserPartner,
+    return new ViewModel(array(
+            'activeUser' 	=> $activeUser,
+            'inactiveUser' => $inactiveUser,
+            'maleUser' 	=> $maleUser,
+            'femaleUser' 	=> $femaleUser,
+            'optinUser' 	=> $optinUser,
+            //'optinUserPartner' => $optinUserPartner,
 
-			'activeGame' 	=> $activeGame,
-			'activePage' 	=> $activePage,
+            'activeGame' 	=> $activeGame,
+            'activePage' 	=> $activePage,
 
-			'userPerGames'	=> $userPerGames,
-			'sharePerGames'=> $sharePerGames,
+            'userPerGames'	=> $userPerGames,
+            'sharePerGames'=> $sharePerGames,
 
-			'userPerBadges'=> $userPerBadges,
+            'userPerBadges'=> $userPerBadges,
 
-			'form' 		=> $form,
-	)
-	);
-	}*/
+            'form' 		=> $form,
+    )
+    );
+    }*/
 
     public function gamesAction()
     {
@@ -333,7 +331,6 @@ class StatisticsController extends AbstractActionController
                 $optinUser      = $ap->findOptin('optin', $gameId);
                 $optinPartner   = $ap->findOptin('optinPartner', $gameId);
                 $newUsers       = $ap->findEntries($gameId, true);
-
             }
         }
 
@@ -471,45 +468,35 @@ class StatisticsController extends AbstractActionController
                 endif;
                 echo $row['user_id'] . ";" . $row['title'] . ";" . $row['lastname'] . ";" . $row['firstname'] . ";" . $row['username'] . ";" . $row['email'];
                 if ($row['address2'] != '') :
-                    $address = $row['address'] . ' - ' . $row['address2'];
-
-                else :
+                    $address = $row['address'] . ' - ' . $row['address2']; else :
                     $address = $row['address'];
 
                 endif;
                 echo  ";" . $address . ";" . $row['postal_code'] . ";" . $row['city'] . ";" . $row['dob'];
                 echo  ";" . $row['telephone'] . ";" . $row['mobile'];
                 if ($row['optin'] == true) :
-                    $optin = 'oui';
-
-                else :
+                    $optin = 'oui'; else :
                     $optin = 'non';
 
                 endif;
                 echo  ";" . $optin;
                 if ($row['optin_partner'] == true) :
-                    $optinPartner = 'oui';
-
-                else :
+                    $optinPartner = 'oui'; else :
                     $optinPartner = 'non';
 
                 endif;
                 echo  ";" . $optinPartner . ";";
                 echo   $row['created_at'] . ";" . $row['registration_source'];
                 if ($row['state']== null) :
-                    $validatedEmail = 'non';
-
-                else :
+                    $validatedEmail = 'non'; else :
                     $validatedEmail = 'oui';
 
                 endif;
                 echo  ";" . $validatedEmail;
                 if ($data['player'] != 'all') {
                     if ($data['player'] == 'bronze') :
-                        $goldfather = 'Bronze';
-                    elseif ($data['player'] == 'silver') :
-                        $goldfather = 'Argent';
-                    else :
+                        $goldfather = 'Bronze'; elseif ($data['player'] == 'silver') :
+                        $goldfather = 'Argent'; else :
                         $goldfather = 'Or';
 
                     endif;
@@ -517,10 +504,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['goldfather'] != 'all') {
                     if ($data['goldfather'] == 'bronze') :
-                        $goldfather = 'Bronze';
-                    elseif ($data['goldfather'] == 'silver') :
-                        $goldfather = 'Argent';
-                    else :
+                        $goldfather = 'Bronze'; elseif ($data['goldfather'] == 'silver') :
+                        $goldfather = 'Argent'; else :
                         $goldfather = 'Or';
 
                     endif;
@@ -528,10 +513,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['brain'] != 'all') {
                     if ($data['brain'] == 'bronze') :
-                        $brain = 'Bronze';
-                    elseif ($data['brain'] == 'silver') :
-                        $brain = 'Argent';
-                    else :
+                        $brain = 'Bronze'; elseif ($data['brain'] == 'silver') :
+                        $brain = 'Argent'; else :
                         $brain = 'Or';
 
                     endif;
@@ -539,10 +522,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['ambassador'] != 'all') {
                     if ($data['ambassador'] == 'bronze') :
-                        $ambassador = 'Bronze';
-                    elseif ($data['ambassador'] == 'silver') :
-                        $ambassador = 'Argent';
-                    else :
+                        $ambassador = 'Bronze'; elseif ($data['ambassador'] == 'silver') :
+                        $ambassador = 'Argent'; else :
                         $ambassador = 'Or';
 
                     endif;
@@ -550,10 +531,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['anniversary'] != 'all') {
                     if ($data['anniversary'] == 'bronze') :
-                        $anniversary = 'Bronze';
-                    elseif ($data['anniversary'] == 'silver') :
-                        $anniversary = 'Argent';
-                    else :
+                        $anniversary = 'Bronze'; elseif ($data['anniversary'] == 'silver') :
+                        $anniversary = 'Argent'; else :
                         $anniversary = 'Or';
 
                     endif;
@@ -616,9 +595,7 @@ class StatisticsController extends AbstractActionController
                 . ";" . $record->getFirstname()
                 . ";" . $record->getEmail();
                 if ($record->getAddress2() != '') :
-                    $address = $record->getAddress() . ' - ' . $record->getAddress2();
-
-                else :
+                    $address = $record->getAddress() . ' - ' . $record->getAddress2(); else :
                     $address = $record->getAddress();
 
                 endif;
@@ -633,18 +610,14 @@ class StatisticsController extends AbstractActionController
                 . ";" . $record->getMobile();
                 if ($data['optin'] != 'all') {
                     if ($record->getOptin() == true) :
-                        $optin = 'oui';
-
-                    else :
+                        $optin = 'oui'; else :
                                         $optin = 'non';
 
                     endif;
-                                    $contentRecord .= ";" . $optin;
+                    $contentRecord .= ";" . $optin;
                 }
                 if ($record->getOptinPartner() == true) :
-                    $optinPartner = 'oui';
-
-                else :
+                    $optinPartner = 'oui'; else :
                     $optinPartner = 'non';
 
                 endif;
@@ -657,9 +630,7 @@ class StatisticsController extends AbstractActionController
                 $contentRecord .= ";" . $record->getRegistrationSource();
                 if ($data['hardbounce'] != 'all') {
                     if ($record->getIsHardbounce() == 1) :
-                        $hardbounce = 'oui';
-
-                    else :
+                        $hardbounce = 'oui'; else :
                         $hardbounce = 'non';
 
                     endif;
@@ -667,20 +638,16 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['validatedemail'] != 'all') {
                     if ($record->getState()== null) :
-                        $validatedEmail = 'non';
-
-                    else :
+                        $validatedEmail = 'non'; else :
                                         $validatedEmail = 'oui';
 
                     endif;
-                                    $contentRecord .= ";" . $validatedEmail;
+                    $contentRecord .= ";" . $validatedEmail;
                 }
                 if ($data['player'] != 'all') {
                     if ($data['player'] == 'bronze') :
-                        $goldfather = 'Bronze';
-                    elseif ($data['player'] == 'silver') :
-                        $goldfather = 'Argent';
-                    else :
+                        $goldfather = 'Bronze'; elseif ($data['player'] == 'silver') :
+                        $goldfather = 'Argent'; else :
                         $goldfather = 'Or';
 
                     endif;
@@ -688,10 +655,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['goldfather'] != 'all') {
                     if ($data['goldfather'] == 'bronze') :
-                        $goldfather = 'Bronze';
-                    elseif ($data['goldfather'] == 'silver') :
-                        $goldfather = 'Argent';
-                    else :
+                        $goldfather = 'Bronze'; elseif ($data['goldfather'] == 'silver') :
+                        $goldfather = 'Argent'; else :
                         $goldfather = 'Or';
 
                     endif;
@@ -699,10 +664,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['brain'] != 'all') {
                     if ($data['brain'] == 'bronze') :
-                        $brain = 'Bronze';
-                    elseif ($data['brain'] == 'silver') :
-                        $brain = 'Argent';
-                    else :
+                        $brain = 'Bronze'; elseif ($data['brain'] == 'silver') :
+                        $brain = 'Argent'; else :
                         $brain = 'Or';
 
                     endif;
@@ -710,10 +673,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['ambassador'] != 'all') {
                     if ($data['ambassador'] == 'bronze') :
-                        $ambassador = 'Bronze';
-                    elseif ($data['ambassador'] == 'silver') :
-                        $ambassador = 'Argent';
-                    else :
+                        $ambassador = 'Bronze'; elseif ($data['ambassador'] == 'silver') :
+                        $ambassador = 'Argent'; else :
                         $ambassador = 'Or';
 
                     endif;
@@ -721,10 +682,8 @@ class StatisticsController extends AbstractActionController
                 }
                 if ($data['anniversary'] != 'all') {
                     if ($data['anniversary'] == 'bronze') :
-                        $anniversary = 'Bronze';
-                    elseif ($data['anniversary'] == 'silver') :
-                        $anniversary = 'Argent';
-                    else :
+                        $anniversary = 'Bronze'; elseif ($data['anniversary'] == 'silver') :
+                        $anniversary = 'Argent'; else :
                         $anniversary = 'Or';
 
                     endif;
@@ -832,7 +791,7 @@ class StatisticsController extends AbstractActionController
 
         $activePage     = count($this->getPageService()->getActivePages());
 
-        $shareAction    = count($sr->findBy(array('action' => array(13,14,15,16))));
+        $shareAction    = count($sr->findBy(array('action' => array(13, 14, 15, 16))));
         $sharePerGames  = $allGames/$shareAction;
 
         $userPerBadges = array();
@@ -845,7 +804,6 @@ class StatisticsController extends AbstractActionController
                         'level' => $level['label'],
                         'user'  => count($this->getAchievementService()->findBy(array('type' => 'badge', 'category'=> $keyBadge, 'level' => $keyLevel))),
                 );
-
             }
         }
 

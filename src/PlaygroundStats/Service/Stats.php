@@ -6,7 +6,6 @@ use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcBase\EventManager\EventProvider;
 use Zend\Stdlib\Hydrator\ClassMethods;
-
 use Doctrine\ORM\Query\ResultSetMapping;
 
 class Stats extends EventProvider implements ServiceManagerAwareInterface
@@ -30,8 +29,8 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
         $query = $em->createNativeQuery('
             SELECT COUNT(e.id) AS c
             FROM game_entry e
-		    '.( $firstEntry == true ? ' RIGHT JOIN (SELECT l.id FROM game_entry l GROUP BY l.user_id) AS b ON b.id = e.id' : '' ).'
-			WHERE e.game_id = '.( (int) $game ).'
+		    '.($firstEntry == true ? ' RIGHT JOIN (SELECT l.id FROM game_entry l GROUP BY l.user_id) AS b ON b.id = e.id' : '').'
+			WHERE e.game_id = '.((int) $game).'
 		', $rsm);
         $count = $query->getSingleScalarResult();
         return $count;
@@ -513,7 +512,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
                     $filter[] = 'a.category = \''.$badge.'\'';
                 }
                 if ($level > 0) {
-                    $filter[] = 'a.level = '.( (int) $level );
+                    $filter[] = 'a.level = '.((int) $level);
                 }
                 $rsm->addScalarResult('c'.$i, 'c'.$i);
                 $select[] = 'SUM(CASE WHEN '.implode(' AND ', $filter).' THEN 1 ELSE 0 END) AS c'.$i++;
@@ -799,7 +798,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
                 ' . $anniversaryFilter . '
                     
                 ');
-		*/
+        */
 
         //$sql = "SELECT distinct u.user_id, u.username, u.email";
         $sql = "SELECT distinct u.user_id, u.username, u.email, u.title, u.firstname, u.lastname, u.dob, u.address, u.address2, u.postal_code, u.city, u.telephone, u.mobile, u.optin_partner, u.registration_source, u.optin, u.created_at, u.state";
@@ -820,7 +819,7 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
         if($optin != 'all'){
         $sql .= ', u.optin';
         }
-		*/
+        */
 
         if ($hardbounce != 'all') {
             $sql .= ', u.date_set_hardbounce';

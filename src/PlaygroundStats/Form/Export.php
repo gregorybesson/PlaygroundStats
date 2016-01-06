@@ -15,7 +15,6 @@ class Export extends ProvidesEventsForm
 
     public function __construct($name = null, ServiceManager $sm, Translator $translator)
     {
-
         parent::__construct($name);
         $this->setServiceManager($sm);
 
@@ -553,7 +552,6 @@ class Export extends ProvidesEventsForm
         $this->add($submitElement, array(
             //'priority' => - 100
         ));
-
     }
 
     /**
