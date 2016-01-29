@@ -10,25 +10,25 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $serviceManager = $e->getApplication()->getServiceManager();
-        $eventManager = $e->getApplication()->getEventManager();
+        // $serviceManager = $e->getApplication()->getServiceManager();
+        // $eventManager = $e->getApplication()->getEventManager();
 
-        $options = $serviceManager->get('playgroundcore_module_options');
-        $locale = $options->getLocale();
-        $translator = $serviceManager->get('translator');
-        if (!empty($locale)) {
-            //translator
-            $translator->setLocale($locale);
+        // $options = $serviceManager->get('playgroundcore_module_options');
+        // $locale = $options->getLocale();
+        // $translator = $serviceManager->get('translator');
+        // if (!empty($locale)) {
+        //     //translator
+        //     $translator->setLocale($locale);
 
-            // plugins
-            $translate = $serviceManager->get('viewhelpermanager')->get('translate');
-            $translate->getTranslator()->setLocale($locale);
-        }
-        AbstractValidator::setDefaultTranslator($translator, 'playgroundstats');
+        //     // plugins
+        //     $translate = $serviceManager->get('viewhelpermanager')->get('translate');
+        //     $translate->getTranslator()->setLocale($locale);
+        // }
+        // AbstractValidator::setDefaultTranslator($translator, 'playgroundstats');
 
         
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
+        // $moduleRouteListener = new ModuleRouteListener();
+        // $moduleRouteListener->attach($eventManager);
     }
 
     public function getConfig()
