@@ -1,6 +1,21 @@
 <?php
 
 return array(
+	'doctrine' => array(
+        'driver' => array(
+            'playgroundstats_entity' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => __DIR__ . '/../src/PlaygroundStats/Entity'
+            ),
+
+            'orm_default' => array(
+                'drivers' => array(
+                    'PlaygroundStats\Entity'  => 'playgroundstats_entity'
+                )
+            )
+        )
+    ),
 
     'bjyauthorize' => array(
     
@@ -105,6 +120,16 @@ return array(
                                     ),
                                 ),
                             ),
+                            'update-dashboard' => array(
+		                        'type' => 'Literal',
+		                        'options' => array(
+		                            'route' => '/update-dashboard',
+		                            'defaults' => array(
+		                                'controller' => 'adminstats',
+		                                'action' => 'updateDashboard',
+		                            ),
+		                        ),
+		                    ),
 		                    'share' => array(
 		                        'type' => 'Literal',
 		                        'options' => array(
@@ -190,6 +215,12 @@ return array(
     'translator' => array(
         'locale' => 'fr_FR',
         'translation_file_patterns' => array(
+        	array(
+                'type' => 'phpArray',
+                'base_dir' => __DIR__ . '/../../../../language',
+                'pattern' => '%s.php',
+                'text_domain' => 'playgroundstats'
+            ),
             array(
                 'type'     => 'phpArray',
                 'base_dir' => __DIR__ . '/../language',

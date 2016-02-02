@@ -16,6 +16,21 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
      */
     protected $serviceManager;
 
+    protected $dashboardMapper;
+
+    public function createOrUpdateDashboard($user, $disposition)
+    {
+        $dashboard = $this->getDashboardMapper()->findOneBy(array('user' => $user));
+        if(!$dashboard){
+            $dashboard = new \PlaygroundStats\Entity\Dashboard;
+            $dashboard->setUser($user);
+        }
+        $dashboard->setDisposition($disposition);
+        $dashboard = $this->getDashboardMapper()->update($dashboard);
+
+        return $dashboard;
+    }
+
     /**
      * Return number of users in $game
      * @param  unknown_type $game
@@ -1136,6 +1151,15 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
         $query->setParameter('user', $user);
         $count = $query->getSingleScalarResult();
         return $count;
+    }
+
+    public function getDashboardMapper()
+    {
+        if (!$this->dashboardMapper) {
+            $this->dashboardMapper = $this->getServiceManager()->get('playgroundstats_dashboard_mapper');
+        }
+
+        return $this->dashboardMapper;
     }
 
     /**

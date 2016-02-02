@@ -6,6 +6,7 @@ use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\Session\Container;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class StatisticsController extends AbstractActionController
@@ -52,6 +53,12 @@ class StatisticsController extends AbstractActionController
     public function indexAction()
     {
         $ap = $this->getApplicationService();
+        $disposition = '';
+        $user = $this->zfcUserAuthentication()->getIdentity();
+        $dashboard = $ap->getDashboardMapper()->findOneBy(array('user' => $user));
+        if($dashboard){
+            $disposition = $dashboard->getDisposition();
+        }
         
         list($startDate, $endDate, $form, $data) = $this->getStartEndDateValues();
 
@@ -96,39 +103,54 @@ class StatisticsController extends AbstractActionController
 
         return new ViewModel(
             array(
-                        'members'           => $members,
-                        'validatedMembers'  => $validatedMembers,
-                        'maleMembers'       => $maleMembers,
-                        'femaleMembers'     => $femaleMembers,
-                        'active'            => $active,
-                        'maleActive'        => $maleActive,
-                        'femaleActive'      => $femaleActive,
-                        'optin'             => $optin,
-                        'maleOptin'         => $maleOptin,
-                        'femaleOptin'       => $femaleOptin,
-                        'optinPartners'     => $optinPartners,
-                        'maleOptinPartners' => $maleOptinPartners,
-                        'femaleOptinPartners' => $femaleOptinPartners,
+                'disposition'       => $disposition,
 
-                        'unregistered'      => $unregistered,
-                        'maleUnregistered'  => $maleUnregistered,
-                        'femaleUnregistered'=> $femaleUnregistered,
-                        'suspended'         => $suspended,
+                'members'           => $members,
+                'validatedMembers'  => $validatedMembers,
+                'maleMembers'       => $maleMembers,
+                'femaleMembers'     => $femaleMembers,
+                'active'            => $active,
+                'maleActive'        => $maleActive,
+                'femaleActive'      => $femaleActive,
+                'optin'             => $optin,
+                'maleOptin'         => $maleOptin,
+                'femaleOptin'       => $femaleOptin,
+                'optinPartners'     => $optinPartners,
+                'maleOptinPartners' => $maleOptinPartners,
+                'femaleOptinPartners' => $femaleOptinPartners,
 
-                        'participationsJSON'=> json_encode($participationsSerie),
-                        'participations'    => $participations,
-                        'participationsLastWeek' => $participationsLastWeek,
-                        'totalGames'        => $totalGames,
-                        'activeGames'       => $activeGames,
-                        'activeArticles'    => $activeArticles,
+                'unregistered'      => $unregistered,
+                'maleUnregistered'  => $maleUnregistered,
+                'femaleUnregistered'=> $femaleUnregistered,
+                'suspended'         => $suspended,
 
-                        'subscribers'       => $subscribers,
-                        'subscribersLastWeek' => $subscribersLastWeek,
+                'participationsJSON'=> json_encode($participationsSerie),
+                'participations'    => $participations,
+                'participationsLastWeek' => $participationsLastWeek,
+                'totalGames'        => $totalGames,
+                'activeGames'       => $activeGames,
+                'activeArticles'    => $activeArticles,
 
-                        'form'              => $form,
-                        'data'              => $data,
-                )
+                'subscribers'       => $subscribers,
+                'subscribersLastWeek' => $subscribersLastWeek,
+
+                'form'              => $form,
+                'data'              => $data,
+            )
         );
+    }
+
+    public function updateDashboardAction()
+    {
+        $ap = $this->getApplicationService();
+        $user = $this->zfcUserAuthentication()->getIdentity();
+        if ($this->getRequest()->isPost()) {
+            $ap->createOrUpdateDashboard($user, $this->params()->fromPost('disposition'));
+        }
+
+        $model = new JsonModel(array('success' => true));
+
+        return $model->setTerminal(true);
     }
 
     public function badgeAction()
@@ -160,11 +182,7 @@ class StatisticsController extends AbstractActionController
             }
         }
 
-        $model = new ViewModel(
-            array(
-                        'players'           => $players,
-                )
-        );
+        $model = new ViewModel(array('players' => $players));
         $model->setTerminal(true);
         return $model;
     }
