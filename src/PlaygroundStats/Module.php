@@ -8,29 +8,6 @@ use Zend\Validator\AbstractValidator;
 
 class Module
 {
-    public function onBootstrap(MvcEvent $e)
-    {
-        // $serviceManager = $e->getApplication()->getServiceManager();
-        // $eventManager = $e->getApplication()->getEventManager();
-
-        // $options = $serviceManager->get('playgroundcore_module_options');
-        // $locale = $options->getLocale();
-        // $translator = $serviceManager->get('translator');
-        // if (!empty($locale)) {
-        //     //translator
-        //     $translator->setLocale($locale);
-
-        //     // plugins
-        //     $translate = $serviceManager->get('viewhelpermanager')->get('translate');
-        //     $translate->getTranslator()->setLocale($locale);
-        // }
-        // AbstractValidator::setDefaultTranslator($translator, 'playgroundstats');
-
-        
-        // $moduleRouteListener = new ModuleRouteListener();
-        // $moduleRouteListener->attach($eventManager);
-    }
-
     public function getConfig()
     {
         return include __DIR__ . '/../../config/module.config.php';
@@ -61,6 +38,9 @@ class Module
                     $form = new Form\Export(null, $sm, $translator);
     
                     return $form;
+                },
+                'playgroundstats_dashboard_mapper' => function ($sm) {
+                    return new Mapper\Dashboard($sm->get('doctrine.entitymanager.orm_default'));
                 },
             ),
         );
