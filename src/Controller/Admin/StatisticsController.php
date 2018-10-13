@@ -8,6 +8,7 @@ use Zend\Session\Container;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class StatisticsController extends AbstractActionController
 {
@@ -49,6 +50,22 @@ class StatisticsController extends AbstractActionController
     protected $myExportedResult;
 
     protected $prizeCategoriesExport;
+
+    /**
+     *
+     * @var ServiceManager
+     */
+    protected $serviceLocator;
+
+    public function __construct(ServiceLocatorInterface $locator)
+    {
+        $this->serviceLocator = $locator;
+    }
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
 
     public function indexAction()
     {
@@ -966,7 +983,7 @@ class StatisticsController extends AbstractActionController
     public function getApplicationService()
     {
         if (!$this->applicationService) {
-            $this->applicationService = $this->getServiceLocator()->get('playgroundstats_stats_service');
+            $this->applicationService = $this->getServiceLocator()->get(\PlaygroundStats\Service\Stats::class);
         }
 
         return $this->applicationService;
