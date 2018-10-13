@@ -48,17 +48,5 @@ return array(
 	'Ambassador badge' => 'Badge Ambassadeur',
 	'Birthday badge' => 'Badge Anniversaire',
 	'Generate export' => 'Générer un export',
-	'No Category' => 'Pas de catégories',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	'' => '',
-	
-		
+	'No Category' => 'Pas de catégories',		
 );

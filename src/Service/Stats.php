@@ -4,19 +4,27 @@ namespace PlaygroundStats\Service;
 
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
-use ZfcBase\EventManager\EventProvider;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Zend\EventManager\EventManagerAwareTrait;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-class Stats extends EventProvider implements ServiceManagerAwareInterface
+class Stats
 {
-
-    /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
+    use EventManagerAwareTrait;
 
     protected $dashboardMapper;
+
+    /**
+     *
+     * @var ServiceManager
+     */
+    protected $serviceLocator;
+
+    public function __construct(ServiceLocatorInterface $locator)
+    {
+        $this->serviceLocator = $locator;
+    }
 
     public function createOrUpdateDashboard($user, $disposition)
     {
@@ -1169,19 +1177,6 @@ class Stats extends EventProvider implements ServiceManagerAwareInterface
      */
     public function getServiceManager()
     {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param  ServiceManager $locator
-     * @return Action
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-
-        return $this;
+        return $this->serviceLocator;
     }
 }
