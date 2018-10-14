@@ -40,21 +40,52 @@ class Stats
     }
 
     /**
-     * Return number of users in $game
+     * Return number of entries in $game
      * @param  unknown_type $game
      */
-    public function findEntries($game, $firstEntry = false)
+    public function findEntries($game)
     {
-        $firstEntry = true;
         $em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping;
         $rsm->addScalarResult('c', 'c');
         $query = $em->createNativeQuery('
             SELECT COUNT(e.id) AS c
             FROM game_entry e
-		    '.($firstEntry == true ? ' RIGHT JOIN (SELECT l.id FROM game_entry l GROUP BY l.user_id) AS b ON b.id = e.id' : '').'
 			WHERE e.game_id = '.((int) $game).'
 		', $rsm);
+        $count = $query->getSingleScalarResult();
+        return $count;
+    }
+
+    /**
+     * Return number of players in $game
+     * @param  unknown_type $game
+     */
+    public function getNumberOfPlayers($gameId)
+    {
+        $game = $this->getServiceManager()
+            ->get('playgroundgame_lottery_service')
+            ->getGameMapper()
+            ->findById($gameId);
+
+        $em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping;
+        $rsm->addScalarResult('c', 'c');
+
+        if ($game && $game->getAnonymousAllowed()) {
+            $query = $em->createNativeQuery('
+                SELECT COUNT(distinct e.anonymous_identifier) AS c
+                FROM game_entry e
+                WHERE e.game_id = '.((int) $gameId).'
+            ', $rsm);
+        } else {
+            $query = $em->createNativeQuery('
+                SELECT COUNT(distinct e.user_id) AS c
+                FROM game_entry e
+                WHERE e.game_id = '.((int) $gameId).'
+            ', $rsm);
+        }
+        
         $count = $query->getSingleScalarResult();
         return $count;
     }

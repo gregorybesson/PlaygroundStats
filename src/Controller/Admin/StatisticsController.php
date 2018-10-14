@@ -70,6 +70,33 @@ class StatisticsController extends AbstractActionController
     public function indexAction()
     {
         $ap = $this->getApplicationService();
+        $sg = $this->getGameService();
+        $su = $this->getUserService();
+
+        $games = $sg->getQueryGamesOrderBy()->getResult();
+        $game = $games[0];
+        $gameId         = $game->getId();
+        $participants   = $ap->getNumberOfPlayers($gameId);
+        $entries        = $ap->findEntries($gameId);
+        $optinUser      = $ap->findOptin('optin', $gameId);
+        $optinPartner   = $ap->findOptin('optinPartner', $gameId);
+
+        return new ViewModel(
+            [
+            //    'form'          => $form,
+                'gameId'        => $gameId,
+                'players'       => $participants,
+                'entries'       => $entries,
+                'optinUser'     => $optinUser,
+                'optinPartner'  => $optinPartner,
+                'games'         => $games,
+            ]
+        );
+    }
+
+    public function indexOLDAction()
+    {
+        $ap = $this->getApplicationService();
         $disposition = '';
         $user = $this->zfcUserAuthentication()->getIdentity();
         $dashboard = $ap->getDashboardMapper()->findOneBy(array('user' => $user));
@@ -115,7 +142,7 @@ class StatisticsController extends AbstractActionController
         $subscribersLastWeek    = $ap->getSubscribersByRangeDate($sDate, $eDate);
 
         $totalGames             = $ap->getGamesByRangeDate($startDate, $endDate, false);
-        $activeGames            = $ap->getGamesByRangeDate($startDate, $endDate, true);
+        $activeGames            = $this->getGameService()->getActiveGames(false);
         $activeArticles         = $ap->getArticlesByRangeDate($startDate, $endDate);
 
         return new ViewModel(
@@ -340,13 +367,16 @@ class StatisticsController extends AbstractActionController
 
     public function gamesAction()
     {
-        $ap             = $this->getApplicationService();
-        $sg             = $this->getGameService();
-        $su             = $this->getUserService();
+        $ap = $this->getApplicationService();
+        $sg = $this->getGameService();
+        $su = $this->getUserService();
+
+        $games = $sg->getQueryGamesOrderBy()->getResult();
 
         // initialize default stats
         $gameId         = '';
         $participants   = '';
+        $entries        = '';
         $optinUser      = '';
         $optinPartner   = '';
         $newUsers       = '';
@@ -355,29 +385,29 @@ class StatisticsController extends AbstractActionController
         $form           = new Form();
         $form->setAttribute('method', 'post');
 
-        // Form send
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
             $form->setData($data);
             if ($form->isValid()) {
                 // Change stats with gameId
                 $gameId         = $data['gameId'];
-                $participants   = $ap->findEntries($gameId, false);
+                $participants   = $ap->getNumberOfPlayers($gameId);
+                $entries        = $ap->findEntries($gameId);
                 $optinUser      = $ap->findOptin('optin', $gameId);
                 $optinPartner   = $ap->findOptin('optinPartner', $gameId);
-                $newUsers       = $ap->findEntries($gameId, true);
             }
         }
 
         return new ViewModel(
-            array(
-                        'form'          => $form,
-                        'gameId'        => $gameId,
-                        'participants'  => $participants,
-                        'optinUser'     => $optinUser,
-                        'optinPartner'  => $optinPartner,
-                        'newUsers'      => $newUsers,
-                )
+            [
+                'form'          => $form,
+                'gameId'        => $gameId,
+                'players'       => $participants,
+                'entries'       => $entries,
+                'optinUser'     => $optinUser,
+                'optinPartner'  => $optinPartner,
+                'games'         => $games,
+            ]
         );
     }
 
