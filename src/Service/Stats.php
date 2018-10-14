@@ -279,9 +279,9 @@ class Stats
         $endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
 
         if ($startDate != '' && $endDate != '') {
-            $dateRange = "(e.created_at >='" . $startDateTime->format('Y-m-d') . " 0:0:0' AND e.created_at <= '" . $endDateTime->format('Y-m-d') . " 0:0:0')";
+            $dateRange = "(e.created_at >='" . $startDateTime->format('Y-m-d') . " 0:0:0' AND e.created_at <= '" . $endDateTime->format('Y-m-d') . " 23:59:59')";
         } elseif ($startDate == '' && $endDate != '') {
-            $dateRange = "e.created_at <= '" . $endDateTime->format('Y-m-d') . " 0:0:0'";
+            $dateRange = "e.created_at <= '" . $endDateTime->format('Y-m-d') . " 23:59:59'";
         } elseif ($startDate != '' && $endDate == '') {
             $dateRange = "e.created_at >='" . $startDateTime->format('Y-m-d') . " 0:0:0'";
         } else {
@@ -293,7 +293,7 @@ class Stats
 			WHERE ' . $dateRange . '
             AND e.active=0
             GROUP BY date
-		');
+        ');
         $result = $query->getResult();
         return $result;
     }
