@@ -81,15 +81,50 @@ class StatisticsController extends AbstractActionController
         $optinUser      = $ap->findOptin('optin', $gameId);
         $optinPartner   = $ap->findOptin('optinPartner', $gameId);
 
+        $query = $sg->getEntriesQuery($game);
+        $allEntries = $sg->getGameEntries(null, $query->getResult(), $game);
+        
+        $locations = [];
+        foreach($allEntries as $entry) {
+            $geoloc = explode(",", $entry['geoloc']);
+            if(count($geoloc) === 2){
+                $locations[] = [
+                    "lat" => floatval($geoloc[0]),
+                    "lng" => floatval($geoloc[1]),
+                    "label" => 'S',
+                    "draggable" => false,
+                    "title" => (isset($entry['email'])) ? $entry['email'] : $entry['id'],
+                ];
+            }
+        }
+
+        $partArray = $ap->getParticipationsByDayByRangeDate();
+
+        $labels = array();
+        $series = array();
+        foreach ($partArray as $v) {
+            $labels[] = substr($v['date'], 8, 2) . '/' .substr($v['date'], 5, 2);
+            $series[] = intval($v['qty']);
+        }
+
+        $participationsSerie = [
+            "labels" => $labels,
+            "data" => $series,
+            "min" => min($series),
+            "max" => max($series) + 1,
+        ];
+
         return new ViewModel(
             [
             //    'form'          => $form,
-                'gameId'        => $gameId,
-                'players'       => $participants,
-                'entries'       => $entries,
-                'optinUser'     => $optinUser,
-                'optinPartner'  => $optinPartner,
-                'games'         => $games,
+                'gameId'                => $gameId,
+                'players'               => $participants,
+                'entries'               => $entries,
+                'optinUser'             => $optinUser,
+                'optinPartner'          => $optinPartner,
+                'games'                 => $games,
+                'participationsSerie'   => $participationsSerie,
+                'locations'             => $locations,
             ]
         );
     }
