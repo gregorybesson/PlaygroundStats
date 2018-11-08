@@ -69,62 +69,67 @@ class StatisticsController extends AbstractActionController
 
     public function indexAction()
     {
+        $stats = [];
         $ap = $this->getApplicationService();
         $sg = $this->getGameService();
         $su = $this->getUserService();
 
         $games = $sg->getQueryGamesOrderBy()->getResult();
-        $game = $games[0];
-        $gameId         = $game->getId();
-        $participants   = $ap->getNumberOfPlayers($gameId);
-        $entries        = $ap->findEntries($gameId);
-        $optinUser      = $ap->findOptin('optin', $gameId);
-        $optinPartner   = $ap->findOptin('optinPartner', $gameId);
 
-        $query = $sg->getEntriesQuery($game);
-        $allEntries = $sg->getGameEntries(null, $query->getResult(), $game);
-        
-        $locations = [];
-        foreach($allEntries as $entry) {
-            $geoloc = explode(",", $entry['geoloc']);
-            if(count($geoloc) === 2){
-                $locations[] = [
-                    "lat" => floatval($geoloc[0]),
-                    "lng" => floatval($geoloc[1]),
-                    "label" => 'S',
-                    "draggable" => false,
-                    "title" => (isset($entry['email'])) ? $entry['email'] : $entry['id'],
-                ];
+        foreach($games as $game) {
+            $gameId         = $game->getId();
+            $participants   = $ap->getNumberOfPlayers($gameId);
+            $entries        = $ap->findEntries($gameId);
+            $optinUser      = $ap->findOptin('optin', $gameId);
+            $optinPartner   = $ap->findOptin('optinPartner', $gameId);
+
+            $query = $sg->getEntriesQuery($game);
+            $allEntries = $sg->getGameEntries(null, $query->getResult(), $game);
+            
+            $locations = [];
+            foreach($allEntries as $entry) {
+                $geoloc = explode(",", $entry['geoloc']);
+                if(count($geoloc) === 2){
+                    $locations[] = [
+                        "lat" => floatval($geoloc[0]),
+                        "lng" => floatval($geoloc[1]),
+                        "label" => 'S',
+                        "draggable" => false,
+                        "title" => (isset($entry['email'])) ? $entry['email'] : $entry['id'],
+                    ];
+                }
             }
-        }
 
-        $partArray = $ap->getParticipationsByDayByRangeDate();
+            $partArray = $ap->getParticipationsByDayByGame($game);
 
-        $labels = array();
-        $series = array();
-        foreach ($partArray as $v) {
-            $labels[] = substr($v['date'], 8, 2) . '/' .substr($v['date'], 5, 2);
-            $series[] = intval($v['qty']);
-        }
+            $labels = array();
+            $series = array();
+            foreach ($partArray as $v) {
+                $labels[] = substr($v['date'], 8, 2) . '/' .substr($v['date'], 5, 2);
+                $series[] = intval($v['qty']);
+            }
 
-        $participationsSerie = [
-            "labels" => $labels,
-            "data" => $series,
-            "min" => min($series),
-            "max" => max($series) + 1,
-        ];
+            $participationsSerie = [
+                "labels" => $labels,
+                "data" => $series,
+                "min" => (count($series)  > 0) ? min($series) : 0,
+                "max" => (count($series)  > 0) ? max($series) + 1 : 0,
+            ];
 
-        return new ViewModel(
-            [
-            //    'form'          => $form,
-                'gameId'                => $gameId,
+            $stats[] = [
+                'game'                  => $game,
                 'players'               => $participants,
                 'entries'               => $entries,
                 'optinUser'             => $optinUser,
                 'optinPartner'          => $optinPartner,
-                'games'                 => $games,
                 'participationsSerie'   => $participationsSerie,
                 'locations'             => $locations,
+            ];
+        }
+
+        return new ViewModel(
+            [
+                'stats' => $stats,
             ]
         );
     }

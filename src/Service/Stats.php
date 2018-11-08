@@ -299,6 +299,38 @@ class Stats
     }
 
     /**
+     * Return count of participation for a game
+     * @param number|unknown $startDate
+     * @param number|unknown $endDate
+     */
+    public function getParticipationsByDayByGame($game = null)
+    {
+        $em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
+        $emConfig = $em->getConfiguration();
+        $emConfig->addCustomDatetimeFunction('DATE', '\DoctrineExtensions\Query\Mysql\Date');
+
+        if ($game !== null) {
+            $query = $em->createQuery('
+                SELECT DATE(e.created_at) as date, COUNT(e.id) as qty FROM PlaygroundGame\Entity\Entry e
+                WHERE e.game = :game
+                AND e.active=0
+                GROUP BY date
+            ');
+
+            $query->setParameter('game', $game);
+        } else {
+            $query = $em->createQuery('
+                SELECT DATE(e.created_at) as date, COUNT(e.id) as qty FROM PlaygroundGame\Entity\Entry e
+                WHERE e.active=0
+                GROUP BY date
+            ');
+        }
+
+        $result = $query->getResult();
+        return $result;
+    }
+
+    /**
      * Return count of participation between $startDate and $endDate
      * @param number|unknown $startDate
      * @param number|unknown $endDate
