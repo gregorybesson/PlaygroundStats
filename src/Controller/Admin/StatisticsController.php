@@ -79,7 +79,7 @@ class StatisticsController extends AbstractActionController
         foreach($games as $game) {
             $gameId         = $game->getId();
             $participants   = $ap->getNumberOfPlayers($gameId);
-            $entries        = $ap->findEntries($gameId);
+            $entries        = $ap->getNumberOfEntries($gameId);
             $optinUser      = $ap->findOptin('optin', $gameId);
             $optinPartner   = $ap->findOptin('optinPartner', $gameId);
 
@@ -385,22 +385,22 @@ class StatisticsController extends AbstractActionController
     }
 
     return new ViewModel(array(
-            'activeUser' 	=> $activeUser,
-            'inactiveUser' => $inactiveUser,
-            'maleUser' 	=> $maleUser,
-            'femaleUser' 	=> $femaleUser,
-            'optinUser' 	=> $optinUser,
-            //'optinUserPartner' => $optinUserPartner,
+        'activeUser' 	=> $activeUser,
+        'inactiveUser' => $inactiveUser,
+        'maleUser' 	=> $maleUser,
+        'femaleUser' 	=> $femaleUser,
+        'optinUser' 	=> $optinUser,
+        //'optinUserPartner' => $optinUserPartner,
 
-            'activeGame' 	=> $activeGame,
-            'activePage' 	=> $activePage,
+        'activeGame' 	=> $activeGame,
+        'activePage' 	=> $activePage,
 
-            'userPerGames'	=> $userPerGames,
-            'sharePerGames'=> $sharePerGames,
+        'userPerGames'	=> $userPerGames,
+        'sharePerGames'=> $sharePerGames,
 
-            'userPerBadges'=> $userPerBadges,
+        'userPerBadges'=> $userPerBadges,
 
-            'form' 		=> $form,
+        'form' 		=> $form,
     )
     );
     }*/
@@ -410,8 +410,87 @@ class StatisticsController extends AbstractActionController
         $ap = $this->getApplicationService();
         $sg = $this->getGameService();
         $su = $this->getUserService();
+        $stats = [];
 
         $games = $sg->getQueryGamesOrderBy()->getResult();
+        $partArray = $ap->getParticipationsByDayByGame();
+
+        $labels = [];
+        $series = [];
+        foreach ($partArray as $v) {
+            $labels[] = substr($v['date'], 8, 2) . '/' .substr($v['date'], 5, 2);
+            $series[] = intval($v['qty']);
+        }
+
+        $participationsSerie = [
+            "labels" => $labels,
+            "data" => $series,
+            "min" => (count($series)  > 0) ? min($series) : 0,
+            "max" => (count($series)  > 0) ? max($series) + 1 : 0,
+        ];
+
+        $numberOfEntries = $ap->getNumberOfEntries();
+        $numberOfPlayers = $ap->getNumberOfPlayers();
+
+        $labelsGames = [];
+        $seriesGames = [];
+        $seriesBgcolor = [];
+
+        foreach ($games as $game) {
+            $gameId         = $game->getId();
+            $classType      = $game->getClassType();
+            $bgColor        = 'rgb(54, 162, 235)';
+            $participants   = $ap->getNumberOfPlayers($gameId);
+            $entries        = $ap->getNumberOfEntries($gameId);
+            $optinUser      = $ap->findOptin('optin', $gameId);
+            $optinPartner   = $ap->findOptin('optinPartner', $gameId);
+            $partArray = $ap->getParticipationsByDayByGame($game);
+
+            if ($classType == 'quiz') {
+                $bgColor = 'rgb(75, 192, 192)';
+            } elseif ($classType == 'postvote') {                
+                $bgColor = 'rgb(255, 159, 64)';
+            } elseif ($classType == 'instantwin') {
+                $bgColor = 'rgb(255, 99, 132)';
+            } elseif ($classType == 'lottery') {
+                $bgColor = 'rgb(255, 205, 86)';
+            }
+
+            $labelsGames[] = $game->getTitle();
+            $seriesGames[] = $entries;
+            $seriesBgcolor[] = $bgColor;
+
+            $labels = array();
+            $series = array();
+            foreach ($partArray as $v) {
+                $labels[] = substr($v['date'], 8, 2) . '/' .substr($v['date'], 5, 2);
+                $series[] = intval($v['qty']);
+            }
+
+            $participationsSerie = [
+                "labels" => $labels,
+                "data" => $series,
+                "min" => (count($series)  > 0) ? min($series) : 0,
+                "max" => (count($series)  > 0) ? max($series) + 1 : 0,
+            ];
+
+            $stats[] = [
+                'game'                  => $game,
+                'players'               => $participants,
+                'entries'               => $entries,
+                'optinUser'             => $optinUser,
+                'optinPartner'          => $optinPartner,
+                'participationsSerie'   => $participationsSerie,
+            ];
+        }
+
+        $participationsGames = [
+            "labels" => $labelsGames,
+            "data" => $seriesGames,
+            "bgcolor" => $seriesBgcolor,
+            "min" => (count($seriesGames)  > 0) ? min($seriesGames) : 0,
+            "max" => (count($seriesGames)  > 0) ? max($seriesGames) + 1 : 0,
+        ];
 
         // initialize default stats
         $gameId         = '';
@@ -432,7 +511,7 @@ class StatisticsController extends AbstractActionController
                 // Change stats with gameId
                 $gameId         = $data['gameId'];
                 $participants   = $ap->getNumberOfPlayers($gameId);
-                $entries        = $ap->findEntries($gameId);
+                $entries        = $ap->getNumberOfEntries($gameId);
                 $optinUser      = $ap->findOptin('optin', $gameId);
                 $optinPartner   = $ap->findOptin('optinPartner', $gameId);
             }
@@ -440,13 +519,18 @@ class StatisticsController extends AbstractActionController
 
         return new ViewModel(
             [
-                'form'          => $form,
-                'gameId'        => $gameId,
-                'players'       => $participants,
-                'entries'       => $entries,
-                'optinUser'     => $optinUser,
-                'optinPartner'  => $optinPartner,
-                'games'         => $games,
+                'form'                  => $form,
+                'gameId'                => $gameId,
+                'players'               => $participants,
+                'entries'               => $entries,
+                'optinUser'             => $optinUser,
+                'optinPartner'          => $optinPartner,
+                'games'                 => $games,
+                'participationsSerie'   => $participationsSerie,
+                'numberOfEntries'       => $numberOfEntries,
+                'numberOfPlayers'       => $numberOfPlayers,
+                'participationsGames'   => $participationsGames,
+                'stats'                 => $stats,
             ]
         );
     }

@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'doctrine' => array(
+    'doctrine' => array(
         'driver' => array(
             'playgroundstats_entity' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -45,15 +45,15 @@ return array(
              'admin' => array(
                 'child_routes' => array(
                     'stats' => array(
-                	    'type' => 'Literal',
-                    	'options' => array(
-                    		'route' => '/stats',
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/stats',
                             'defaults' => array(
                                 'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
                                 'action' => 'index',
                             ),
                         ),
-                    	'may_terminate' => true,
+                        'may_terminate' => true,
                         'child_routes' =>array(
                             'statistics' => array(
                                 'type' => 'Literal',
@@ -66,75 +66,75 @@ return array(
                                 ),
                             ),
                             'update-dashboard' => array(
-		                        'type' => 'Literal',
-		                        'options' => array(
-		                            'route' => '/update-dashboard',
-		                            'defaults' => array(
-		                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
-		                                'action' => 'updateDashboard',
-		                            ),
-		                        ),
-		                    ),
-		                    'share' => array(
-		                        'type' => 'Literal',
-		                        'options' => array(
-		                            'route' => '/share',
-		                            'defaults' => array(
-		                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
-		                                'action' => 'share',
-		                            ),
-		                        ),
-		                    ),
-		                    'badge' => array(
-		                        'type' => 'Literal',
-		                        'options' => array(
-		                            'route' => '/badge',
-		                            'defaults' => array(
-		                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
-		                                'action' => 'badge',
-		                            ),
-		                        ),
-		                    ),
-		                    'download' => array(
-		                        'type' => 'Literal',
-		                        'options' => array(
-		                            'route' => '/download',
-		                            'defaults' => array(
-		                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
-		                                'action'     => 'download',
-		                            ),
-		                        ),
-		                    ),
-		                    'games' => array(
-								'type' => 'literal',
-								'options' => array(
-									'route' => '/games',
-									'defaults' => array(
-		                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
-		                                'action' => 'games',
-		                            ),
-								),
-							),
-							'export' => array(
-								'type' => 'literal',
-								'options' => array(
-									'route' => '/export',
-									'defaults' => array(
-		                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
-		                                'action' => 'export',
-		                            ),
-								),
-							),
-							'downloadexport' => array(
-		                        'type' => 'Literal',
-		                        'options' => array(
-		                            'route' => '/download-export',
-		                            'defaults' => array(
-		                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
-		                                'action'     => 'downloadexport',
-		                            ),
-		                        ),
-		                    ),
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/update-dashboard',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action' => 'updateDashboard',
+                                    ),
+                                ),
+                            ),
+                            'share' => array(
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/share',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action' => 'share',
+                                    ),
+                                ),
+                            ),
+                            'badge' => array(
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/badge',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action' => 'badge',
+                                    ),
+                                ),
+                            ),
+                            'download' => array(
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/download',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action'     => 'download',
+                                    ),
+                                ),
+                            ),
+                            'games' => array(
+                                'type' => 'literal',
+                                'options' => array(
+                                    'route' => '/games',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action' => 'games',
+                                    ),
+                                ),
+                            ),
+                            'export' => array(
+                                'type' => 'literal',
+                                'options' => array(
+                                    'route' => '/export',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action' => 'export',
+                                    ),
+                                ),
+                            ),
+                            'downloadexport' => array(
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/download-export',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action'     => 'downloadexport',
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -148,9 +148,9 @@ return array(
                 'PlaygroundStats' => array(
                     'default_layout' => 'layout/admin',
                     'controllers' => array(
-                    	'playgroundstats'   => array(
-                    		'default_layout' => 'layout/admin',
-                    	),
+                        'playgroundstats'   => array(
+                            'default_layout' => 'layout/admin',
+                        ),
                     ),
                 ),
             ),
@@ -160,7 +160,7 @@ return array(
     'translator' => array(
         'locale' => 'fr_FR',
         'translation_file_patterns' => array(
-        	array(
+            array(
                 'type' => 'phpArray',
                 'base_dir' => __DIR__ . '/../../../../language',
                 'pattern' => '%s.php',
@@ -170,18 +170,18 @@ return array(
                 'type'     => 'phpArray',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern'  => '%s.php',
-            	'text_domain'  => 'playgroundstats'
+                'text_domain'  => 'playgroundstats'
             ),
         ),
     ),
 
     'controllers' => array(
-		'factories' => array(
-			\PlaygroundStats\Controller\Admin\StatisticsController::class => \PlaygroundStats\Controller\Admin\StatisticsControllerFactory::class,
-		),
-	),
-	
-	'service_manager' => array(
+        'factories' => array(
+            \PlaygroundStats\Controller\Admin\StatisticsController::class => \PlaygroundStats\Controller\Admin\StatisticsControllerFactory::class,
+        ),
+    ),
+
+    'service_manager' => array(
         'factories' => array(
             \PlaygroundStats\Service\Stats::class => PlaygroundStats\Service\StatsFactory::class,
         ),
@@ -194,38 +194,38 @@ return array(
         ),
     ),
 
-	'navigation' => array(
-		'admin' => array(
-			'statisticsgames' => array(
-				'order' => 1,
-				'label' => 'Statistics',
-				'route' => 'admin/stats/games',
-				'resource' => 'stats',
-				'privilege' => 'list',
+    'navigation' => array(
+        'admin' => array(
+            'statisticsgames' => array(
+                'order' => 1,
+                'label' => 'Statistics',
+                'route' => 'admin/stats/games',
+                'resource' => 'stats',
+                'privilege' => 'list',
                 'target' => 'nav-icon icon-chart',
-				'pages' => array(
-					'list' => array(
-						'label' => 'Game stats',
-						'route' => 'admin/stats/games',
-						'resource' => 'stats',
-						'privilege' => 'list',
-					),
-					'export' => array(
-						'label' => 'Export',
-						'route' => 'admin/stats/export',
-						'resource' => 'stats',
-						'privilege' => 'list',
-					),
-				),
-			),
-		),
-	),
-	
-	// PlaygroundStats defines itself as the admin Dashboard controller
-	'playgrounduser' => array(
-		'admin' => array(
+                'pages' => array(
+                    'list' => array(
+                        'label' => 'Game stats',
+                        'route' => 'admin/stats/games',
+                        'resource' => 'stats',
+                        'privilege' => 'list',
+                    ),
+                    'export' => array(
+                        'label' => 'Export',
+                        'route' => 'admin/stats/export',
+                        'resource' => 'stats',
+                        'privilege' => 'list',
+                    ),
+                ),
+            ),
+        ),
+    ),
+
+// PlaygroundStats defines itself as the admin Dashboard controller
+    'playgrounduser' => array(
+        'admin' => array(
             'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
             'action' => 'index'
         ),
-	)
+    )
 );

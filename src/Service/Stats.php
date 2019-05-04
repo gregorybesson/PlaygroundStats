@@ -43,16 +43,23 @@ class Stats
      * Return number of entries in $game
      * @param  unknown_type $game
      */
-    public function findEntries($game)
+    public function getNumberOfEntries($game = null)
     {
         $em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping;
         $rsm->addScalarResult('c', 'c');
-        $query = $em->createNativeQuery('
-            SELECT COUNT(e.id) AS c
-            FROM game_entry e
-			WHERE e.game_id = '.((int) $game).'
-		', $rsm);
+        if ($game !== null) {
+            $query = $em->createNativeQuery('
+                SELECT COUNT(e.id) AS c
+                FROM game_entry e
+                WHERE e.game_id = '.((int) $game).'
+            ', $rsm);
+        } else {
+            $query = $em->createNativeQuery('
+                SELECT COUNT(e.id) AS c
+                FROM game_entry e
+            ', $rsm);
+        }
         $count = $query->getSingleScalarResult();
         return $count;
     }
@@ -61,29 +68,35 @@ class Stats
      * Return number of players in $game
      * @param  unknown_type $game
      */
-    public function getNumberOfPlayers($gameId)
+    public function getNumberOfPlayers($gameId = null)
     {
-        $game = $this->getServiceManager()
-            ->get('playgroundgame_lottery_service')
-            ->getGameMapper()
-            ->findById($gameId);
-
         $em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping;
         $rsm->addScalarResult('c', 'c');
+        if ($gameId !== null) {
+            $game = $this->getServiceManager()
+                ->get('playgroundgame_lottery_service')
+                ->getGameMapper()
+                ->findById($gameId);
 
-        if ($game && $game->getAnonymousAllowed()) {
-            $query = $em->createNativeQuery('
-                SELECT COUNT(distinct e.anonymous_identifier) AS c
-                FROM game_entry e
-                WHERE e.game_id = '.((int) $gameId).'
-            ', $rsm);
+            if ($game && $game->getAnonymousAllowed()) {
+                $query = $em->createNativeQuery('
+                    SELECT COUNT(distinct e.anonymous_identifier) AS c
+                    FROM game_entry e
+                    WHERE e.game_id = '.((int) $gameId).'
+                ', $rsm);
+            } else {
+                $query = $em->createNativeQuery('
+                    SELECT COUNT(distinct e.user_id) AS c
+                    FROM game_entry e
+                    WHERE e.game_id = '.((int) $gameId).'
+                ', $rsm);
+            }
         } else {
             $query = $em->createNativeQuery('
-                SELECT COUNT(distinct e.user_id) AS c
-                FROM game_entry e
-                WHERE e.game_id = '.((int) $gameId).'
-            ', $rsm);
+                    SELECT COUNT(distinct e.user_id) AS c
+                    FROM game_entry e
+                ', $rsm);
         }
         
         $count = $query->getSingleScalarResult();
