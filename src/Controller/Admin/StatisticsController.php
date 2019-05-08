@@ -474,7 +474,7 @@ class StatisticsController extends AbstractActionController
             $entries        = $ap->getNumberOfEntries($gameId);
             $optinUser      = $ap->findOptin('optin', $gameId);
             $optinPartner   = $ap->findOptin('optinPartner', $gameId);
-            $partArray = $ap->getParticipationsByDayByGame($game);
+            $partArray      = $ap->getParticipationsByDayByGame($game);
 
             if ($classType == 'quiz') {
                 $bgColor = 'rgb(75, 192, 192)';
@@ -497,7 +497,7 @@ class StatisticsController extends AbstractActionController
                 $series[] = intval($v['qty']);
             }
 
-            $participationsSerie = [
+            $partsSerie = [
                 "labels" => $labels,
                 "data" => $series,
                 "min" => (count($series)  > 0) ? min($series) : 0,
@@ -510,7 +510,7 @@ class StatisticsController extends AbstractActionController
                 'entries'               => $entries,
                 'optinUser'             => $optinUser,
                 'optinPartner'          => $optinPartner,
-                'participationsSerie'   => $participationsSerie,
+                'participationsSerie'   => $partsSerie,
             ];
         }
 
