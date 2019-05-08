@@ -13,6 +13,11 @@ class Stats
 {
     use EventManagerAwareTrait;
 
+    /**
+     * Google Analytics View Id
+     */
+    protected $gaViewId = null;
+
     protected $dashboardMapper;
 
     /**
@@ -1254,5 +1259,166 @@ class Stats
     public function getServiceManager()
     {
         return $this->serviceLocator;
+    }
+
+    /**
+     * /**
+     * METRIC
+     * users : unique visitors
+     * newUsers : New visitors
+     * sessions : number of sessions (30') on the website
+     * pageviews : number of page views on the website
+     * 
+     * DIMENSION
+     * browser
+     * continent
+     * country
+     * city
+     * date : Useful for charts based on dates
+     * year, month, week, day, hour, nthMonth, nthWeek, nthDay
+     * source : Source of the traffic
+     * userType : new visitor or returning visitor
+     * pageTitle : Title of the page
+     * 
+     * userAgeBracket, userGender : You need to authorize specifically your report to collect these data
+     * 
+     * $startDate and $endDate: 2015-01-31 or today, 7daysAgo or 14daysAgo...
+     */
+    public function getGaReport($dimension = null, $metric = 'users', $pageSize = null, $order = null, $startDate = null, $endDate = null)
+    {
+        if (!empty($this->getGoogleAnalyticsViewId())) {
+
+            $analytics = $this->getGoogleAnalytics();
+            // Replace with your view ID, for example XXXX.
+            $VIEW_ID = $this->getGoogleAnalyticsViewId();
+
+            $metrics = new \Google_Service_AnalyticsReporting_Metric();
+            $metrics->setExpression("ga:".$metric);
+            $metrics->setAlias($metric);
+
+            $request = new \Google_Service_AnalyticsReporting_ReportRequest();
+            $request->setViewId($VIEW_ID);
+            if ($dimension) {
+                $dim = new \Google_Service_AnalyticsReporting_Dimension();
+                $dim->setName("ga:".$dimension);
+                // $dim2 = new \Google_Service_AnalyticsReporting_Dimension();
+                // $dim2->setName("ga:nthDay");
+                $request->setDimensions([$dim]);
+            }
+            if ($startDate && $endDate) {
+                $thisRange = new \Google_Service_AnalyticsReporting_DateRange();
+                $thisRange->setStartDate($startDate);
+                $thisRange->setEndDate($endDate);
+                $request->setDateRanges([$thisRange]);
+            }
+
+            $request->setMetrics(array($metrics));
+
+            if ($order) {
+                $ordering = new \Google_Service_AnalyticsReporting_OrderBy();
+                $ordering->setOrderType("VALUE");
+                $ordering->setFieldName("ga:".$metric);
+                if ($order == 1 || strtolower($order) == 'asc') {
+                    $ordering->setSortOrder("ASCENDING");
+                } else {
+                    $ordering->setSortOrder("DESCENDING");
+                }
+                $request->SetOrderBys($ordering);
+            }
+
+            if ($pageSize) {
+                $request->setPageSize($pageSize);
+            }
+
+            $body = new \Google_Service_AnalyticsReporting_GetReportsRequest();
+            $body->setReportRequests(array( $request));
+            $reports = $analytics->reports->batchGet($body);
+
+            return $this->getGaSerie($reports);
+        } else {
+            return false;
+        }
+    }
+    
+    public function getGoogleAnalyticsViewId()
+    {
+        if ($this->gaViewId === null) {
+            $companyMapper = $this->getServiceManager()->get('playgrounddesign_company_mapper');
+            $company = $companyMapper->findOneBy([]);
+
+            if ($company != null && $company->getGaViewId() != null) {
+                $this->gaViewId = $company->getGaViewId();
+            } else {
+                $this->gaViewId = '';
+            }
+        }
+
+        return $this->gaViewId;
+    }
+
+    /**
+    * Initializes an Analytics Reporting API V4 service object.
+    *
+    * @return An authorized Analytics Reporting API V4 service object.
+    */
+    public function getGoogleAnalytics()
+    {
+        // Use the developers console and download your service account
+        // credentials in JSON format. Place them in this directory or
+        // change the key file location if necessary.
+        $KEY_FILE_LOCATION = __DIR__ . '/../../../../../data/ganalytics/ga-user.json';
+
+        // Create and configure a new client object.
+        $client = new \Google_Client();
+        $client->setApplicationName("Analytics Reporting");
+        $client->setAuthConfig($KEY_FILE_LOCATION);
+        $client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);
+        $analytics = new \Google_Service_AnalyticsReporting($client);
+
+        return $analytics;
+    }
+
+    public function getGaSerie($reports)
+    {
+        //var_dump($reports);
+
+        $labels = [];
+        $data = [];
+
+        for ( $reportIndex = 0; $reportIndex < count( $reports ); $reportIndex++ ) {
+            $report = $reports[ $reportIndex ];
+            $header = $report->getColumnHeader();
+            $dimensionHeaders = $header->getDimensions();
+            $metricHeaders = $header->getMetricHeader()->getMetricHeaderEntries();
+            $rows = $report->getData()->getRows();
+        
+            for ( $rowIndex = 0; $rowIndex < count($rows); $rowIndex++) {
+                $row = $rows[ $rowIndex ];
+                $dimensions = $row->getDimensions();
+                $metrics = $row->getMetrics();
+                for ($i = 0; $i < count($dimensionHeaders) && $i < count($dimensions); $i++) {
+                    //print($dimensionHeaders[$i] . ": " . $dimensions[$i] . "<br/>");
+                    $labels[] = $dimensions[$i];
+                }
+            
+                for ($j = 0; $j < count($metrics); $j++) {
+                    $values = $metrics[$j]->getValues();
+                    for ($k = 0; $k < count($values); $k++) {
+                        $entry = $metricHeaders[$k];
+                        $data[] = $values[$k];
+                        //print($entry->getName() . ": " . $values[$k] . "<br/>");
+                    }
+                }
+            }
+        }
+
+        $serie = [
+            "labels" => $labels,
+            "data" => $data,
+            "min" => (count($data)  > 0) ? min($data) : 0,
+            "max" => (count($data)  > 0) ? max($data) + 1 : 0,
+        ];
+
+        return $serie;
     }
 }

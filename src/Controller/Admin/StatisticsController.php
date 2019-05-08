@@ -405,12 +405,42 @@ class StatisticsController extends AbstractActionController
     );
     }*/
 
+    /*
+        var thisWeek = query({
+        'ids': ids,
+        'dimensions': 'ga:date,ga:nthDay',
+        'metrics': 'ga:sessions',
+        'start-date': moment(now).subtract(1, 'day').day(0).format('YYYY-MM-DD'),
+        'end-date': moment(now).format('YYYY-MM-DD')
+        });
+
+        var lastWeek = query({
+        'ids': ids,
+        'dimensions': 'ga:date,ga:nthDay',
+        'metrics': 'ga:sessions',
+        'start-date': moment(now).subtract(1, 'day').day(0).subtract(1, 'week')
+            .format('YYYY-MM-DD'),
+        'end-date': moment(now).subtract(1, 'day').day(6).subtract(1, 'week')
+            .format('YYYY-MM-DD')
+        });
+    */
     public function gamesAction()
     {
         $ap = $this->getApplicationService();
         $sg = $this->getGameService();
         $su = $this->getUserService();
         $stats = [];
+
+        $wholeSerie = $ap->getGaReport('date', 'sessions', null, null, '30daysAgo', 'today');
+        $sessionSerie1 = $ap->getGaReport('date', 'sessions', null, null, '7daysAgo', 'today');
+        $sessionSerie2 = $ap->getGaReport('date', 'sessions', null, null, '14daysAgo', '7daysAgo');
+        $countriesSerie = $ap->getGaReport('country', 'pageviews', 5, 'desc');
+        $browserSerie = $ap->getGaReport('browser', 'pageviews', null, 'desc');
+        $sourceSerie = $ap->getGaReport('source', 'pageviews', null, 'desc');
+        $topPagesSerie = $ap->getGaReport('pageTitle', 'pageviews', 10, 'desc');
+
+        $sessionSerie = $sessionSerie1;
+        $sessionSerie['data2'] = $sessionSerie2['data'];
 
         $games = $sg->getQueryGamesOrderBy()->getResult();
         $partArray = $ap->getParticipationsByDayByGame();
@@ -531,6 +561,12 @@ class StatisticsController extends AbstractActionController
                 'numberOfPlayers'       => $numberOfPlayers,
                 'participationsGames'   => $participationsGames,
                 'stats'                 => $stats,
+                'sessionSerie'          => $sessionSerie,
+                'countriesSerie'        => $countriesSerie,
+                'browserSerie'          => $browserSerie,
+                'sourceSerie'           => $sourceSerie,
+                'topPagesSerie'         => $topPagesSerie,
+                'wholeSerie'            => $wholeSerie,
             ]
         );
     }
