@@ -67,7 +67,7 @@ class StatisticsController extends AbstractActionController
         return $this->serviceLocator;
     }
 
-    public function indexAction()
+    public function gamesAction()
     {
         $stats = [];
         $ap = $this->getApplicationService();
@@ -424,7 +424,7 @@ class StatisticsController extends AbstractActionController
             .format('YYYY-MM-DD')
         });
     */
-    public function gamesAction()
+    public function indexAction()
     {
         $ap = $this->getApplicationService();
         $sg = $this->getGameService();
