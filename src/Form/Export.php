@@ -379,7 +379,7 @@ class Export extends ProvidesEventsForm
             'name' => 'nbpart',
             'type' => 'Zend\Form\Element\Radio',
             'options' => array(
-                'label' => $translator->translate('Nb participants', 'playgroundstats'),
+                'label' => $translator->translate('Nb participations', 'playgroundstats'),
                 'value_options' => array(
                     'all'       =>  $translator->translate('All', 'playgroundstats'),
                     //'betweennb' => $translator->translate('Entre', 'playgroundstats'),
@@ -457,101 +457,19 @@ class Export extends ProvidesEventsForm
                 'value' => 'all'
             )
         ));
-        
-        $this->add(array(
-            'name' => 'player',
-            'type' => 'Zend\Form\Element\Radio',
-            'options' => array(
-                'label' => $translator->translate('Player badge', 'playgroundstats'),
-                'value_options' => array(
-                    'all'       =>  $translator->translate('All', 'playgroundstats'),
-                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
-                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
-                    'gold'      => $translator->translate('Gold', 'playgroundstats')
-                )
-            ),
-            'attributes' => array(
-                'value' => 'all'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'goldfather',
-            'type' => 'Zend\Form\Element\Radio',
-            'options' => array(
-                'label' => $translator->translate('Sponsor badge', 'playgroundstats'),
-                'value_options' => array(
-                    'all'       =>  $translator->translate('All', 'playgroundstats'),
-                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
-                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
-                    'gold'      => $translator->translate('Gold', 'playgroundstats')
-                )
-            ),
-            'attributes' => array(
-                'value' => 'all'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'brain',
-            'type' => 'Zend\Form\Element\Radio',
-            'options' => array(
-                'label' => $translator->translate('Brain badge', 'playgroundstats'),
-                'value_options' => array(
-                    'all'       =>  $translator->translate('All', 'playgroundstats'),
-                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
-                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
-                    'gold'      => $translator->translate('Gold', 'playgroundstats')
-                )
-            ),
-            'attributes' => array(
-                'value' => 'all'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'ambassador',
-            'type' => 'Zend\Form\Element\Radio',
-            'options' => array(
-                'label' => $translator->translate('Ambassador badge', 'playgroundstats'),
-                'value_options' => array(
-                    'all'       =>  $translator->translate('All', 'playgroundstats'),
-                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
-                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
-                    'gold'      => $translator->translate('Gold', 'playgroundstats')
-                )
-            ),
-            'attributes' => array(
-                'value' => 'all'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'anniversary',
-            'type' => 'Zend\Form\Element\Radio',
-            'options' => array(
-                'label' => $translator->translate('Birthday badge', 'playgroundstats'),
-                'value_options' => array(
-                    'all'       =>  $translator->translate('All', 'playgroundstats'),
-                    'bronze'    => $translator->translate('Bronze', 'playgroundstats'),
-                    'silver'    => $translator->translate('Silver', 'playgroundstats'),
-                    'gold'      => $translator->translate('Gold', 'playgroundstats')
-                )
-            ),
-            'attributes' => array(
-                'value' => 'all'
-            )
-        ));
             
         $submitElement = new Element\Button('submit');
         $submitElement->setLabel($translator->translate('Generate export', 'playgroundstats'))
-            ->setAttributes(array(
-            'type' => 'submit',
-            ));
-
-        $this->add($submitElement, array(
-            //'priority' => - 100
-        ));
+            ->setAttributes(
+                array(
+                    'type' => 'submit',
+                )
+            );
+        $this->add(
+            $submitElement, array(
+                //'priority' => - 100
+            )
+        );
     }
 
     /**

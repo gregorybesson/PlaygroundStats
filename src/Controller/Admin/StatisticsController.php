@@ -810,10 +810,9 @@ class StatisticsController extends AbstractActionController
             $content .= "Optin Newsletter;";
 
         endif;
-        $content       .= "Optin NL partenaires;Nb enfants;";
+        $content       .= "Optin NL partenaires;";
         if ($data['inscriptiondate'] != 'all') :
             $content .= "Date d'inscription;";
-
         endif;
         $content        .= "Source d'inscription;";
         if ($data['hardbounce'] != 'all') :
