@@ -1162,32 +1162,39 @@ class Stats
     {
         $em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
-        switch ($type) {
-            case 'shares':
-                $filter = "e.action IN (13,14,15,16,17) AND e.label like '%espace client%'";
-                break;
-            case 'fbShares':
-                $filter = "e.action IN (14,15) AND e.label like '%espace client%'";
-                break;
-            case 'twShares':
-                $filter = "e.action=16 AND e.label like '%espace client%'";
-                break;
-            case 'glShares':
-                $filter = "e.action=17 AND e.label like '%espace client%'";
-                break;
-            case 'mailShares':
-                $filter = "e.action=13 AND e.label like '%espace client%'";
-                break;
-        }
+        // switch ($type) {
+        //     case 'shares':
+        //         $filter = "e.action IN (13,14,15,16,17) AND e.label like '%espace client%'";
+        //         break;
+        //     case 'fbShares':
+        //         $filter = "e.action IN (14,15) AND e.label like '%espace client%'";
+        //         break;
+        //     case 'twShares':
+        //         $filter = "e.action=16 AND e.label like '%espace client%'";
+        //         break;
+        //     case 'glShares':
+        //         $filter = "e.action=17 AND e.label like '%espace client%'";
+        //         break;
+        //     case 'mailShares':
+        //         $filter = "e.action=13 AND e.label like '%espace client%'";
+        //         break;
+        // }
 
-        $query = $em->createQuery('
-            SELECT COUNT(e.id) FROM PlaygroundReward\Entity\Event e
-            WHERE e.user = :user
-			AND ' . $filter . '
-		');
-        $query->setParameter('user', $user);
-        $count = $query->getSingleScalarResult();
-        return $count;
+        // $query = $em->createQuery(
+        //     '
+        //     SELECT COUNT(e.id) FROM PlaygroundReward\Entity\Event e
+        //     WHERE e.user = :user
+        //     AND ' . $filter
+        // );
+        // $query->setParameter('user', $user);
+        // try {
+        //     $count = $query->getSingleScalarResult();
+        // } catch(\Exception $e) {
+        //     var_dump($e);
+        // }
+        
+        // return $count;
+        return 0;
     }
 
     public function getPrizeCategoriesByUser($user, $hobbies)
@@ -1219,7 +1226,7 @@ class Stats
 
     public function getNumberEntriesByUser($user, $data)
     {
-        $nbpart             = $data['nbpart'];
+        $nbpart         = $data['nbpart'];
         $nbpartStartIni = $data['nbpart-start'];
         $nbpartEndIni   = $data['nbpart-end'];
         $nbpartStart    = \DateTime::createFromFormat('d/m/Y', $nbpartStartIni);
@@ -1239,6 +1246,7 @@ class Stats
         ');
         $query->setParameter('user', $user);
         $count = $query->getSingleScalarResult();
+
         return $count;
     }
 
