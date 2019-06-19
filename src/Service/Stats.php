@@ -753,12 +753,6 @@ class Stats
 
         $validatedemail = $data['validatedemail'];
 
-        $player         = $data['player'];
-        $goldfather     = $data['goldfather'];
-        $brain          = $data['brain'];
-        $ambassador     = $data['ambassador'];
-        $anniversary    = $data['anniversary'];
-
         /*
          if($gameId != '')  : $gameidFilter = "AND u.id IN (SELECT r FROM PlaygroundGame\Entity\Entry e LEFT JOIN e.user r WHERE e.game = " . $gameId . " GROUP BY e.user)"; else : $gameidFilter = ""; endif;
 
@@ -937,22 +931,6 @@ class Stats
 
         if ($hobbies != null) {
             $sql .= " INNER JOIN game_prize_category_user pcu ON pcu.user_id = u.user_id";
-        }
-
-        if ($player != 'all') {
-            $sql .= " INNER JOIN reward_achievement ra1 ON ra1.user_id = u.user_id AND ra1.category = 'player'";
-        }
-        if ($goldfather != 'all') {
-            $sql .= " INNER JOIN reward_achievement ra2 ON ra2.user_id = u.user_id AND ra2.category = 'goldfather'";
-        }
-        if ($brain != 'all') {
-            $sql .= " INNER JOIN reward_achievement ra3 ON ra3.user_id = u.user_id AND ra3.category = 'brain'";
-        }
-        if ($ambassador != 'all') {
-            $sql .= " INNER JOIN reward_achievement ra4 ON ra4.user_id = u.user_id AND ra4.category = 'ambassador'";
-        }
-        if ($anniversary != 'all') {
-            $sql .= " INNER JOIN reward_achievement ra5 ON ra5.user_id = u.user_id AND ra5.category = 'anniversary'";
         }
 
         $sql .= " WHERE 1=1";
