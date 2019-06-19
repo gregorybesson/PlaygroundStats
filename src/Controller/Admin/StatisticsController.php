@@ -623,6 +623,7 @@ class StatisticsController extends AbstractActionController
         $dataContainer  = new Container('Export');
         $ap = $this->getApplicationService();
         $data = $dataContainer->offsetGet('data');
+
         $this->myExportedResult = $ap->getExportRecords($data);
 
         if ($this->myExportedResult instanceof \PDOStatement) {
@@ -651,29 +652,10 @@ class StatisticsController extends AbstractActionController
                 echo "Id du jeu;";
 
             endif;
-            echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;Optin Newsletter;Optin NL partenaires;Nb enfants;Date d'inscription;Source d'inscription;Hard Bounce;Email validé;";
-            if ($data['player'] != 'all') :
-                echo "Badge Joueur;";
-
-            endif;
-            if ($data['goldfather'] != 'all') :
-                echo "Badge Parrain;";
-
-            endif;
-            if ($data['brain'] != 'all') :
-                echo "Badge Cerveau;";
-
-            endif;
-            if ($data['ambassador'] != 'all') :
-                echo "Badge Ambassadeur;";
-
-            endif;
-            if ($data['anniversary'] != 'all') :
-                echo "Badge Anniversaire;";
-
-            endif;
-            echo "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;Centres d'intérêts;Nb participations";
+            echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;Optin Newsletter;Optin NL partenaires;Date d'inscription;Source d'inscription;Email validé;";
+            echo "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;Nb participations";
             echo "\n";
+            
             while ($row = $result->fetch()) {
                 //var_dump($row);
                 $userId         = $row['user_id'];
@@ -683,105 +665,42 @@ class StatisticsController extends AbstractActionController
                 $glShares       = $ap->getSharesByUser('glShares', $userId);
                 $mailShares     = $ap->getSharesByUser('mailShares', $userId);
 
-
-
-
                 //var_dump($row);exit;
-                if ($data['gameid'] != '') :
+                if ($data['gameid'] != '') {
                     echo $data['gameid'] . ";";
-
-                endif;
+                }
                 echo $row['user_id'] . ";" . $row['title'] . ";" . $row['lastname'] . ";" . $row['firstname'] . ";" . $row['username'] . ";" . $row['email'];
-                if ($row['address2'] != '') :
-                    $address = $row['address'] . ' - ' . $row['address2']; else :
+                if ($row['address2'] != '') {
+                    $address = $row['address'] . ' - ' . $row['address2']; 
+                } else {
                     $address = $row['address'];
-
-                endif;
+                }
                 echo  ";" . $address . ";" . $row['postal_code'] . ";" . $row['city'] . ";" . $row['dob'];
                 echo  ";" . $row['telephone'] . ";" . $row['mobile'];
-                if ($row['optin'] == true) :
-                    $optin = 'oui'; else :
-                    $optin = 'non';
 
-                endif;
+                $optin = ($row['optin'] == true) ? 'oui' : 'non';
                 echo  ";" . $optin;
-                if ($row['optin_partner'] == true) :
-                    $optinPartner = 'oui'; else :
-                    $optinPartner = 'non';
 
-                endif;
+                $optinPartner = ($row['optin_partner'] == true) ? 'oui' : 'non';
                 echo  ";" . $optinPartner . ";";
+
                 echo   $row['created_at'] . ";" . $row['registration_source'];
-                if ($row['state']== null) :
-                    $validatedEmail = 'non'; else :
-                    $validatedEmail = 'oui';
 
-                endif;
+                $validatedEmail = ($row['state']== null) ? 'non' : 'oui';
                 echo  ";" . $validatedEmail;
-                if ($data['player'] != 'all') {
-                    if ($data['player'] == 'bronze') :
-                        $goldfather = 'Bronze'; elseif ($data['player'] == 'silver') :
-                        $goldfather = 'Argent'; else :
-                        $goldfather = 'Or';
+                echo  ";" . $totalShares . ";" . $fbShares . ";" . $twShares . ";" . $glShares . ";" . $mailShares;
 
-                    endif;
-                    echo  ";" . $goldfather;
-                }
-                if ($data['goldfather'] != 'all') {
-                    if ($data['goldfather'] == 'bronze') :
-                        $goldfather = 'Bronze'; elseif ($data['goldfather'] == 'silver') :
-                        $goldfather = 'Argent'; else :
-                        $goldfather = 'Or';
-
-                    endif;
-                    echo  ";" . $goldfather;
-                }
-                if ($data['brain'] != 'all') {
-                    if ($data['brain'] == 'bronze') :
-                        $brain = 'Bronze'; elseif ($data['brain'] == 'silver') :
-                        $brain = 'Argent'; else :
-                        $brain = 'Or';
-
-                    endif;
-                    echo  ";" . $brain;
-                }
-                if ($data['ambassador'] != 'all') {
-                    if ($data['ambassador'] == 'bronze') :
-                        $ambassador = 'Bronze'; elseif ($data['ambassador'] == 'silver') :
-                        $ambassador = 'Argent'; else :
-                        $ambassador = 'Or';
-
-                    endif;
-                    echo  ";" . $ambassador;
-                }
-                if ($data['anniversary'] != 'all') {
-                    if ($data['anniversary'] == 'bronze') :
-                        $anniversary = 'Bronze'; elseif ($data['anniversary'] == 'silver') :
-                        $anniversary = 'Argent'; else :
-                        $anniversary = 'Or';
-
-                    endif;
-                    echo  ";" . $anniversary;
-                }
-                echo  ";" . $totalShares
-                . ";" . $fbShares
-                . ";" . $twShares
-                . ";" . $glShares
-                . ";" . $mailShares;
-
-
-                $this->prizeCategoriesExport = $ap->getPrizeCategoriesByUser($userId, $data['prizeCategory']);
-                $prizeCategoriesArray = array();
-                while ($prizeCategories = $this->prizeCategoriesExport->fetch()) {
-                    $prizeCategoriesArray[] .= $prizeCategories['title'];
-                    unset($prizeCategories);
-                }
-                $prizeCategoriesString = implode(',', $prizeCategoriesArray);
-                echo ";" . $prizeCategoriesString;
+                // $this->prizeCategoriesExport = $ap->getPrizeCategoriesByUser($userId, $data['prizeCategory']);
+                // $prizeCategoriesArray = array();
+                // while ($prizeCategories = $this->prizeCategoriesExport->fetch()) {
+                //     $prizeCategoriesArray[] .= $prizeCategories['title'];
+                //     unset($prizeCategories);
+                // }
+                // $prizeCategoriesString = implode(',', $prizeCategoriesArray);
+                // echo ";" . $prizeCategoriesString;
 
                 $nbEntries = $ap->getNumberEntriesByUser($userId, $data);
                 echo ";" . $nbEntries;
-
 
                 echo  "\n";
                 unset($row);
@@ -869,57 +788,7 @@ class StatisticsController extends AbstractActionController
                     endif;
                     $contentRecord .= ";" . $validatedEmail;
                 }
-                if ($data['player'] != 'all') {
-                    if ($data['player'] == 'bronze') :
-                        $goldfather = 'Bronze'; elseif ($data['player'] == 'silver') :
-                        $goldfather = 'Argent'; else :
-                        $goldfather = 'Or';
-
-                    endif;
-                    $contentRecord .= ";" . $goldfather;
-                }
-                if ($data['goldfather'] != 'all') {
-                    if ($data['goldfather'] == 'bronze') :
-                        $goldfather = 'Bronze'; elseif ($data['goldfather'] == 'silver') :
-                        $goldfather = 'Argent'; else :
-                        $goldfather = 'Or';
-
-                    endif;
-                    $contentRecord .= ";" . $goldfather;
-                }
-                if ($data['brain'] != 'all') {
-                    if ($data['brain'] == 'bronze') :
-                        $brain = 'Bronze'; elseif ($data['brain'] == 'silver') :
-                        $brain = 'Argent'; else :
-                        $brain = 'Or';
-
-                    endif;
-                    $contentRecord .= ";" . $brain;
-                }
-                if ($data['ambassador'] != 'all') {
-                    if ($data['ambassador'] == 'bronze') :
-                        $ambassador = 'Bronze'; elseif ($data['ambassador'] == 'silver') :
-                        $ambassador = 'Argent'; else :
-                        $ambassador = 'Or';
-
-                    endif;
-                    $contentRecord .= ";" . $ambassador;
-                }
-                if ($data['anniversary'] != 'all') {
-                    if ($data['anniversary'] == 'bronze') :
-                        $anniversary = 'Bronze'; elseif ($data['anniversary'] == 'silver') :
-                        $anniversary = 'Argent'; else :
-                        $anniversary = 'Or';
-
-                    endif;
-                    $contentRecord .= ";" . $anniversary;
-                }
-                $contentRecord  .= ";" . $totalShares
-                . ";" . $fbShares
-                . ";" . $twShares
-                . ";" . $glShares
-                . ";" . $mailShares;
-                $contentRecord .= "\n";
+                $contentRecord .= ";$totalShares;$fbShares;$twShares;$glShares;$mailShares\n";
             }
         }
 
@@ -953,26 +822,6 @@ class StatisticsController extends AbstractActionController
         endif;
         if ($data['validatedemail'] != 'all') :
             $content .= "Email validé;";
-
-        endif;
-        if ($data['player'] != 'all') :
-            $content .= "Badge Joueur;";
-
-        endif;
-        if ($data['goldfather'] != 'all') :
-            $content .= "Badge Parrain;";
-
-        endif;
-        if ($data['brain'] != 'all') :
-            $content .= "Badge Cerveau;";
-
-        endif;
-        if ($data['ambassador'] != 'all') :
-            $content .= "Badge Ambassadeur;";
-
-        endif;
-        if ($data['anniversary'] != 'all') :
-            $content .= "Badge Anniversaire;";
 
         endif;
         $content       .= "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;";
