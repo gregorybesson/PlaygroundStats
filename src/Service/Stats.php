@@ -753,6 +753,10 @@ class Stats
 
         $validatedemail = $data['validatedemail'];
 
+        $lastLogin = $data['lastLogin'];
+        $lastLoginSinceIni = $data['lastLoginSince'];
+        $lastLoginSince    = \DateTime::createFromFormat('d/m/Y', $lastLoginSinceIni);
+
         /*
          if($gameId != '')  : $gameidFilter = "AND u.id IN (SELECT r FROM PlaygroundGame\Entity\Entry e LEFT JOIN e.user r WHERE e.game = " . $gameId . " GROUP BY e.user)"; else : $gameidFilter = ""; endif;
 
@@ -1046,7 +1050,11 @@ class Stats
             $sql .= " AND u.user_id IN (SELECT ge.user_id FROM game_entry ge LEFT JOIN user v ON (v.user_id = ge.user_id) GROUP BY ge.user_id HAVING (COUNT(ge.user_id) >= " . $nbpartMin . " AND COUNT(ge.user_id) <= " . $nbpartMax . "))";
         }
 
-
+        if ($lastLogin == 'never') {
+            $sql .= " AND u.last_login IS NULL";
+        } else if ($lastLogin == 'since') {
+            $sql .= " AND u.last_login >= '" . $lastLoginSince->format('Y-m-d') . " 00:00:00'";
+        }
 
         if ($hobbies != null) {
             foreach ($hobbies as $key => $hobby) :

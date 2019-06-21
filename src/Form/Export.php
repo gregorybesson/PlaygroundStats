@@ -375,88 +375,133 @@ class Export extends ProvidesEventsForm
             ),
         ));
         
-        $this->add(array(
-            'name' => 'nbpart',
-            'type' => 'Zend\Form\Element\Radio',
-            'options' => array(
-                'label' => $translator->translate('Nb participations', 'playgroundstats'),
-                'value_options' => array(
-                    'all'       =>  $translator->translate('All', 'playgroundstats'),
-                    //'betweennb' => $translator->translate('Entre', 'playgroundstats'),
-                    'between'   => $translator->translate('Between', 'playgroundstats'),
+        $this->add(
+            array(
+                'name' => 'nbpart',
+                'type' => 'Zend\Form\Element\Radio',
+                'options' => array(
+                    'label' => $translator->translate('Nb participations', 'playgroundstats'),
+                    'value_options' => array(
+                        'all'       =>  $translator->translate('All', 'playgroundstats'),
+                        //'betweennb' => $translator->translate('Entre', 'playgroundstats'),
+                        'between'   => $translator->translate('Between', 'playgroundstats'),
+                    )
+                ),
+                'attributes' => array(
+                    'value' => 'all',
+                    'class' => 'nbpart',
                 )
-            ),
-            'attributes' => array(
-                'value' => 'all',
-                'class' => 'nbpart',
             )
-        ));
+        );
         
-        $this->add(array(
-            'name' => 'nbpart-min',
-            'options' => array(
-                'label' => $translator->translate('Nb participants', 'playgroundstats'),
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'placeholder' => $translator->translate('Number', 'playgroundstats'),
-                'id' => 'nbpartmin-input',
-            ),
-        ));
+        $this->add(
+            array(
+                'name' => 'nbpart-min',
+                'options' => array(
+                    'label' => $translator->translate('Nb participants', 'playgroundstats'),
+                ),
+                'attributes' => array(
+                    'type' => 'text',
+                    'placeholder' => $translator->translate('Number', 'playgroundstats'),
+                    'id' => 'nbpartmin-input',
+                ),
+            )
+        );
         
-        $this->add(array(
-            'name' => 'nbpart-max',
-            'options' => array(
-                'label' => $translator->translate('Nb participations', 'playgroundstats'),
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'placeholder' => $translator->translate('Number', 'playgroundstats'),
-                'id' => 'nbpartmax-input',
-            ),
-        ));
+        $this->add(
+            array(
+                'name' => 'nbpart-max',
+                'options' => array(
+                    'label' => $translator->translate('Nb participations', 'playgroundstats'),
+                ),
+                'attributes' => array(
+                    'type' => 'text',
+                    'placeholder' => $translator->translate('Number', 'playgroundstats'),
+                    'id' => 'nbpartmax-input',
+                ),
+            )
+        );
         
-        $this->add(array(
-            'name' => 'nbpart-start',
-            'options' => array(
-                'label' => $translator->translate('Nb participations', 'playgroundstats'),
-            ),
-            'attributes' => array(
-                'type' => 'dateTime',
-                'placeholder' => $translator->translate('JJ/MM/AAAA', 'playgroundstats'),
-                'class' => 'date-export',
-                'id' => 'nbpartstart-input',
-            ),
-        ));
+        $this->add(
+            array(
+                'name' => 'nbpart-start',
+                'options' => array(
+                    'label' => $translator->translate('Nb participations', 'playgroundstats'),
+                ),
+                'attributes' => array(
+                    'type' => 'dateTime',
+                    'placeholder' => $translator->translate('JJ/MM/AAAA', 'playgroundstats'),
+                    'class' => 'date-export',
+                    'id' => 'nbpartstart-input',
+                ),
+            )
+        );
         
-        $this->add(array(
-            'name' => 'nbpart-end',
-            'options' => array(
-                'label' => $translator->translate('Nb participations', 'playgroundstats'),
-            ),
-            'attributes' => array(
-                'type' => 'dateTime',
-                'placeholder' => $translator->translate('JJ/MM/AAAA', 'playgroundstats'),
-                'class' => 'date-export',
-                'id' => 'nbpartend-input',
-            ),
-        ));
+        $this->add(
+            array(
+                'name' => 'nbpart-end',
+                'options' => array(
+                    'label' => $translator->translate('Nb participations', 'playgroundstats'),
+                ),
+                'attributes' => array(
+                    'type' => 'dateTime',
+                    'placeholder' => $translator->translate('JJ/MM/AAAA', 'playgroundstats'),
+                    'class' => 'date-export',
+                    'id' => 'nbpartend-input',
+                ),
+            )
+        );
         
-        $this->add(array(
-            'name' => 'validatedemail',
-            'type' => 'Zend\Form\Element\Radio',
-            'options' => array(
-                'label' => $translator->translate('Email validated', 'playgroundstats'),
-                'value_options' => array(
-                    'all'       =>  $translator->translate('All', 'playgroundstats'),
-                    'yes'       => $translator->translate('Yes', 'playgroundstats'),
-                    'no'        => $translator->translate('No', 'playgroundstats')
+        $this->add(
+            array(
+                'name' => 'validatedemail',
+                'type' => 'Zend\Form\Element\Radio',
+                'options' => array(
+                    'label' => $translator->translate('Email validated', 'playgroundstats'),
+                    'value_options' => array(
+                        'all'       =>  $translator->translate('All', 'playgroundstats'),
+                        'yes'       => $translator->translate('Yes', 'playgroundstats'),
+                        'no'        => $translator->translate('No', 'playgroundstats')
+                    )
+                ),
+                'attributes' => array(
+                    'value' => 'all'
                 )
-            ),
-            'attributes' => array(
-                'value' => 'all'
             )
-        ));
+        );
+
+        $this->add(
+            array(
+                'name' => 'lastLogin',
+                'type' => 'Zend\Form\Element\Radio',
+                'options' => array(
+                    'label' => $translator->translate('Last login', 'playgroundstats'),
+                    'value_options' => array(
+                        'all'         =>  $translator->translate('All', 'playgroundstats'),
+                        'never'       =>  $translator->translate('Never', 'playgroundstats'),
+                        'since'       => $translator->translate('Since', 'playgroundstats'),
+                    )
+                ),
+                'attributes' => array(
+                    'value' => 'all'
+                )
+            )
+        );
+
+        $this->add(
+            array(
+                'name' => 'lastLoginSince',
+                'options' => array(
+                    'label' => $translator->translate('Last login since', 'playgroundstats'),
+                ),
+                'attributes' => array(
+                    'type' => 'dateTime',
+                    'placeholder' => $translator->translate('JJ/MM/AAAA', 'playgroundstats'),
+                    'class' => 'date-export',
+                    'id' => 'lastLoginSince',
+                ),
+            )
+        );
             
         $submitElement = new Element\Button('submit');
         $submitElement->setLabel($translator->translate('Generate export', 'playgroundstats'))
