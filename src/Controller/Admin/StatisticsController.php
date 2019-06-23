@@ -611,10 +611,10 @@ class StatisticsController extends AbstractActionController
 
         return new ViewModel(
             array(
-                        'form'      => $form,
-                        'data'      => $data,
-                        'records'   => $records,
-                )
+                'form'      => $form,
+                'data'      => $data,
+                'records'   => $records,
+            )
         );
     }
 
@@ -652,8 +652,14 @@ class StatisticsController extends AbstractActionController
                 echo "Id du jeu;";
 
             endif;
-            echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;Optin Newsletter;Optin NL partenaires;Date d'inscription;Source d'inscription;Email validé;";
+            echo "ID du membre;Civilité;Nom;Prénom;Pseudo;Email;Adresse;CP;Ville;Date de naissance;Tél fixe;Tél mobile;";
+            echo "Optin Newsletter;Optin NL partenaires;Date d'inscription;Source d'inscription;Email validé;";
             echo "Nb partages total;Nb partages FB;Nb partages Twitter;Nb partages G+;Nb partages mail;Nb participations";
+            if (isset($data['actionName'])) {
+                foreach ($data['actionName'] as $action) {
+                    echo ";" . $this->getServiceLocator()->get('MvcTranslator')->translate($action, 'playgroundstats');
+                }
+            }
             echo "\n";
             
             while ($row = $result->fetch()) {
@@ -701,6 +707,13 @@ class StatisticsController extends AbstractActionController
 
                 $nbEntries = $ap->getNumberEntriesByUser($userId, $data);
                 echo ";" . $nbEntries;
+
+                if (isset($data['actionName'])) {
+                    foreach ($data['actionName'] as $action) {
+                        $actionLabel = str_replace("/", "", str_replace("-", "", $action));
+                        echo ";" . $row[$actionLabel];
+                    }
+                }
 
                 echo  "\n";
                 unset($row);
