@@ -757,6 +757,11 @@ class Stats
         $lastLoginSinceIni = $data['lastLoginSince'];
         $lastLoginSince    = \DateTime::createFromFormat('d/m/Y', $lastLoginSinceIni);
 
+        $actionNames = array();
+        if (isset($data['actionName'])) {
+            $actionNames = $data['actionName'];
+        }
+
         /*
          if($gameId != '')  : $gameidFilter = "AND u.id IN (SELECT r FROM PlaygroundGame\Entity\Entry e LEFT JOIN e.user r WHERE e.game = " . $gameId . " GROUP BY e.user)"; else : $gameidFilter = ""; endif;
 
@@ -902,33 +907,31 @@ class Stats
                 ');
         */
 
-        //$sql = "SELECT distinct u.user_id, u.username, u.email";
-        $sql = "SELECT distinct u.user_id, u.username, u.email, u.title, u.firstname, u.lastname, u.dob, u.address, u.address2, u.postal_code, u.city, u.telephone, u.mobile, u.optin_partner, u.registration_source, u.optin, u.created_at, u.state";
-
-        /*
-         if($validatedemail != 'all'){
-        $sql .= ', u.state';
+        if (count($actionNames) > 0) {
+            foreach ($actionNames as $action) {
+                $actionArr = explode("/", $action);
+                $controllerName = $actionArr[0];
+                $actionName = $actionArr[1];
+                $actionLabel = str_replace("/", "", str_replace("-", "", $action));
+                $actionSelect .= " SUM(if(action_name = '". $actionName . "' AND RIGHT(controller_class,". strlen($controllerName) .") = '". $controllerName ."', 1, 0)) AS ". $actionLabel. ",";
+            }
+            $sql = "SELECT" . $actionSelect . " u.user_id, u.username, u.email, u.title, u.firstname, u.lastname, u.dob, u.address, u.address2,
+                u.postal_code, u.city, u.telephone, u.mobile, u.optin_partner, u.registration_source, u.optin, u.created_at, u.state";
+        } else {
+            $sql = "SELECT distinct u.user_id, u.username, u.email, u.title, u.firstname, u.lastname, u.dob, u.address, u.address2,
+                u.postal_code, u.city, u.telephone, u.mobile, u.optin_partner, u.registration_source, u.optin, u.created_at, u.state";
         }
-
-        if($birthdate != 'all'){
-        $sql .= ', u.dob';
-        }
-
-        if($suscribeDate != 'all'){
-        $sql .= ', u.created_at';
-        }
-
-        if($optin != 'all'){
-        $sql .= ', u.optin';
-        }
-        */
 
         if ($hardbounce != 'all') {
             $sql .= ', u.date_set_hardbounce';
         }
 
-        $sql .= " FROM user u";
-
+        if (count($actionNames) > 0) {
+            $sql .= " FROM user_log as ul inner join user as u on u.user_id = ul.user_id";
+        } else {
+            $sql .= " FROM user u";
+        }
+        
         if (($gameId != '')||($nbpart == 'between')) {
             $sql .= " INNER JOIN game_entry ge ON ge.user_id = u.user_id";
         }
@@ -1035,9 +1038,6 @@ class Stats
                 break;
         }
 
-
-
-
         if ($gameId != '') {
             $sql .= " AND ge.game_id=$gameId";
         }
@@ -1066,71 +1066,15 @@ class Stats
             $sql .= " AND pcu.prize_category_id IN (" . $hobbies . ")";
         }
 
-        switch ($player) {
-            case 'bronze':
-                $sql .= " AND ra1.level=1";
-                break;
-            case 'silver':
-                $sql .= " AND ra1.level=2";
-                break;
-            case 'gold':
-                $sql .= " AND ra1.level=3";
-                break;
-        }
-
-        switch ($goldfather) {
-            case 'bronze':
-                $sql .= " AND ra2.level=1";
-                break;
-            case 'silver':
-                $sql .= " AND ra2.level=2";
-                break;
-            case 'gold':
-                $sql .= " AND ra2.level=3";
-                break;
-        }
-
-        switch ($brain) {
-            case 'bronze':
-                $sql .= " AND ra3.level=1";
-                break;
-            case 'silver':
-                $sql .= " AND ra3.level=2";
-                break;
-            case 'gold':
-                $sql .= " AND ra3.level=3";
-                break;
-        }
-
-        switch ($ambassador) {
-            case 'bronze':
-                $sql .= " AND ra4.level=1";
-                break;
-            case 'silver':
-                $sql .= " AND ra4.level=2";
-                break;
-            case 'gold':
-                $sql .= " AND ra4.level=3";
-                break;
-        }
-
-        switch ($anniversary) {
-            case 'bronze':
-                $sql .= " AND ra5.level=1";
-                break;
-            case 'silver':
-                $sql .= " AND ra5.level=2";
-                break;
-            case 'gold':
-                $sql .= " AND ra5.level=3";
-                break;
+        if (count($actionNames) > 0) {
+            $sql .= " GROUP BY ul.user_id";
         }
 
         $rsm = new ResultSetMapping();
 
         $query = $em->createNativeQuery($sql, $rsm);
-
-        //echo $sql;
+        // echo $sql;
+        // die('---');
 
         $method = new \ReflectionMethod($query, '_doExecute');
         $method->setAccessible(true);
