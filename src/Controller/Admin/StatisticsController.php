@@ -1,6 +1,7 @@
 <?php
 namespace PlaygroundStats\Controller\Admin;
 
+use PlaygroundStats\Entity\Card;
 use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
@@ -430,6 +431,7 @@ class StatisticsController extends AbstractActionController
         $sg = $this->getGameService();
         $su = $this->getUserService();
         $stats = [];
+        $cards = $ap->getCardMapper()->findAll();
 
         $wholeSerie = $ap->getGaReport('date', 'sessions', null, null, '30daysAgo', 'today');
         $sessionSerie1 = $ap->getGaReport('date', 'sessions', null, null, '7daysAgo', 'today');
@@ -567,6 +569,7 @@ class StatisticsController extends AbstractActionController
                 'sourceSerie'           => $sourceSerie,
                 'topPagesSerie'         => $topPagesSerie,
                 'wholeSerie'            => $wholeSerie,
+                'cards'                 => $cards,
             ]
         );
     }
@@ -929,6 +932,139 @@ class StatisticsController extends AbstractActionController
         $response->setContent($content);
 
         return $response;
+    }
+
+    /**
+     * ListAction : retrieve all cards
+     *
+     * @return array $return
+     */
+    public function listCardAction()
+    {
+        $cards = $this->getApplicationService()->getCardMapper()->findAll();
+
+        return [
+            'cards' => $cards,
+            'flashMessages' => $this->flashMessenger()->getMessages(),
+        ];
+    }
+
+    /**
+     * CreateCard : create a card
+     *
+     * @return viewModel $viewModel
+     */
+    public function createCardAction()
+    {
+        $form = $this->getServiceLocator()->get('playgroundstats_card_form');
+        
+        $request = $this->getRequest();
+        $card = new Card();
+        
+        if ($request->isPost()) {
+            $data = array_merge(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+
+            $card = $this->getApplicationService()->createCard($data, 'playgroundstats_card_form');
+            if ($card) {
+                $this->flashMessenger()->addMessage('The card "'.$card->getTitle().'" has been created');
+
+                return $this->redirect()->toRoute('admin/stats/card/list');
+            } else {
+                $this->flashMessenger()->addMessage('The card has not been created');
+
+                return $this->redirect()->toRoute('admin/stats/card/list');
+            }
+        }
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('playground-stats/statistics/card');
+
+        return $viewModel->setVariables(array('form' => $form));
+    }
+
+
+    /**
+    * editAction : edit a card
+    *
+    * @return viewModel $viewModel
+    */
+    public function editCardAction()
+    {
+        $cardId = $this->getEvent()->getRouteMatch()->getParam('cardId');
+        $card = $this->getApplicationService()->getCardMapper()->findById($cardId);
+
+        $form = $this->getServiceLocator()->get('playgroundstats_card_form');
+
+        $request = $this->getRequest();
+
+        $form->bind($card);
+
+        if ($request->isPost()) {
+            $data = array_merge(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+
+            $card = $this->getApplicationService()->editCard(
+                $data,
+                $card,
+                'playgroundstats_card_form'
+            );
+
+            if ($card) {
+                $this->flashMessenger()->addMessage('The card "'.$card->getTitle().'" has been updated');
+
+                return $this->redirect()->toRoute('admin/stats/card/list');
+            } else {
+                $this->flashMessenger()->addMessage('The card has not been updated');
+
+                return $this->redirect()->toRoute('admin/stats/card/list');
+            }
+        }
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('playground-stats/statistics/card');
+
+        return $viewModel->setVariables(array('form' => $form));
+    }
+
+    /**
+     * RemoveCardAction : remove a card
+     *
+     * @return redirect
+     */
+    public function removeCardAction()
+    {
+        $cardId = $this->getEvent()->getRouteMatch()->getParam('cardId');
+        $card = $this->getApplicationService()->getCardMapper()->findById($cardId);
+        $title = $card->getTitle();
+        $this->getApplicationService()->removeCard($card);
+        $this->flashMessenger()->addMessage('The leaderboard "'.$title.'"has been removed');
+
+        return $this->redirect()->toRoute('admin/stats/card/list');
+    }
+
+    /**
+     * ViewCardAction : view a card
+     *
+     * @return redirect
+     */
+    public function viewCardAction()
+    {
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('playground-stats/statistics/view-card');
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $viewModel->setTerminal(true);
+        }
+
+        $cardId = $this->getEvent()->getRouteMatch()->getParam('cardId');
+        $card = $this->getApplicationService()->getCardMapper()->findById($cardId);
+        $sqlResult = $this->getApplicationService()->getSqlResult($card);
+
+        return $viewModel->setVariables(array('card' => $card, 'sqlResult' => $sqlResult));
     }
 
     public function getAchievementService()
