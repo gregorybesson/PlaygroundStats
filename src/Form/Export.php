@@ -584,7 +584,9 @@ class Export extends ProvidesEventsForm
             )
         );
 
-        $this->getInputFilter()->get('actionName')->setRequired(false);
+        if ($this->getInputFilter()->has('actionName')) {
+            $this->getInputFilter()->get('actionName')->setRequired(false);
+        }
     }
 
     /**
