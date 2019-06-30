@@ -83,7 +83,7 @@ class StatisticsController extends AbstractActionController
             $optinUser      = $ap->findOptin('optin', $gameId);
             $optinPartner   = $ap->findOptin('optinPartner', $gameId);
 
-            $query = $sg->getEntriesQuery($game);
+            $query = $sg->getEntriesQuery($game)->getQuery();
             $allEntries = $sg->getGameEntries(null, $query->getResult(), $game);
             
             $locations = [];
