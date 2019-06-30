@@ -2,6 +2,7 @@
 
 namespace PlaygroundStats\Service;
 
+use PlaygroundStats\Entity\Card;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Hydrator\ClassMethods;
@@ -19,6 +20,8 @@ class Stats
     protected $gaViewId = null;
 
     protected $dashboardMapper;
+
+    protected $cardMapper;
 
     /**
      *
@@ -1180,6 +1183,82 @@ class Stats
         return $count;
     }
 
+    /**
+     * create : ajout de card
+     * @param array $data
+     * @param string $formClass
+     *
+     * @return Card $card
+     */
+    public function createCard(array $data, $formClass)
+    {
+        $card = new Card();
+        $form = $this->serviceLocator->get($formClass);
+        $form->bind($card);
+        $form->setData($data);
+
+        if (!$form->isValid()) {
+            return false;
+        }
+        
+        $card = $this->getCardMapper()->insert($card);
+
+        return $card;
+    }
+
+    /**
+     * Edit : mise ajour de card
+     * 
+     * @param array  $data
+     * @param Card  $card
+     * @param string  $formClass
+     *
+     * @return Card  $card
+     */
+    public function editCard(array $data, $card, $formClass)
+    {
+        $form  = $this->serviceLocator->get($formClass);
+        $form->bind($card);
+        $form->setData($data);
+        
+        if (!$form->isValid()) {
+            return false;
+        }
+
+        $card = $this->getCardMapper()->update($card);
+
+        return $card;
+    }
+
+    public function getSqlResult($card)
+    {
+        $em = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
+        $sql = $card->getSqlStatement();
+        $stmt = $em->getConnection()->prepare($sql);
+
+        //set parameters 
+        //you may set as many parameters as you have on your query
+        //$sql = "SELECT name FROM user WHERE favorite_color = :color";
+        //$params['color'] = blue;
+        //$stmt->execute($params);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    /**
+     * Remove a card
+     * 
+     * @return PlaygroundStats\Entity\Card $entity Card
+     *
+     */
+    public function removeCard($entity)
+    {
+        return $this->getCardMapper()->remove($entity);
+    }
+
     public function getDashboardMapper()
     {
         if (!$this->dashboardMapper) {
@@ -1189,6 +1268,15 @@ class Stats
         return $this->dashboardMapper;
     }
 
+    public function getCardMapper()
+    {
+        if (!$this->cardMapper) {
+            $this->cardMapper = $this->getServiceManager()->get('playgroundstats_card_mapper');
+        }
+
+        return $this->cardMapper;
+    }
+    
     /**
      * Retrieve service manager instance
      *

@@ -135,6 +135,71 @@ return array(
                                     ),
                                 ),
                             ),
+                            'card' => array(
+                                'type' => 'Zend\Router\Http\Literal',
+                                'options' => array(
+                                    'route' => '/card',
+                                    'defaults' => array(
+                                        'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                        'action'     => 'index',
+                                    ),
+                                ),
+                                'child_routes' =>array(
+                                    'list' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/list[/:p]',
+                                            'defaults' => array(
+                                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                                'action'     => 'listCard',
+                                            ),
+                                        ),
+                                    ),
+                                    'create' => array(
+                                        'type' => 'Zend\Router\Http\Literal',
+                                        'options' => array(
+                                            'route' => '/create',
+                                            'defaults' => array(
+                                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                                'action'     => 'createCard'
+                                            ),
+                                        ),
+                                    ),
+                                    'edit' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/edit/:cardId',
+                                            'defaults' => array(
+                                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                                'action'     => 'editCard',
+                                                'cardId'     => 0
+                                            ),
+                                        ),
+                                    ),
+                                    'delete' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/delete/:cardId',
+                                            'defaults' => array(
+                                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                                'action'     => 'removeCard',
+                                                'cardId'     => 0
+                                            ),
+                                        ),
+                                    ),
+                                    'view' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/view/:cardId',
+                                            'defaults' => array(
+                                                'controller' => \PlaygroundStats\Controller\Admin\StatisticsController::class,
+                                                'action'     => 'viewCard',
+                                                'cardId'     => 0
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 ),
