@@ -4,11 +4,8 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'DoctrineDataFixtureModule',
-        'AsseticBundle',
-        'ZfcBase',
         'PlaygroundCore',
         'PlaygroundDesign',
-        'PlaygroundStats'
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(

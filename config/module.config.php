@@ -136,7 +136,7 @@ return array(
                                 ),
                             ),
                             'card' => array(
-                                'type' => 'Zend\Router\Http\Literal',
+                                'type' => 'Laminas\Router\Http\Literal',
                                 'options' => array(
                                     'route' => '/card',
                                     'defaults' => array(
@@ -156,7 +156,7 @@ return array(
                                         ),
                                     ),
                                     'create' => array(
-                                        'type' => 'Zend\Router\Http\Literal',
+                                        'type' => 'Laminas\Router\Http\Literal',
                                         'options' => array(
                                             'route' => '/create',
                                             'defaults' => array(

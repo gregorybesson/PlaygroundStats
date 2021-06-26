@@ -3,12 +3,12 @@
 namespace PlaygroundStats\Service;
 
 use PlaygroundStats\Entity\Card;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Laminas\ServiceManager\ServiceManagerAwareInterface;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Stdlib\Hydrator\ClassMethods;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Zend\EventManager\EventManagerAwareTrait;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\EventManager\EventManagerAwareTrait;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class Stats
 {
