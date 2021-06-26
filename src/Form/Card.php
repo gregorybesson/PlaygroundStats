@@ -2,10 +2,10 @@
 namespace PlaygroundStats\Form;
 
 use PlaygroundStats\Options\ModuleOptions;
-use Zend\Form\Element;
+use Laminas\Form\Element;
 use ZfcUser\Form\ProvidesEventsForm;
-use Zend\Mvc\I18n\Translator;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Mvc\I18n\Translator;
+use Laminas\ServiceManager\ServiceManager;
 use PlaygroundCore\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class Card extends ProvidesEventsForm
@@ -34,7 +34,7 @@ class Card extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'id',
-            'type' => 'Zend\Form\Element\Hidden',
+            'type' => 'Laminas\Form\Element\Hidden',
             'attributes' => array(
                 'value' => 0
             )
@@ -53,7 +53,7 @@ class Card extends ProvidesEventsForm
         
         $this->add(array(
             'name' => 'sqlStatement',
-            'type' => 'Zend\Form\Element\Textarea',
+            'type' => 'Laminas\Form\Element\Textarea',
             'options' => array(
                 'label' => $translator->translate('SQL Statement', 'playgroundstats')
             ),
@@ -66,7 +66,7 @@ class Card extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'description',
-            'type' => 'Zend\Form\Element\Textarea',
+            'type' => 'Laminas\Form\Element\Textarea',
             'options' => array(
                 'label' => $translator->translate('SQL Statement', 'playgroundstats')
             ),

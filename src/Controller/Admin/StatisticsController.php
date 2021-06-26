@@ -2,14 +2,14 @@
 namespace PlaygroundStats\Controller\Admin;
 
 use PlaygroundStats\Entity\Card;
-use Zend\Form\Element;
-use Zend\Form\Form;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\Session\Container;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Form\Element;
+use Laminas\Form\Form;
+use Laminas\InputFilter\Factory as InputFactory;
+use Laminas\Session\Container;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\JsonModel;
+use Laminas\View\Model\ViewModel;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class StatisticsController extends AbstractActionController
 {

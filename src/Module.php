@@ -2,9 +2,9 @@
 
 namespace PlaygroundStats;
 
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\MvcEvent;
-use Zend\Validator\AbstractValidator;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Validator\AbstractValidator;
 
 class Module
 {
@@ -29,13 +29,13 @@ class Module
     
                     return $form;
                 },
-                'playgroundstats_dashboard_mapper' => function (\Zend\ServiceManager\ServiceManager $sm) {
+                'playgroundstats_dashboard_mapper' => function (\Laminas\ServiceManager\ServiceManager $sm) {
                     return new Mapper\Dashboard(
                         $sm->get('doctrine.entitymanager.orm_default'),
                         $sm
                     );
                 },
-                'playgroundstats_card_mapper' => function (\Zend\ServiceManager\ServiceManager $sm) {
+                'playgroundstats_card_mapper' => function (\Laminas\ServiceManager\ServiceManager $sm) {
                     return new Mapper\Card(
                         $sm->get('doctrine.entitymanager.orm_default'),
                         $sm

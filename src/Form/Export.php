@@ -2,11 +2,11 @@
 
 namespace PlaygroundStats\Form;
 
-use Zend\Form\Form;
-use Zend\Form\Element;
+use Laminas\Form\Form;
+use Laminas\Form\Element;
 use ZfcUser\Form\ProvidesEventsForm;
-use Zend\Mvc\I18n\Translator;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Mvc\I18n\Translator;
+use Laminas\ServiceManager\ServiceManager;
 
 class Export extends ProvidesEventsForm
 {
@@ -34,7 +34,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'lastname',
-                'type' => 'Zend\Form\Element\Select',
+                'type' => 'Laminas\Form\Element\Select',
                 'options' => array(
                     'label' => $translator->translate('Lastname', 'playgroundstats'),
                     'value_options' => array(
@@ -67,7 +67,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'firstname',
-                'type' => 'Zend\Form\Element\Select',
+                'type' => 'Laminas\Form\Element\Select',
                 'options' => array(
                     'label' => $translator->translate('Firstname', 'playgroundstats'),
                     'value_options' => array(
@@ -100,7 +100,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'sexe',
-                'type' => 'Zend\Form\Element\Select',
+                'type' => 'Laminas\Form\Element\Select',
                 'options' => array(
                     'label' => $translator->translate('Gender', 'playgroundstats'),
                     'value_options' => array(
@@ -118,7 +118,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'memberid',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('ID member', 'playgroundstats'),
                     'value_options' => array(
@@ -150,7 +150,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'email',
-                'type' => 'Zend\Form\Element\Select',
+                'type' => 'Laminas\Form\Element\Select',
                 'options' => array(
                     'label' => $translator->translate('Email', 'playgroundstats'),
                     'value_options' => array(
@@ -182,7 +182,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'zipcode',
-                'type' => 'Zend\Form\Element\Select',
+                'type' => 'Laminas\Form\Element\Select',
                 'options' => array(
                     'label' => $translator->translate('Zipcode', 'playgroundstats'),
                     'value_options' => array(
@@ -214,7 +214,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'birthdate',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Birth date', 'playgroundstats'),
                     'value_options' => array(
@@ -284,7 +284,7 @@ class Export extends ProvidesEventsForm
             $this->add(
                 array(
                     'name' => 'actionName',
-                    'type' => 'Zend\Form\Element\MultiCheckbox',
+                    'type' => 'Laminas\Form\Element\MultiCheckbox',
                     'options' => array(
                         'value_options' => $userActions_label,
                         'label' => $translator->translate('User actions', 'playgroundstats'),
@@ -301,7 +301,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'prizeCategory',
-                'type' => 'Zend\Form\Element\MultiCheckbox',
+                'type' => 'Laminas\Form\Element\MultiCheckbox',
                 'options' => array(
                     'value_options' => $categories_label,
                     'label' => $translator->translate('Interest center', 'playgroundstats'),
@@ -312,7 +312,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'optin',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Newsletter optin', 'playgroundstats'),
                     'value_options' => array(
@@ -330,7 +330,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'optinpartner',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Partners NL optin', 'playgroundstats'),
                     'value_options' => array(
@@ -348,7 +348,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'inscriptiondate',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Registration date', 'playgroundstats'),
                     'value_options' => array(
@@ -396,7 +396,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'hardbounce',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Hard Bounce', 'playgroundstats'),
                     'value_options' => array(
@@ -446,7 +446,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'nbpart',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Nb participations', 'playgroundstats'),
                     'value_options' => array(
@@ -523,7 +523,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'validatedemail',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Email validated', 'playgroundstats'),
                     'value_options' => array(
@@ -541,7 +541,7 @@ class Export extends ProvidesEventsForm
         $this->add(
             array(
                 'name' => 'lastLogin',
-                'type' => 'Zend\Form\Element\Radio',
+                'type' => 'Laminas\Form\Element\Radio',
                 'options' => array(
                     'label' => $translator->translate('Last login', 'playgroundstats'),
                     'value_options' => array(

@@ -2,7 +2,7 @@
 namespace PlaygroundStats\Controller\Admin;
 
 use PlaygroundStats\Controller\Admin\StatisticsController;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 class StatisticsControllerFactory implements FactoryInterface

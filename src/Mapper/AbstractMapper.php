@@ -4,7 +4,7 @@ namespace PlaygroundStats\Mapper;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\DBALException;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 abstract class AbstractMapper
 {
