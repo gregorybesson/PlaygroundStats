@@ -106,7 +106,7 @@ class Stats
                     FROM game_entry e
                 ', $rsm);
         }
-        
+
         $count = $query->getSingleScalarResult();
         return $count;
     }
@@ -415,7 +415,7 @@ class Stats
         $count = $query->getSingleScalarResult();
         return $count;
     }
-    
+
     /**
      * Return count of active games between $startDate and $endDate
      * @param number|unknown $startDate
@@ -606,9 +606,9 @@ class Stats
 
         $startDateTime = \DateTime::createFromFormat('d/m/Y', $startDate);
         $endDateTime = \DateTime::createFromFormat('d/m/Y', $endDate);
-      
+
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping;
-      
+
         $select = array();
         $i = 0;
 
@@ -906,7 +906,7 @@ class Stats
                 ' . $brainFilter . '
                 ' . $ambassadorFilter . '
                 ' . $anniversaryFilter . '
-                    
+
                 ');
         */
 
@@ -934,7 +934,7 @@ class Stats
         } else {
             $sql .= " FROM user u";
         }
-        
+
         if (($gameId != '')||($nbpart == 'between')) {
             $sql .= " INNER JOIN game_entry ge ON ge.user_id = u.user_id";
         }
@@ -1064,7 +1064,7 @@ class Stats
                 $hobbiesSql[] = '\''.$hobby.'\'';
 
             endforeach;
-                
+
             $hobbies = implode(',', $hobbiesSql);
             $sql .= " AND pcu.prize_category_id IN (" . $hobbies . ")";
         }
@@ -1125,7 +1125,7 @@ class Stats
         // } catch(\Exception $e) {
         //     var_dump($e);
         // }
-        
+
         // return $count;
         return 0;
     }
@@ -1200,7 +1200,7 @@ class Stats
         if (!$form->isValid()) {
             return false;
         }
-        
+
         $card = $this->getCardMapper()->insert($card);
 
         return $card;
@@ -1208,7 +1208,7 @@ class Stats
 
     /**
      * Edit : mise ajour de card
-     * 
+     *
      * @param array  $data
      * @param Card  $card
      * @param string  $formClass
@@ -1220,7 +1220,7 @@ class Stats
         $form  = $this->serviceLocator->get($formClass);
         $form->bind($card);
         $form->setData($data);
-        
+
         if (!$form->isValid()) {
             return false;
         }
@@ -1236,21 +1236,23 @@ class Stats
         $sql = $card->getSqlStatement();
         $stmt = $em->getConnection()->prepare($sql);
 
-        //set parameters 
+        //set parameters
         //you may set as many parameters as you have on your query
         //$sql = "SELECT name FROM user WHERE favorite_color = :color";
         //$params['color'] = blue;
         //$stmt->execute($params);
 
         $stmt->execute();
-        $result = $stmt->fetchAll();
+
+        $query = $stmt->executeQuery();
+        $result = $query->fetchAllKeyValue();
 
         return $result;
     }
 
     /**
      * Remove a card
-     * 
+     *
      * @return PlaygroundStats\Entity\Card $entity Card
      *
      */
@@ -1276,7 +1278,7 @@ class Stats
 
         return $this->cardMapper;
     }
-    
+
     /**
      * Retrieve service manager instance
      *
@@ -1294,7 +1296,7 @@ class Stats
      * newUsers : New visitors
      * sessions : number of sessions (30') on the website
      * pageviews : number of page views on the website
-     * 
+     *
      * DIMENSION
      * browser
      * continent
@@ -1305,9 +1307,9 @@ class Stats
      * source : Source of the traffic
      * userType : new visitor or returning visitor
      * pageTitle : Title of the page
-     * 
+     *
      * userAgeBracket, userGender : You need to authorize specifically your report to collect these data
-     * 
+     *
      * $startDate and $endDate: 2015-01-31 or today, 7daysAgo or 14daysAgo...
      */
     public function getGaReport($dimension = null, $metric = 'users', $pageSize = null, $order = null, $startDate = null, $endDate = null)
@@ -1365,7 +1367,7 @@ class Stats
             return false;
         }
     }
-    
+
     public function getGoogleAnalyticsViewId()
     {
         if ($this->gaViewId === null) {
@@ -1417,7 +1419,7 @@ class Stats
             $dimensionHeaders = $header->getDimensions();
             $metricHeaders = $header->getMetricHeader()->getMetricHeaderEntries();
             $rows = $report->getData()->getRows();
-        
+
             for ( $rowIndex = 0; $rowIndex < count($rows); $rowIndex++) {
                 $row = $rows[ $rowIndex ];
                 $dimensions = $row->getDimensions();
@@ -1426,7 +1428,7 @@ class Stats
                     //print($dimensionHeaders[$i] . ": " . $dimensions[$i] . "<br/>");
                     $labels[] = $dimensions[$i];
                 }
-            
+
                 for ($j = 0; $j < count($metrics); $j++) {
                     $values = $metrics[$j]->getValues();
                     for ($k = 0; $k < count($values); $k++) {
