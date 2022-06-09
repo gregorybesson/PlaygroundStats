@@ -139,7 +139,7 @@ class StatisticsController extends AbstractActionController
     {
         $ap = $this->getApplicationService();
         $disposition = '';
-        $user = $this->zfcUserAuthentication()->getIdentity();
+        $user = $this->lmcUserAuthentication()->getIdentity();
         $dashboard = $ap->getDashboardMapper()->findOneBy(array('user' => $user));
         if($dashboard){
             $disposition = $dashboard->getDisposition();
@@ -228,7 +228,7 @@ class StatisticsController extends AbstractActionController
     public function updateDashboardAction()
     {
         $ap = $this->getApplicationService();
-        $user = $this->zfcUserAuthentication()->getIdentity();
+        $user = $this->lmcUserAuthentication()->getIdentity();
         if ($this->getRequest()->isPost()) {
             $ap->createOrUpdateDashboard($user, $this->params()->fromPost('disposition'));
         }
