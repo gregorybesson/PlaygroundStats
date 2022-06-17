@@ -1315,54 +1315,58 @@ class Stats
     public function getGaReport($dimension = null, $metric = 'users', $pageSize = null, $order = null, $startDate = null, $endDate = null)
     {
         if (!empty($this->getGoogleAnalyticsViewId())) {
+            try {
 
-            $analytics = $this->getGoogleAnalytics();
-            // Replace with your view ID, for example XXXX.
-            $VIEW_ID = $this->getGoogleAnalyticsViewId();
+                $analytics = $this->getGoogleAnalytics();
+                // Replace with your view ID, for example XXXX.
+                $VIEW_ID = $this->getGoogleAnalyticsViewId();
 
-            $metrics = new \Google_Service_AnalyticsReporting_Metric();
-            $metrics->setExpression("ga:".$metric);
-            $metrics->setAlias($metric);
+                $metrics = new \Google_Service_AnalyticsReporting_Metric();
+                $metrics->setExpression("ga:".$metric);
+                $metrics->setAlias($metric);
 
-            $request = new \Google_Service_AnalyticsReporting_ReportRequest();
-            $request->setViewId($VIEW_ID);
-            if ($dimension) {
-                $dim = new \Google_Service_AnalyticsReporting_Dimension();
-                $dim->setName("ga:".$dimension);
-                // $dim2 = new \Google_Service_AnalyticsReporting_Dimension();
-                // $dim2->setName("ga:nthDay");
-                $request->setDimensions([$dim]);
-            }
-            if ($startDate && $endDate) {
-                $thisRange = new \Google_Service_AnalyticsReporting_DateRange();
-                $thisRange->setStartDate($startDate);
-                $thisRange->setEndDate($endDate);
-                $request->setDateRanges([$thisRange]);
-            }
-
-            $request->setMetrics(array($metrics));
-
-            if ($order) {
-                $ordering = new \Google_Service_AnalyticsReporting_OrderBy();
-                $ordering->setOrderType("VALUE");
-                $ordering->setFieldName("ga:".$metric);
-                if ($order == 1 || strtolower($order) == 'asc') {
-                    $ordering->setSortOrder("ASCENDING");
-                } else {
-                    $ordering->setSortOrder("DESCENDING");
+                $request = new \Google_Service_AnalyticsReporting_ReportRequest();
+                $request->setViewId($VIEW_ID);
+                if ($dimension) {
+                    $dim = new \Google_Service_AnalyticsReporting_Dimension();
+                    $dim->setName("ga:".$dimension);
+                    // $dim2 = new \Google_Service_AnalyticsReporting_Dimension();
+                    // $dim2->setName("ga:nthDay");
+                    $request->setDimensions([$dim]);
                 }
-                $request->SetOrderBys($ordering);
+                if ($startDate && $endDate) {
+                    $thisRange = new \Google_Service_AnalyticsReporting_DateRange();
+                    $thisRange->setStartDate($startDate);
+                    $thisRange->setEndDate($endDate);
+                    $request->setDateRanges([$thisRange]);
+                }
+
+                $request->setMetrics(array($metrics));
+
+                if ($order) {
+                    $ordering = new \Google_Service_AnalyticsReporting_OrderBy();
+                    $ordering->setOrderType("VALUE");
+                    $ordering->setFieldName("ga:".$metric);
+                    if ($order == 1 || strtolower($order) == 'asc') {
+                        $ordering->setSortOrder("ASCENDING");
+                    } else {
+                        $ordering->setSortOrder("DESCENDING");
+                    }
+                    $request->SetOrderBys($ordering);
+                }
+
+                if ($pageSize) {
+                    $request->setPageSize($pageSize);
+                }
+
+                $body = new \Google_Service_AnalyticsReporting_GetReportsRequest();
+                $body->setReportRequests(array( $request));
+                $reports = $analytics->reports->batchGet($body);
+
+                return $this->getGaSerie($reports);
+            } catch (\Exception $e) {
+                return false;
             }
-
-            if ($pageSize) {
-                $request->setPageSize($pageSize);
-            }
-
-            $body = new \Google_Service_AnalyticsReporting_GetReportsRequest();
-            $body->setReportRequests(array( $request));
-            $reports = $analytics->reports->batchGet($body);
-
-            return $this->getGaSerie($reports);
         } else {
             return false;
         }
