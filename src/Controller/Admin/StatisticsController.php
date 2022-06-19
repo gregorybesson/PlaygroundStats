@@ -86,7 +86,7 @@ class StatisticsController extends AbstractActionController
 
             $query = $sg->getEntriesQuery($game)->getQuery();
             $allEntries = $sg->getGameEntries(null, $query->getResult(), $game);
-            
+
             $locations = [];
             foreach($allEntries as $entry) {
                 $geoloc = explode(",", $entry['geoloc']);
@@ -144,7 +144,7 @@ class StatisticsController extends AbstractActionController
         if($dashboard){
             $disposition = $dashboard->getDisposition();
         }
-        
+
         list($startDate, $endDate, $form, $data) = $this->getStartEndDateValues();
 
         list(
@@ -166,7 +166,7 @@ class StatisticsController extends AbstractActionController
         $beginning->sub(new \DateInterval($interval));
         $sDate = $beginning->format('d/m/Y');
         $eDate   = $now->format('d/m/Y');
-        
+
         $participationsLastWeek     = $ap->getParticipationsByRangeDate($sDate, $eDate);
 
         $partArray = $ap->getParticipationsByDayByRangeDate($startDate, $endDate);
@@ -480,7 +480,7 @@ class StatisticsController extends AbstractActionController
 
             if ($classType == 'quiz') {
                 $bgColor = 'rgb(75, 192, 192)';
-            } elseif ($classType == 'postvote') {                
+            } elseif ($classType == 'postvote') {
                 $bgColor = 'rgb(255, 159, 64)';
             } elseif ($classType == 'instantwin') {
                 $bgColor = 'rgb(255, 99, 132)';
@@ -602,8 +602,10 @@ class StatisticsController extends AbstractActionController
                 $results    = $ap->getExportRecords($data);
                 if ($results instanceof \PDOStatement) {
                     $records = $results->rowCount();
-                } else {
+                } else if(is_array($results)) {
                     $records = count($results);
+                } else {
+                    $records = 0;
                 }
                 $session = new Container('Export');
                 $session->data = $data;
@@ -664,7 +666,7 @@ class StatisticsController extends AbstractActionController
                 }
             }
             echo "\n";
-            
+
             while ($row = $result->fetch()) {
                 //var_dump($row);
                 $userId         = $row['user_id'];
@@ -680,7 +682,7 @@ class StatisticsController extends AbstractActionController
                 }
                 echo $row['user_id'] . ";" . $row['title'] . ";" . $row['lastname'] . ";" . $row['firstname'] . ";" . $row['username'] . ";" . $row['email'];
                 if ($row['address2'] != '') {
-                    $address = $row['address'] . ' - ' . $row['address2']; 
+                    $address = $row['address'] . ' - ' . $row['address2'];
                 } else {
                     $address = $row['address'];
                 }
@@ -957,10 +959,10 @@ class StatisticsController extends AbstractActionController
     public function createCardAction()
     {
         $form = $this->getServiceLocator()->get('playgroundstats_card_form');
-        
+
         $request = $this->getRequest();
         $card = new Card();
-        
+
         if ($request->isPost()) {
             $data = array_merge(
                 $request->getPost()->toArray(),
