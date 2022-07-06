@@ -1245,7 +1245,7 @@ class Stats
         $stmt->execute();
 
         $query = $stmt->executeQuery();
-        $result = $query->fetchAllKeyValue();
+        $result = $query->fetchAllAssociative();
 
         return $result;
     }
